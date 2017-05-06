@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8" />
+    <title th:text="${title}">Cinema</title>
+    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}" />
+</head>
+<header th:fragment="header">
+    <nav>
+        <div sec:authorize="!authenticated">
+            <a href="/login" th:href="@{/login}"><button class="dropbtn">Log In</button></a>
+        </div>
+        <div class="dropdown" sec:authorize="authenticated">
+            <div class="dropbtn">
+                <span sec:authentication="principal.name"></span>
+            </div>
+            <div class="dropdown-content">
+                <a href="/customers" th:href="@{/customers}">Customers</a>
+                <a href="#">Link 2</a>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Log out" class="logoutbtn"/>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div th:text="${globalMessage}"></div>
+</header>
+</html>

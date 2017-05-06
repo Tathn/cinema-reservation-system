@@ -16,7 +16,7 @@ import java.util.Collection;
  * Created by Patryk on 2017-04-19.
  */
 @Controller
-@RequestMapping("/customers")
+@RequestMapping
 public class CustomerController {
     private final CustomerService customerService;
 
@@ -25,38 +25,23 @@ public class CustomerController {
         customerService = new CustomerService(customerRepository);
     }
 
-    @GetMapping
+    @GetMapping("/customers")
     public String get(Model model){
         Collection<Customer> customers = customerService.findAll();
         model.addAttribute("customers",customers);
         return "customers/all";
     }
 
-    @GetMapping("/new")
-    public String initCreationForm(Model model){
-        model.addAttribute("customer", new Customer());
-        return "customers/create";
-    }
 
-    @PostMapping("/new")
-    public String processCreationForm(@ModelAttribute Customer customer, BindingResult result, RedirectAttributes redir){
-        if (result.hasErrors()) {
-            return "customers/create";
-        } else {
-            customerService.save(customer);
-            redir.addFlashAttribute("message","New customer added!");
-            return "redirect:/customers/";
-        }
-    }
 
-    @GetMapping("/edit/{customerId}")
-    public String initEditForm(@PathVariable Long customerId,Model model){
+    @GetMapping("/customers/edit/{customerId}")
+    public String initEditForm(@PathVariable Long customerId, Model model){
 
         model.addAttribute("customer", customerService.findById(customerId));
         return "customers/edit";
     }
 
-    @PostMapping("/edit/{customerId}")
+    @PostMapping("/customers/edit/{customerId}")
     public String processEditForm(@PathVariable Long customerId, @ModelAttribute Customer customer, BindingResult result, RedirectAttributes redir){
         if (result.hasErrors()) {
             return "customers/edit";
@@ -67,7 +52,7 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/delete/{customerId}")
+    @GetMapping("/customers/delete/{customerId}")
     public String removeCustomer(@PathVariable Long customerId, RedirectAttributes redir){
         customerService.delete(customerId);
         redir.addFlashAttribute("message","Customer deleted!");

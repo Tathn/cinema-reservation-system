@@ -11,7 +11,10 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 public class BaseEntity implements Serializable {
-    @Id
+	
+	private static final long serialVersionUID = 8446522415730561872L;
+	
+	@Id
     @GeneratedValue
     @Column(name = "id")
     private Long id;
