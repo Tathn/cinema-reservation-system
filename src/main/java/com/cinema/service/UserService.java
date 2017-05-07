@@ -1,7 +1,7 @@
 package com.cinema.service;
 
-import com.cinema.domain.Customer;
-import com.cinema.domain.CustomerRepository;
+import com.cinema.domain.User;
+import com.cinema.domain.UserRepository;
 
 import java.util.Collection;
 
@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
  * Created by Patryk on 2017-04-27.
  */
 @Service
-public class CustomerService {
-    private final CustomerRepository customerRepository;
+public class UserService {
+    private final UserRepository customerRepository;
 
-    public CustomerService(CustomerRepository customerRepository){
+    public UserService(UserRepository customerRepository){
         this.customerRepository = customerRepository;
     }
 
 
-    public Customer save(Customer customer){
+    public User save(User customer){
         return customerRepository.save(customer);
     }
 
@@ -27,15 +27,15 @@ public class CustomerService {
         customerRepository.delete(id);
     }
 
-    public Collection<Customer> findAll(){
+    public Collection<User> findAll(){
         return customerRepository.findAll();
     }
 
-    public Customer findById(Long id){
+    public User findById(Long id){
         return customerRepository.findOne(id);
     }
     
-    public Customer findByUsername(String username){
-    	return customerRepository.findCustomerByUsername(username);
+    public User findByUsername(String username){
+    	return customerRepository.findUserByUsername(username);
     }
 }

@@ -14,8 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * Created by Patryk on 2017-04-19.
  */
 @Entity
-@Table(name = "customers")
-public class Customer extends BaseEntity {
+@Table(name = "users")
+public class User extends BaseEntity {
 
 	private static final long serialVersionUID = -1006690702888698974L;
 
@@ -31,13 +31,13 @@ public class Customer extends BaseEntity {
     @NotEmpty(message = "Password is required.")
     private String password;
 
-    public Customer(){}
+    public User(){}
     
-    public Customer(Customer customer){
-    	this.setId(customer.getId());
-    	this.username = customer.username;
-    	this.email = customer.email;
-    	this.password = customer.password;
+    public User(User user){
+    	this.setId(user.getId());
+    	this.username = user.username;
+    	this.email = user.email;
+    	this.password = user.password;
     }
 
     public String getUsername(){ return this.username; }

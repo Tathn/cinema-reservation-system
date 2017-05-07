@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="header :: head('Edit Customer')"></div>
+<div th:replace="header :: head('Edit User')"></div>
 <body>
 <div th:replace="header :: header"></div>
-<form action="#" th:action="@{/customers/edit/} + ${customer.id}" th:object="${customer}" method="post">
+<form action="#" th:action="@{/user/edit/} + ${user.id}" th:object="${user}" method="post">
     <input type="hidden" th:field="*{id}"/>
     <p>Username: <input type="text" th:field="*{username}" /></p>
     <p>E-mail: <input type="text" th:field="*{email}" /></p>

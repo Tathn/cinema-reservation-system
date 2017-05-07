@@ -8,33 +8,33 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.cinema.domain.Customer;
+import com.cinema.domain.User;
 
 @Service
-public class CustomerRepositoryUserDetailsService implements UserDetailsService {
-	private final CustomerService customerService;
+public class UserRepositoryUserDetailsService implements UserDetailsService {
+	private final UserService userService;
 	
 	@Autowired
-	public CustomerRepositoryUserDetailsService(CustomerService customerService) {
-		this.customerService = customerService;
+	public UserRepositoryUserDetailsService(UserService userService) {
+		this.userService = userService;
 	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) 
 			throws UsernameNotFoundException {
-		Customer customer = customerService.findByUsername(username);
-		if(customer == null) {
+		User user = userService.findByUsername(username);
+		if(user == null) {
 			throw new UsernameNotFoundException("Could not find user " + username);
 		}
-		return new CustomUserDetails(customer);
+		return new CustomUserDetails(user);
 	}
 	
-	private final class CustomUserDetails extends Customer implements UserDetails {
+	private final class CustomUserDetails extends User implements UserDetails {
 
 		private static final long serialVersionUID = -8006025957151631338L;
 
-		private CustomUserDetails(Customer customer) {
-	        super(customer);
+		private CustomUserDetails(User user) {
+	        super(user);
 	    }
 
 	    @Override

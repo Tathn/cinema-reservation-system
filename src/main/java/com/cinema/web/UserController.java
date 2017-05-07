@@ -1,8 +1,8 @@
 package com.cinema.web;
 
-import com.cinema.domain.Customer;
-import com.cinema.domain.CustomerRepository;
-import com.cinema.service.CustomerService;
+import com.cinema.domain.User;
+import com.cinema.domain.UserRepository;
+import com.cinema.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,45 +17,45 @@ import java.util.Collection;
  */
 @Controller
 @RequestMapping
-public class CustomerController {
-    private final CustomerService customerService;
+public class UserController {
+    private final UserService userService;
 
     @Autowired
-    public CustomerController(CustomerRepository customerRepository){
-        customerService = new CustomerService(customerRepository);
+    public UserController(UserRepository userRepository){
+        userService = new UserService(userRepository);
     }
 
-    @GetMapping("/customers")
+    @GetMapping("/users")
     public String get(Model model){
-        Collection<Customer> customers = customerService.findAll();
-        model.addAttribute("customers",customers);
-        return "customers/all";
+        Collection<User> users = userService.findAll();
+        model.addAttribute("users",users);
+        return "users/all";
     }
 
 
 
-    @GetMapping("/customers/edit/{customerId}")
-    public String initEditForm(@PathVariable Long customerId, Model model){
+    @GetMapping("/user/edit/{userId}")
+    public String initEditForm(@PathVariable Long userId, Model model){
 
-        model.addAttribute("customer", customerService.findById(customerId));
-        return "customers/edit";
+        model.addAttribute("user", userService.findById(userId));
+        return "users/edit";
     }
 
-    @PostMapping("/customers/edit/{customerId}")
-    public String processEditForm(@PathVariable Long customerId, @ModelAttribute Customer customer, BindingResult result, RedirectAttributes redir){
+    @PostMapping("/user/edit/{userId}")
+    public String processEditForm(@PathVariable Long userId, @ModelAttribute User user, BindingResult result, RedirectAttributes redir){
         if (result.hasErrors()) {
-            return "customers/edit";
+            return "users/edit";
         } else {
-            customerService.save(customer);
-            redir.addFlashAttribute("message","Customer edited!");
-            return "redirect:/customers/";
+            userService.save(user);
+            redir.addFlashAttribute("message","User edited!");
+            return "redirect:/users/";
         }
     }
 
-    @GetMapping("/customers/delete/{customerId}")
-    public String removeCustomer(@PathVariable Long customerId, RedirectAttributes redir){
-        customerService.delete(customerId);
-        redir.addFlashAttribute("message","Customer deleted!");
-        return "redirect:/customers/";
+    @GetMapping("/user/delete/{userId}")
+    public String removeCustomer(@PathVariable Long userId, RedirectAttributes redir){
+        userService.delete(userId);
+        redir.addFlashAttribute("message","User deleted!");
+        return "redirect:/users/";
     }
 }

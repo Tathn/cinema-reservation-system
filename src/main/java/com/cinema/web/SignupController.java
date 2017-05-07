@@ -1,8 +1,8 @@
 package com.cinema.web;
 
-import com.cinema.domain.Customer;
-import com.cinema.domain.CustomerRepository;
-import com.cinema.service.CustomerService;
+import com.cinema.domain.User;
+import com.cinema.domain.UserRepository;
+import com.cinema.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,32 +27,32 @@ import java.util.List;
 @Controller
 @RequestMapping("/register")
 public class SignupController {
-    private final CustomerService customerService;
+    private final UserService userService;
 
     @Autowired
-    public SignupController(CustomerRepository customerRepository){
-        customerService = new CustomerService(customerRepository);
+    public SignupController(UserRepository userRepository){
+        userService = new UserService(userRepository);
     }
 
     @GetMapping
-    public String initCreationForm(@ModelAttribute Customer customer){
-        return "customers/create";
+    public String initCreationForm(@ModelAttribute User user){
+        return "users/signup";
     }
 
     @PostMapping
-    public String processCreationForm(@Valid Customer customer, BindingResult result, RedirectAttributes redirect){
+    public String processCreationForm(@Valid User user, BindingResult result, RedirectAttributes redirect){
         if (result.hasErrors()) {
-            return "customers/create";
+            return "users/signup";
         } else {
-            customer = customerService.save(customer);
+            user = userService.save(user);
             redirect.addFlashAttribute("globalMessage", "Successfully signed up");
 
             List<GrantedAuthority> authorities =
                     AuthorityUtils.createAuthorityList("ROLE_USER");
             UserDetails userDetails = new org.springframework.security.core.userdetails
-                    .User(customer.getEmail(),customer.getPassword(), authorities);
+                    .User(user.getUsername(),user.getPassword(), authorities);
             Authentication auth =
-                    new UsernamePasswordAuthenticationToken(userDetails, customer.getPassword(), authorities);
+                    new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
             SecurityContextHolder.getContext().setAuthentication(auth);
             return "redirect:/";
         }
