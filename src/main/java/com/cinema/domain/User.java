@@ -4,9 +4,17 @@ package com.cinema.domain;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.transaction.Transactional;
+import javax.persistence.JoinColumn;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -30,6 +38,15 @@ public class User extends BaseEntity {
 
     @NotEmpty(message = "Password is required.")
     private String password;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable( 
+        name = "users_roles", 
+        joinColumns = @JoinColumn(
+          name = "user_id", referencedColumnName = "id"), 
+        inverseJoinColumns = @JoinColumn(
+          name = "role_id", referencedColumnName = "id")) 
+    private Collection<Role> roles;
 
     public User(){}
     
@@ -38,6 +55,7 @@ public class User extends BaseEntity {
     	this.username = user.username;
     	this.email = user.email;
     	this.password = user.password;
+    	this.roles = user.roles;
     }
 
     public String getUsername(){ return this.username; }
@@ -47,9 +65,20 @@ public class User extends BaseEntity {
     public void setEmail(String email){ this.email = email; }
 
     public String getPassword() { return password; }
-
     public void setPassword(String password) { 
     	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
     	this.password = bCryptPasswordEncoder.encode(password); 
+    }
+    
+    public Collection<Role> getRoles() { return roles; }
+    public void setRoles(Collection<Role> roles) { this.roles = roles; }
+    
+    public String[] getRolesNames() { 
+    	ArrayList<String> strRoles = new ArrayList<String>();
+    	for(Role role : roles){
+    		strRoles.add(role.getName());
+    	}
+    	return strRoles.toArray(new String[strRoles.size()]);
+    	
     }
 }

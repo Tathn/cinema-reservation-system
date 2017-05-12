@@ -1,5 +1,6 @@
 package com.cinema.service;
 
+import com.cinema.domain.Role;
 import com.cinema.domain.User;
 import com.cinema.domain.UserRepository;
 
@@ -12,30 +13,34 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
-    private final UserRepository customerRepository;
+    private final UserRepository userRepository;
 
-    public UserService(UserRepository customerRepository){
-        this.customerRepository = customerRepository;
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
     }
 
 
-    public User save(User customer){
-        return customerRepository.save(customer);
+    public User save(User user){
+        return userRepository.save(user);
     }
 
     public void delete(Long id){
-        customerRepository.delete(id);
+        userRepository.delete(id);
     }
 
     public Collection<User> findAll(){
-        return customerRepository.findAll();
+        return userRepository.findAll();
     }
 
     public User findById(Long id){
-        return customerRepository.findOne(id);
+        return userRepository.findOne(id);
     }
     
     public User findByUsername(String username){
-    	return customerRepository.findUserByUsername(username);
+    	return userRepository.findUserByUsername(username);
+    }
+    
+    public Collection<User> findUsersByRoles(Role role){
+    	return userRepository.findUsersByRoles(role);
     }
 }

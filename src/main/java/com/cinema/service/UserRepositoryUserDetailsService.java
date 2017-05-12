@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import com.cinema.domain.User;
 
 @Service
@@ -39,7 +40,7 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
 
 	    @Override
 	    public Collection<? extends GrantedAuthority> getAuthorities() {
-	        return AuthorityUtils.createAuthorityList("ROLE_USER");
+	    	return AuthorityUtils.createAuthorityList(getRolesNames());
 	    }
 
 	    @Override
