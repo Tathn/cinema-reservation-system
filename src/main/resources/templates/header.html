@@ -15,8 +15,7 @@
                 <span sec:authentication="name"></span>
             </div>
             <div class="dropdown-content">
-                <a href="/users" th:href="@{/users}">Users</a>
-                <a href="#">Link 2</a>
+                <a href="/account" th:href="@{/account}">Manage Account</a>
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Log out" class="logoutbtn"/>
                 </form>

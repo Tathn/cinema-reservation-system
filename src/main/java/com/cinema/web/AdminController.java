@@ -43,7 +43,15 @@ public class AdminController {
     	return "admin/manageUsers";
     }
     
-    @GetMapping("/admin/edit/{userId}")
+    @GetMapping("employees")
+    public String getEmployees(Model model){
+    	Role role = roleService.findByName("ROLE_EMPLOYEE");
+    	Collection<User> employees = userService.findUsersByRoles(role);
+        model.addAttribute("employees",employees);
+    	return "admin/manageEmployees";
+    }
+    
+    @GetMapping("edit/{userId}")
     public String initEditForm(@PathVariable Long userId, Model model){
 
         model.addAttribute("user", userService.findById(userId));

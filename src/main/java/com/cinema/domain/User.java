@@ -65,10 +65,7 @@ public class User extends BaseEntity {
     public void setEmail(String email){ this.email = email; }
 
     public String getPassword() { return password; }
-    public void setPassword(String password) { 
-    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
-    	this.password = bCryptPasswordEncoder.encode(password); 
-    }
+    public void setPassword(String password) { this.password = password; }
     
     public Collection<Role> getRoles() { return roles; }
     public void setRoles(Collection<Role> roles) { this.roles = roles; }

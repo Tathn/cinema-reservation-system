@@ -1,0 +1,9 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:replace="header :: head('Cinema Main Page')"></div>
+<body>
+<div th:replace="header :: header"></div>
+<div><a href="/account/edit" th:href="@{/account/edit}"><button>Edit account information</button></a></div>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>

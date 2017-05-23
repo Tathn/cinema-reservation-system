@@ -32,26 +32,6 @@ public class UserController {
         return "users/all";
     }
 
-
-
-    @GetMapping("/user/edit/{userId}")
-    public String initEditForm(@PathVariable Long userId, Model model){
-
-        model.addAttribute("user", userService.findById(userId));
-        return "users/edit";
-    }
-
-    @PostMapping("/user/edit/{userId}")
-    public String processEditForm(@PathVariable Long userId, @ModelAttribute User user, BindingResult result, RedirectAttributes redir){
-        if (result.hasErrors()) {
-            return "users/edit";
-        } else {
-            userService.save(user);
-            redir.addFlashAttribute("message","User edited!");
-            return "redirect:/users/";
-        }
-    }
-
     @GetMapping("/user/delete/{userId}")
     public String removeCustomer(@PathVariable Long userId, RedirectAttributes redir){
         userService.delete(userId);

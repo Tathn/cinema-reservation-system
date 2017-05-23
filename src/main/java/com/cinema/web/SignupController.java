@@ -2,6 +2,7 @@ package com.cinema.web;
 
 import com.cinema.domain.User;
 import com.cinema.domain.UserRepository;
+import com.cinema.service.UserRepositoryUserDetailsService;
 import com.cinema.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,24 +38,27 @@ public class SignupController {
 
     @GetMapping
     public String initCreationForm(@ModelAttribute User user){
-        return "users/signup";
+        return "signup";
     }
 
     @PostMapping
     public String processCreationForm(@Valid User user, BindingResult result, RedirectAttributes redirect){
         if (result.hasErrors()) {
-            return "users/signup";
+            return "signup";
         } else {
+        	// Save newly created user in database
+        	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
+    		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user = userService.save(user);
             redirect.addFlashAttribute("globalMessage", "Successfully signed up");
 
-            List<GrantedAuthority> authorities =
-                    AuthorityUtils.createAuthorityList("ROLE_USER");
-            UserDetails userDetails = new org.springframework.security.core.userdetails
-                    .User(user.getUsername(),user.getPassword(), authorities);
-            Authentication auth =
-                    new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
+            // Authenticate registered user
+            List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRolesNames());
+            UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+            Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
             SecurityContextHolder.getContext().setAuthentication(auth);
+            
             return "redirect:/";
         }
     }
