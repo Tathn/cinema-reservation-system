@@ -75,7 +75,13 @@ public class User extends BaseEntity {
     	for(Role role : roles){
     		strRoles.add(role.getName());
     	}
-    	return strRoles.toArray(new String[strRoles.size()]);
-    	
+    	return strRoles.toArray(new String[strRoles.size()]); 	
+    }
+    
+    public void addRole(Role role) {
+       	if(roles == null) {
+    		roles = new ArrayList<Role>();
+    	}
+    	roles.add(role);
     }
 }

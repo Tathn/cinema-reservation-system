@@ -1,7 +1,10 @@
 package com.cinema.web;
 
+import com.cinema.domain.Role;
+import com.cinema.domain.RoleRepository;
 import com.cinema.domain.User;
 import com.cinema.domain.UserRepository;
+import com.cinema.service.RoleService;
 import com.cinema.service.UserRepositoryUserDetailsService;
 import com.cinema.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +33,12 @@ import java.util.List;
 @RequestMapping("/register")
 public class SignupController {
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public SignupController(UserRepository userRepository){
+    public SignupController(UserRepository userRepository, RoleRepository roleRepository){
         userService = new UserService(userRepository);
+        roleService = new RoleService(roleRepository);
     }
 
     @GetMapping
@@ -46,6 +51,9 @@ public class SignupController {
         if (result.hasErrors()) {
             return "signup";
         } else {
+        	Role userRole = roleService.findByName("ROLE_USER");
+        	user.addRole(userRole);
+        	
         	// Save newly created user in database
         	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
     		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

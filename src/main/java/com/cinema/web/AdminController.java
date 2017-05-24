@@ -58,21 +58,21 @@ public class AdminController {
         return "admin/edit";
     }
 
-    @PostMapping("/admin/edit/{userId}")
+    @PostMapping("edit/{userId}")
     public String processEditForm(@PathVariable Long userId, @ModelAttribute User user, BindingResult result, RedirectAttributes redir){
         if (result.hasErrors()) {
             return "admin/edit";
         } else {
             userService.save(user);
-            redir.addFlashAttribute("message","User edited!");
-            return "redirect:/users/";
+            redir.addFlashAttribute("globalMessage","User edited!");
+            return "redirect:/admin/users";
         }
     }
 
-    @GetMapping("/admin/delete/{userId}")
-    public String removeCustomer(@PathVariable Long userId, RedirectAttributes redir){
+    @GetMapping("delete/{userId}")
+    public String removeUser(@PathVariable Long userId, RedirectAttributes redir){
         userService.delete(userId);
-        redir.addFlashAttribute("message","User deleted!");
-        return "redirect:/users/";
+        redir.addFlashAttribute("globalMessage","User deleted!");
+        return "redirect:/admin/users";
     }
 }
