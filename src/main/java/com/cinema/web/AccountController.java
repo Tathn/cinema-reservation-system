@@ -55,26 +55,36 @@ public class AccountController {
         if (result.hasErrors()) {
             return "account/edit";
         } else {
-        	// Edit database entry
+        	// Get database record of edited user
         	User dbRecord = userService.findById(user.getId());
         	dbRecord.setUsername(user.getUsername());
         	dbRecord.setEmail(user.getEmail());
-        	if(user.getPassword() != ""){
-        		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
-        		dbRecord.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        	String userPassword = user.getPassword();
+        	if(userPassword != ""){
+        		String encodedPassword = encodePassword(userPassword);
+        		dbRecord.setPassword(encodedPassword);
         	}
             userService.save(dbRecord);
+            authenticate(dbRecord);
             redir.addFlashAttribute("globalMessage","Account details saved!");
-            
-            // Reauthenticate edited user
-            List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(dbRecord.getRolesNames());
-            UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(dbRecord.getUsername());
-            Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, dbRecord.getPassword(), authorities);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            
             return "redirect:/account";
         }
+    }
+    
+    //TODO refractor
+    private void authenticate(User user){
+    	List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRolesNames());
+        UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        
+    }
+    
+    private String encodePassword(String password){
+    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
+    	String encodedPassword = bCryptPasswordEncoder.encode(password);
+    	return encodedPassword;
     }
 
 }

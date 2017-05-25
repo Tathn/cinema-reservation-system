@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="header :: head('Show all users')"></div>
+<div th:replace="header :: head('Show all employees')"></div>
 <body>
 <div th:replace="header :: header"></div>
 <table>
@@ -12,15 +12,23 @@
 </tr>
 </thead>
 <tbody>
-<tr th:each="user : ${users}">
-    <td th:text="${user.id}"></td>
-    <td th:text="${user.username}"></td>
-    <td th:text="${user.email}"></td>
-	<td th:text="${user.password}"></td>
-    <td><a th:href="@{/admin/delete/} + ${user.id}"><button>Remove</button></a></td>
-    <td><a th:href="@{/admin/edit/} + ${user.id}"><button>Edit</button></a></td>
+<tr th:each="employee : ${employees}">
+    <td th:text="${employee.id}"></td>
+    <td th:text="${employee.username}"></td>
+    <td th:text="${employee.email}"></td>
+    <td><a th:href="@{/admin/delete/} + ${employee.id}"><button>Remove</button></a></td>
+    <td><a th:href="@{/admin/edit/} + ${employee.id}"><button>Edit</button></a></td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+	<td>
+		<a href="/admin/employees/create" th:href="@{/admin/employees/create}">
+		<button>Add Employee</button>
+		</a>
+	</td>
+</tr>
+</tfoot>
 </table>
 <div th:replace="footer :: footer"></div>
 </body>

@@ -3,10 +3,10 @@
 <div th:replace="header :: head('Cinema Main Page')"></div>
 <body>
 <div th:replace="header :: header"></div>
-<div><a href="/admin/users"><button>MANAGE USERS</button></a></div>
-<div><a href="/admin/employees"><button>MANAGE EMPLOYEES</button></a></div>
-<div><a href="/admin/movies"><button>MANAGE MOVIES</button></a></div>
-<div><a href="/admin/cinema-rooms"><button>MANAGE CINEMA ROOMS</button></a></div>
+<div><a href="/admin/users" th:href="@{/admin/users}"><button>MANAGE USERS</button></a></div>
+<div><a href="/admin/employees" th:href="@{/admin/employees}"><button>MANAGE EMPLOYEES</button></a></div>
+<div><a href="/admin/movies" th:href="@{/admin/movies}"><button>MANAGE MOVIES</button></a></div>
+<div><a href="/admin/cinema-rooms" th:href="@{/admin/cinema-rooms}"><button>MANAGE CINEMA ROOMS</button></a></div>
 <div th:replace="footer :: footer"></div>
 </body>
 </html>

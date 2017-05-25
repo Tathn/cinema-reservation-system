@@ -5,8 +5,16 @@ import com.cinema.domain.RoleRepository;
 import com.cinema.domain.User;
 import com.cinema.domain.UserRepository;
 import com.cinema.service.RoleService;
+import com.cinema.service.UserRepositoryUserDetailsService;
 import com.cinema.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Patryk on 2017-04-19.
@@ -34,41 +43,54 @@ public class AdminController {
     public String getAdminPanel(){
         return "admin/adminPanel";
     }
+    
+    private Collection<User> populateUsersByRole(String roleName) {
+    	Role role = roleService.findByName(roleName);
+    	Collection<User> users = userService.findUsersByRoles(role);
+    	return users;
+    }
 
     @GetMapping("users")
-    public String getUsers(Model model){
-    	Role role = roleService.findByName("ROLE_USER");
-    	Collection<User> users = userService.findUsersByRoles(role);
+    public String getUsers(Model model) {
+    	Collection<User> users = populateUsersByRole("ROLE_USER");
         model.addAttribute("users",users);
     	return "admin/manageUsers";
     }
     
     @GetMapping("employees")
-    public String getEmployees(Model model){
-    	Role role = roleService.findByName("ROLE_EMPLOYEE");
-    	Collection<User> employees = userService.findUsersByRoles(role);
+    public String getEmployees(Model model) {
+    	Collection<User> employees = populateUsersByRole("ROLE_EMPLOYEE");
         model.addAttribute("employees",employees);
     	return "admin/manageEmployees";
     }
     
-    @GetMapping("edit/{userId}")
-    public String initEditForm(@PathVariable Long userId, Model model){
-
-        model.addAttribute("user", userService.findById(userId));
-        return "admin/edit";
+    @GetMapping("employees/create")
+    public String initCreateEmployeeForm(@ModelAttribute User user){
+    	return "admin/createEmployee";
     }
-
-    @PostMapping("edit/{userId}")
-    public String processEditForm(@PathVariable Long userId, @ModelAttribute User user, BindingResult result, RedirectAttributes redir){
-        if (result.hasErrors()) {
-            return "admin/edit";
-        } else {
-            userService.save(user);
-            redir.addFlashAttribute("globalMessage","User edited!");
-            return "redirect:/admin/users";
-        }
+    
+    @PostMapping("employees/create")
+    public String processCreateEmployeeForm(@ModelAttribute User user, BindingResult result, RedirectAttributes redirect){
+    	if(result.hasErrors()) {
+    		return "employees/create";
+    	} else {
+    		Role userRole = roleService.findByName("ROLE_EMPLOYEE");
+        	user.addRole(userRole);
+        	String encodedPassword = encodePassword(user.getPassword());
+        	user.setPassword(encodedPassword);
+            user = userService.save(user);
+            redirect.addFlashAttribute("globalMessage", "Successfully created an Employee Account");
+    		return "redirect:/admin/employees";
+    	}
     }
-
+    
+    //TODO refractor
+    private String encodePassword(String password){
+    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
+    	String encodedPassword = bCryptPasswordEncoder.encode(password);
+    	return encodedPassword;
+    }
+    
     @GetMapping("delete/{userId}")
     public String removeUser(@PathVariable Long userId, RedirectAttributes redir){
         userService.delete(userId);

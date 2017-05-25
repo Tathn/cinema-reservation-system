@@ -42,32 +42,39 @@ public class SignupController {
     }
 
     @GetMapping
-    public String initCreationForm(@ModelAttribute User user){
+    public String initUserCreationForm(@ModelAttribute User user){
         return "signup";
     }
 
     @PostMapping
-    public String processCreationForm(@Valid User user, BindingResult result, RedirectAttributes redirect){
+    public String processUserCreationForm(@Valid User user, BindingResult result, RedirectAttributes redirect){
         if (result.hasErrors()) {
             return "signup";
         } else {
         	Role userRole = roleService.findByName("ROLE_USER");
         	user.addRole(userRole);
-        	
-        	// Save newly created user in database
-        	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
-    		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        	String encodedPassword = encodePassword(user.getPassword());
+        	user.setPassword(encodedPassword);
             user = userService.save(user);
+            authenticate(user);
             redirect.addFlashAttribute("globalMessage", "Successfully signed up");
-
-            // Authenticate registered user
-            List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRolesNames());
-            UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-            Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            
             return "redirect:/";
         }
+    }
+    
+    //TODO refractor
+    private void authenticate(User user){
+    	List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRolesNames());
+        UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        
+    }
+    
+    private String encodePassword(String password){
+    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
+    	String encodedPassword = bCryptPasswordEncoder.encode(password);
+    	return encodedPassword;
     }
 }

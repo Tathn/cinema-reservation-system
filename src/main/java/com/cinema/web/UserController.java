@@ -25,17 +25,4 @@ public class UserController {
         userService = new UserService(userRepository);
     }
 
-    @GetMapping("/users")
-    public String get(Model model){
-        Collection<User> users = userService.findAll();
-        model.addAttribute("users",users);
-        return "users/all";
-    }
-
-    @GetMapping("/user/delete/{userId}")
-    public String removeCustomer(@PathVariable Long userId, RedirectAttributes redir){
-        userService.delete(userId);
-        redir.addFlashAttribute("message","User deleted!");
-        return "redirect:/users/";
-    }
 }
