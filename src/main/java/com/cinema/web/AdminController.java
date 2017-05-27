@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -77,8 +78,10 @@ public class AdminController {
     	if(result.hasErrors()) {
     		return "employees/create";
     	} else {
-    		Role userRole = roleService.findByName("ROLE_EMPLOYEE");
-        	user.addRole(userRole);
+    		Collection<Role> userRoles = new ArrayList<Role>();
+    		userRoles.add(roleService.findByName("ROLE_EMPLOYEE"));
+    		userRoles.add(roleService.findByName("ROLE_USER"));
+        	user.setRoles(userRoles);
         	String encodedPassword = securityService.encodePassword(user.getPassword());
         	user.setPassword(encodedPassword);
             user = userService.save(user);
