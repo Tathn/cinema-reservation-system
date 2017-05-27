@@ -5,6 +5,7 @@ import com.cinema.domain.RoleRepository;
 import com.cinema.domain.User;
 import com.cinema.domain.UserRepository;
 import com.cinema.service.RoleService;
+import com.cinema.service.SecurityService;
 import com.cinema.service.UserRepositoryUserDetailsService;
 import com.cinema.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,13 @@ import java.util.List;
 public class SignupController {
     private final UserService userService;
     private final RoleService roleService;
-
+    private final SecurityService securityService;
+    
     @Autowired
     public SignupController(UserRepository userRepository, RoleRepository roleRepository){
         userService = new UserService(userRepository);
         roleService = new RoleService(roleRepository);
+        securityService = new SecurityService();
     }
 
     @GetMapping
@@ -53,28 +56,12 @@ public class SignupController {
         } else {
         	Role userRole = roleService.findByName("ROLE_USER");
         	user.addRole(userRole);
-        	String encodedPassword = encodePassword(user.getPassword());
+        	String encodedPassword = securityService.encodePassword(user.getPassword());
         	user.setPassword(encodedPassword);
             user = userService.save(user);
-            authenticate(user);
+            securityService.authenticate(user, userService);
             redirect.addFlashAttribute("globalMessage", "Successfully signed up");
             return "redirect:/";
         }
-    }
-    
-    //TODO refractor
-    private void authenticate(User user){
-    	List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRolesNames());
-        UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        
-    }
-    
-    private String encodePassword(String password){
-    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
-    	String encodedPassword = bCryptPasswordEncoder.encode(password);
-    	return encodedPassword;
     }
 }

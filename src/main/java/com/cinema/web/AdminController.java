@@ -5,6 +5,7 @@ import com.cinema.domain.RoleRepository;
 import com.cinema.domain.User;
 import com.cinema.domain.UserRepository;
 import com.cinema.service.RoleService;
+import com.cinema.service.SecurityService;
 import com.cinema.service.UserRepositoryUserDetailsService;
 import com.cinema.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,13 @@ import java.util.List;
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
-
+    private final SecurityService securityService;
+    
     @Autowired
     public AdminController(UserRepository userRepository, RoleRepository roleRepository){
         userService = new UserService(userRepository);
         roleService = new RoleService(roleRepository);
+        securityService = new SecurityService();
     }
     
     @GetMapping
@@ -76,19 +79,12 @@ public class AdminController {
     	} else {
     		Role userRole = roleService.findByName("ROLE_EMPLOYEE");
         	user.addRole(userRole);
-        	String encodedPassword = encodePassword(user.getPassword());
+        	String encodedPassword = securityService.encodePassword(user.getPassword());
         	user.setPassword(encodedPassword);
             user = userService.save(user);
             redirect.addFlashAttribute("globalMessage", "Successfully created an Employee Account");
     		return "redirect:/admin/employees";
     	}
-    }
-    
-    //TODO refractor
-    private String encodePassword(String password){
-    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
-    	String encodedPassword = bCryptPasswordEncoder.encode(password);
-    	return encodedPassword;
     }
     
     @GetMapping("delete/{userId}")

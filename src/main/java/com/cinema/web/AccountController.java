@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cinema.domain.User;
 import com.cinema.domain.UserRepository;
+import com.cinema.service.SecurityService;
 import com.cinema.service.UserRepositoryUserDetailsService;
 import com.cinema.service.UserService;
 
@@ -32,10 +33,12 @@ import com.cinema.service.UserService;
 public class AccountController {
 	
 	private final UserService userService;
-
+	private final SecurityService securityService;
+	
     @Autowired
     public AccountController(UserRepository userRepository){
         userService = new UserService(userRepository);
+        securityService = new SecurityService();
     }
 
     @GetMapping
@@ -61,30 +64,13 @@ public class AccountController {
         	dbRecord.setEmail(user.getEmail());
         	String userPassword = user.getPassword();
         	if(userPassword != ""){
-        		String encodedPassword = encodePassword(userPassword);
+        		String encodedPassword = securityService.encodePassword(userPassword);
         		dbRecord.setPassword(encodedPassword);
         	}
             userService.save(dbRecord);
-            authenticate(dbRecord);
+            securityService.authenticate(dbRecord,userService);
             redir.addFlashAttribute("globalMessage","Account details saved!");
             return "redirect:/account";
         }
     }
-    
-    //TODO refractor
-    private void authenticate(User user){
-    	List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRolesNames());
-        UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        
-    }
-    
-    private String encodePassword(String password){
-    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
-    	String encodedPassword = bCryptPasswordEncoder.encode(password);
-    	return encodedPassword;
-    }
-
 }
