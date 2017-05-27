@@ -47,6 +47,9 @@ public class User extends BaseEntity {
         inverseJoinColumns = @JoinColumn(
           name = "role_id", referencedColumnName = "id")) 
     private Collection<Role> roles;
+    
+    //TODO
+    // hasMany Tickets
 
     public User(){}
     
