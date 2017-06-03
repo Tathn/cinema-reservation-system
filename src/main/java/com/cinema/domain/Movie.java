@@ -1,7 +1,10 @@
 package com.cinema.domain;
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -10,7 +13,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * Created by Patryk on 2017-05-27.
  */
 @Entity
-@Table(name="movies")
+@Table(name = "movies")
 public class Movie extends BaseEntity {
 
 	private static final long serialVersionUID = 369022311879378956L;
@@ -35,9 +38,8 @@ public class Movie extends BaseEntity {
 	@Column(name = "available", nullable = false)
 	private Boolean available;
 
-	//TODO
-	//hasMany cinemaRooms
-	//hasMany tickets
+	@OneToMany(mappedBy="movie")
+	Collection<Screening> screenings;
 	
 	
 	public Movie(){}

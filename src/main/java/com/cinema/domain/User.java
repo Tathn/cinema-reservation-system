@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.transaction.Transactional;
 import javax.persistence.JoinColumn;
@@ -48,8 +49,8 @@ public class User extends BaseEntity {
           name = "role_id", referencedColumnName = "id")) 
     private Collection<Role> roles;
     
-    //TODO
-    // hasMany Tickets
+    @OneToMany(mappedBy = "user")
+	Collection<Ticket> tickets;
 
     public User(){}
     

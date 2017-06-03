@@ -1,7 +1,7 @@
 package com.cinema.service;
 
-import com.cinema.domain.Seat;
-import com.cinema.domain.SeatRepository;
+import com.cinema.domain.RoomSeat;
+import com.cinema.domain.RoomSeatRepository;
 
 import java.util.Collection;
 
@@ -11,26 +11,26 @@ import org.springframework.stereotype.Service;
  * Created by Patryk on 2017-05-27.
  */
 @Service
-public class SeatService {
-    private final SeatRepository seatRepository;
+public class RoomSeatService {
+    private final RoomSeatRepository roomSeatRepository;
 
-    public SeatService(SeatRepository seatRepository){
-        this.seatRepository = seatRepository;
+    public RoomSeatService(RoomSeatRepository roomSeatRepository){
+        this.roomSeatRepository = roomSeatRepository;
     }
 
-    public Seat save(Seat seat){
-        return seatRepository.save(seat);
+    public RoomSeat save(RoomSeat roomSeat){
+        return roomSeatRepository.save(roomSeat);
     }
 
     public void delete(Long id){
-        seatRepository.delete(id);
+        roomSeatRepository.delete(id);
     }
 
-    public Collection<Seat> findAll(){
-        return seatRepository.findAll();
+    public Collection<RoomSeat> findAll(){
+        return roomSeatRepository.findAll();
     }
 
-    public Seat findById(Long id){
-        return seatRepository.findOne(id);
+    public RoomSeat findById(Long id){
+        return roomSeatRepository.findOne(id);
     }
 }

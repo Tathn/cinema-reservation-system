@@ -1,5 +1,6 @@
 package com.cinema.web;
 
+import com.cinema.domain.Movie;
 import com.cinema.domain.Role;
 import com.cinema.domain.RoleRepository;
 import com.cinema.domain.User;
@@ -96,4 +97,5 @@ public class AdminController {
         redir.addFlashAttribute("globalMessage","User deleted!");
         return "redirect:/admin/users";
     }
+    
 }
