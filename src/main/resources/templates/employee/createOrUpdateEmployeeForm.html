@@ -3,7 +3,7 @@
 <div th:replace="header :: head('Create Employee Account')"></div>
 <body>
 <div th:replace="header :: header"></div>
-<form action="#" th:action="@{/admin/employees/create}" th:object="${user}" method="post">
+<form action="#" th:action="${#httpServletRequest.requestURI}" th:object="${user}" method="post">
     <p>Username: <input type="text" th:field="*{username}" /></p>
     <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
     <p>E-mail: <input type="text" th:field="*{email}" /></p>

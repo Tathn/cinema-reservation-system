@@ -23,6 +23,9 @@ import com.cinema.service.UserService;
 @RequestMapping("/account")
 public class AccountController {
 	
+	private static final String VIEWS_USER_CREATE_OR_UPDATE_FORM= "user/createOrUpdateUserForm";
+	
+	
 	private final UserService userService;
 	private final SecurityService securityService;
 	
@@ -34,32 +37,32 @@ public class AccountController {
 
     @GetMapping
     public String getManageAccountPanel(){
-        return "account/manageAccountPanel";
+        return "user/userPanel";
     }
 
     @GetMapping("edit")
-    public String initEditForm(Model model){
-    	User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();;
+    public String initEditAccountForm(Model model){
+    	User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("user", user);
-        return "account/edit";
+        return VIEWS_USER_CREATE_OR_UPDATE_FORM;
     }
 
     @PostMapping("edit")
-    public String processEditForm(@ModelAttribute User user, BindingResult result, RedirectAttributes redir){
+    public String processEditAccountForm(@ModelAttribute User user, BindingResult result, RedirectAttributes redir){
         if (result.hasErrors()) {
-            return "account/edit";
+            return VIEWS_USER_CREATE_OR_UPDATE_FORM;
         } else {
-        	// Get database record of edited user
-        	User dbRecord = userService.findById(user.getId());
-        	dbRecord.setUsername(user.getUsername());
-        	dbRecord.setEmail(user.getEmail());
+        	User currentUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        	user.setId(currentUser.getId());
         	String userPassword = user.getPassword();
         	if(userPassword != ""){
         		String encodedPassword = securityService.encodePassword(userPassword);
-        		dbRecord.setPassword(encodedPassword);
+        		user.setPassword(encodedPassword);
+        	} else {
+        		user.setPassword(currentUser.getPassword());
         	}
-            userService.save(dbRecord);
-            securityService.authenticate(dbRecord,userService);
+            userService.save(user);
+            securityService.authenticate(user,userService);
             redir.addFlashAttribute("globalMessage","Account details saved!");
             return "redirect:/account";
         }

@@ -15,12 +15,19 @@
                 <span sec:authentication="name"></span>
             </div>
             <div class="dropdown-content">
-                <a href="/customers" th:href="@{/customers}">Customers</a>
-                <a href="#">Link 2</a>
+          		<a sec:authorize="hasRole('ROLE_ADMIN')" href="/admin" th:href="@{/admin}">Admin Panel</a>
+                <a sec:authorize="hasRole('ROLE_USER')" href="/account" th:href="@{/account}">Manage Account</a>
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Log out" class="logoutbtn"/>
                 </form>
             </div>
+        </div>
+        <div sec:authorize="authenticated">
+        	<p style="color: white;">Roles:
+        		<span sec:authorize="hasRole('ROLE_ADMIN')"> Admin </span>
+        		<span sec:authorize="hasRole('ROLE_EMPLOYEE')"> Employee </span>
+        		<span sec:authorize="hasRole('ROLE_USER')"> User </span>
+        	</p>
         </div>
     </nav>
     <div th:text="${globalMessage}"></div>

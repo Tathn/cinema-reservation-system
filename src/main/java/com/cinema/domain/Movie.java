@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -26,15 +27,14 @@ public class Movie extends BaseEntity {
 	@Column(name = "genre", nullable = false)
 	private String genre;
 	
-	@NotEmpty(message = "Duration is required")
+	@NotNull(message = "Duration is required")
 	@Column(name = "duration", nullable = false)
-	private Short duration;
+	private Integer duration;
 
 	@NotEmpty(message = "Description is required")
 	@Column(name = "description", nullable = false)
 	private String description;
 	
-	@NotEmpty(message = "Availability is required")
 	@Column(name = "available", nullable = false)
 	private Boolean available;
 
@@ -58,8 +58,8 @@ public class Movie extends BaseEntity {
 	public String getGenre() { return genre; }
 	public void setGenre(String genre) { this.genre = genre; }
 
-	public Short getDuration() { return duration; }
-	public void setDuration(Short duration) { this.duration = duration; }
+	public Integer getDuration() { return duration; }
+	public void setDuration(Integer duration) { this.duration = duration; }
 
 	public String getDescription() { return description; }
 	public void setDescription(String description) { this.description = description; }

@@ -16,8 +16,11 @@
     <td th:text="${user.id}"></td>
     <td th:text="${user.username}"></td>
     <td th:text="${user.email}"></td>
-    <td><a th:href="@{/admin/delete/} + ${user.id}"><button>Remove</button></a></td>
-    <td><a th:href="@{/admin/edit/} + ${user.id}"><button>Edit</button></a></td>
+    <td>
+    	<form th:action="@{/admin/users/delete/} + ${user.id}" method="post">
+        	<input type="submit" value="Remove"/>
+    	</form>
+    </td>
 </tr>
 </tbody>
 </table>

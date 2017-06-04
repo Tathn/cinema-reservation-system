@@ -16,14 +16,17 @@
     <td th:text="${employee.id}"></td>
     <td th:text="${employee.username}"></td>
     <td th:text="${employee.email}"></td>
-    <td><a th:href="@{/admin/delete/} + ${employee.id}"><button>Remove</button></a></td>
-    <td><a th:href="@{/admin/edit/} + ${employee.id}"><button>Edit</button></a></td>
+    <td>
+    	<form th:action="@{/admin/users/delete/} + ${employee.id}" method="post">
+        	<input type="submit" value="Remove"/>
+    	</form>
+    </td>
 </tr>
 </tbody>
 <tfoot>
 <tr>
 	<td>
-		<a href="/admin/employees/create" th:href="@{/admin/employees/create}">
+		<a href="/admin/users/employees/create" th:href="@{/admin/users/employees/create}">
 		<button>Add Employee</button>
 		</a>
 	</td>
