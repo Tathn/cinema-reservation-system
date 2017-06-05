@@ -1,4 +1,4 @@
-package com.cinema.config;
+package com.springframework.cinema.infrastructure.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

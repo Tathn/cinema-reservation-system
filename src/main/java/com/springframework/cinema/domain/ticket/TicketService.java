@@ -1,7 +1,4 @@
-package com.cinema.service;
-
-import com.cinema.domain.Ticket;
-import com.cinema.domain.TicketRepository;
+package com.springframework.cinema.domain.ticket;
 
 import java.util.Collection;
 

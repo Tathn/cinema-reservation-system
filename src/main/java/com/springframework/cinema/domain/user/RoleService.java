@@ -1,9 +1,4 @@
-package com.cinema.service;
-
-import com.cinema.domain.Role;
-import com.cinema.domain.RoleRepository;
-import com.cinema.domain.User;
-import com.cinema.domain.UserRepository;
+package com.springframework.cinema.domain.user;
 
 import java.util.Collection;
 

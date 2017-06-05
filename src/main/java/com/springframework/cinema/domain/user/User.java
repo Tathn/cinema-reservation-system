@@ -1,4 +1,4 @@
-package com.cinema.domain;
+package com.springframework.cinema.domain.user;
 
 
 import org.hibernate.validator.constraints.Email;
@@ -18,6 +18,9 @@ import javax.transaction.Transactional;
 import javax.persistence.JoinColumn;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.springframework.cinema.domain.ticket.Ticket;
+import com.springframework.cinema.infrastructure.model.BaseEntity;
 
 /**
  * Created by Patryk on 2017-04-19.

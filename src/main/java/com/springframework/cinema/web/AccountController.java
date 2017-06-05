@@ -1,4 +1,4 @@
-package com.cinema.web;
+package com.springframework.cinema.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.cinema.domain.User;
-import com.cinema.domain.UserRepository;
-import com.cinema.service.SecurityService;
-import com.cinema.service.UserService;
+import com.springframework.cinema.domain.user.User;
+import com.springframework.cinema.domain.user.UserRepository;
+import com.springframework.cinema.domain.user.UserService;
+import com.springframework.cinema.infrastructure.util.SecurityService;
 
 /**
  * Created by Patryk on 2017-05-01.
@@ -52,17 +52,17 @@ public class AccountController {
         if (result.hasErrors()) {
             return VIEWS_USER_CREATE_OR_UPDATE_FORM;
         } else {
-        	User currentUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        	user.setId(currentUser.getId());
+        	// Get database record of edited user
+        	User dbRecord = userService.findById(user.getId());
+        	dbRecord.setUsername(user.getUsername());
+        	dbRecord.setEmail(user.getEmail());
         	String userPassword = user.getPassword();
         	if(userPassword != ""){
         		String encodedPassword = securityService.encodePassword(userPassword);
-        		user.setPassword(encodedPassword);
-        	} else {
-        		user.setPassword(currentUser.getPassword());
+        		dbRecord.setPassword(encodedPassword);
         	}
-            userService.save(user);
-            securityService.authenticate(user,userService);
+            userService.save(dbRecord);
+            securityService.authenticate(dbRecord,userService);
             redir.addFlashAttribute("globalMessage","Account details saved!");
             return "redirect:/account";
         }

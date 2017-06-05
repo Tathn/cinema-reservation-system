@@ -1,4 +1,4 @@
-package com.cinema.domain;
+package com.springframework.cinema.domain.screening;
 
 import java.util.Collection;
 
@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.springframework.cinema.infrastructure.model.BaseEntity;
 
 /**
  * Created by Patryk on 2017-05-27.

@@ -1,7 +1,4 @@
-package com.cinema.service;
-
-import com.cinema.domain.RoomSeat;
-import com.cinema.domain.RoomSeatRepository;
+package com.springframework.cinema.domain.screening;
 
 import java.util.Collection;
 

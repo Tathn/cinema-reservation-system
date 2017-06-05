@@ -1,4 +1,4 @@
-package com.cinema.domain;
+package com.springframework.cinema.domain.user;
 
 import java.util.Collection;
 
@@ -10,6 +10,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.springframework.cinema.infrastructure.model.BaseEntity;
 
 @Entity
 @Table(name = "roles")

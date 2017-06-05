@@ -1,13 +1,14 @@
-package com.cinema.web;
+package com.springframework.cinema.web;
 
-import com.cinema.domain.Role;
-import com.cinema.domain.RoleRepository;
-import com.cinema.domain.User;
-import com.cinema.domain.UserRepository;
-import com.cinema.service.RoleService;
-import com.cinema.service.SecurityService;
-import com.cinema.service.UserRepositoryUserDetailsService;
-import com.cinema.service.UserService;
+import com.springframework.cinema.domain.user.Role;
+import com.springframework.cinema.domain.user.RoleRepository;
+import com.springframework.cinema.domain.user.RoleService;
+import com.springframework.cinema.domain.user.User;
+import com.springframework.cinema.domain.user.UserRepository;
+import com.springframework.cinema.domain.user.UserRepositoryUserDetailsService;
+import com.springframework.cinema.domain.user.UserService;
+import com.springframework.cinema.infrastructure.util.SecurityService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

@@ -1,4 +1,4 @@
-package com.cinema.domain;
+package com.springframework.cinema.domain.ticket;
 
 import java.util.Collection;
 
@@ -10,6 +10,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.springframework.cinema.domain.screening.Screening;
+import com.springframework.cinema.domain.screening.ScreeningSeat;
+import com.springframework.cinema.domain.user.User;
+import com.springframework.cinema.infrastructure.model.BaseEntity;
 
 /**
  * Created by Patryk on 2017-05-27.

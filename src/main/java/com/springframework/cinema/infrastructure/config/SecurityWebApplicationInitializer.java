@@ -1,4 +1,4 @@
-package com.cinema.config;
+package com.springframework.cinema.infrastructure.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

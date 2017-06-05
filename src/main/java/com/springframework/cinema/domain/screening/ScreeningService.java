@@ -1,7 +1,4 @@
-package com.cinema.service;
-
-import com.cinema.domain.Screening;
-import com.cinema.domain.ScreeningRepository;
+package com.springframework.cinema.domain.screening;
 
 import java.util.Collection;
 

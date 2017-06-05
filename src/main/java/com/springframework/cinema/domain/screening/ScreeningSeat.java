@@ -1,9 +1,12 @@
-package com.cinema.domain;
+package com.springframework.cinema.domain.screening;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.springframework.cinema.domain.ticket.Ticket;
+import com.springframework.cinema.infrastructure.model.BaseEntity;
 
 /**
  * Created by Patryk on 2017-03-06.

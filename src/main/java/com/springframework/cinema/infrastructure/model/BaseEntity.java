@@ -1,4 +1,4 @@
-package com.cinema.domain;
+package com.springframework.cinema.infrastructure.model;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

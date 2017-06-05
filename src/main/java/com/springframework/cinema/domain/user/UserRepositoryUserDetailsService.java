@@ -1,4 +1,4 @@
-package com.cinema.service;
+package com.springframework.cinema.domain.user;
 
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.cinema.domain.User;
 
 @Service
 public class UserRepositoryUserDetailsService implements UserDetailsService {

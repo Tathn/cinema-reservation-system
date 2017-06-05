@@ -1,4 +1,4 @@
-package com.cinema.domain;
+package com.springframework.cinema.infrastructure.model;
 
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;

@@ -1,4 +1,4 @@
-package com.cinema.service;
+package com.springframework.cinema.infrastructure.util;
 
 import java.util.List;
 
@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.cinema.domain.User;
+import com.springframework.cinema.domain.user.User;
+import com.springframework.cinema.domain.user.UserRepositoryUserDetailsService;
+import com.springframework.cinema.domain.user.UserService;
 
 @Service
 public class SecurityService {
