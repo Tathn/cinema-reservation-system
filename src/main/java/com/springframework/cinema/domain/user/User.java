@@ -4,33 +4,37 @@ package com.springframework.cinema.domain.user;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.transaction.Transactional;
 import javax.persistence.JoinColumn;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.springframework.cinema.domain.ticket.Ticket;
-import com.springframework.cinema.infrastructure.model.BaseEntity;
 
 /**
  * Created by Patryk on 2017-04-19.
  */
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = -1006690702888698974L;
 
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
+	private Long id;
+	
 	@NotEmpty(message = "The username is required.")
     @Column(name = "username", unique=true, nullable = false)
     private String username;
@@ -91,4 +95,8 @@ public class User extends BaseEntity {
     	}
     	roles.add(role);
     }
+
+	public Long getId() { return id; }
+
+	public void setId(Long id) { this.id = id; }
 }

@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="header :: head('Create/Update Movie')"></div>
+<body>
+<div th:replace="header :: header"></div>
+<form action="#" th:action="${#httpServletRequest.requestURI}" th:object="${room}" method="post">
+    <p>Name: <input type="text" th:field="*{name}" /></p>
+    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+    <p>Rows: <input type="number" th:field="*{rows}" /></p>
+    <p th:if="${#fields.hasErrors('rows')}" th:errors="*{rows}"></p>
+    <p>Columns: <input type="number" th:field="*{columns}"/></p>
+    <p th:if="${#fields.hasErrors('columns')}" th:errors="*{columns}"></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>

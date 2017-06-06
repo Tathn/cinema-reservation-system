@@ -1,4 +1,4 @@
-package com.springframework.cinema.domain.screening;
+package com.springframework.cinema.domain.room;
 
 import org.springframework.stereotype.Repository;
 

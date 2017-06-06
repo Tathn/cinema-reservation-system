@@ -1,26 +1,34 @@
-package com.springframework.cinema.domain.screening;
+package com.springframework.cinema.domain.movie;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.springframework.cinema.infrastructure.model.BaseEntity;
+import com.springframework.cinema.domain.screening.Screening;
 
 /**
  * Created by Patryk on 2017-05-27.
  */
 @Entity
 @Table(name = "movies")
-public class Movie extends BaseEntity {
+public class Movie implements Serializable {
 
 	private static final long serialVersionUID = 369022311879378956L;
 	
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
+	private Long id;
+
 	@NotEmpty(message = "Title is required")
 	@Column(name = "title", nullable = false)
 	private String title;
@@ -41,8 +49,7 @@ public class Movie extends BaseEntity {
 	private Boolean available;
 
 	@OneToMany(mappedBy="movie")
-	Collection<Screening> screenings;
-	
+	Collection<Screening> screenings;	
 	
 	public Movie(){}
 	
@@ -68,4 +75,8 @@ public class Movie extends BaseEntity {
 
 	public Boolean getAvailable() { return available; }
 	public void setAvailable(Boolean available) { this.available = available; }
+
+	public Long getId() { return id; }
+
+	public void setId(Long id) { this.id = id; }
 }
