@@ -15,11 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
-
-import com.springframework.cinema.domain.ticket.Ticket;
 
 /**
  * Created by Patryk on 2017-04-19.
@@ -56,8 +53,8 @@ public class User implements Serializable {
           name = "role_id", referencedColumnName = "id")) 
     private Collection<Role> roles;
     
-    @OneToMany(mappedBy = "user")
-	Collection<Ticket> tickets;
+//  @OneToMany(mappedBy = "user")
+//	Collection<Ticket> tickets;
 
     public User(){}
     

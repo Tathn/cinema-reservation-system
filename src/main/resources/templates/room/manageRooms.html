@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="header :: head('Show all users')"></div>
+<div th:replace="header :: head('Show all rooms')"></div>
 <body>
 <div th:replace="header :: header"></div>
 <table>
@@ -8,19 +8,29 @@
 <tr>
     <th>ID</th>
     <th>Name</th>
-    <th>Email</th>
 </tr>
 </thead>
 <tbody>
-<tr th:each="user : ${users}">
-    <td th:text="${user.id}"></td>
-    <td th:text="${user.username}"></td>
-    <td th:text="${user.email}"></td>
-	<td th:text="${user.password}"></td>
-    <td><a th:href="@{/user/delete/} + ${user.id}"><button>Remove</button></a></td>
-    <td><a th:href="@{/user/edit/} + ${user.id}"><button>Edit</button></a></td>
+<tr th:each="room : ${rooms}">
+    <td th:text="${room.id}"></td>
+    <td th:text="${room.name}"></td>
+    <td><a href="#" th:href="@{/admin/rooms/show/} + ${room.id}"><button>Show</button></a></td>
+    <td>
+    	<form th:action="@{/admin/rooms/delete/} + ${room.id}" method="post">
+        	<input type="submit" value="Remove"/>
+    	</form>
+    </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+	<td>
+		<a href="/admin/rooms/create" th:href="@{/admin/rooms/create}">
+		<button>Add Room</button>
+		</a>
+	</td>
+</tr>
+</tfoot>
 </table>
 <div th:replace="footer :: footer"></div>
 </body>

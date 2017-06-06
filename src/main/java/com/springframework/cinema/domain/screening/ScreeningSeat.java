@@ -6,11 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.springframework.cinema.domain.ticket.Ticket;
 
 /**
  * Created by Patryk on 2017-03-06.
@@ -26,13 +22,13 @@ public class ScreeningSeat implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
-	@ManyToOne
-	@JoinColumn(name = "screening_fk")
-	Screening screening;
+//	@ManyToOne
+//	@JoinColumn(name = "screening_fk")
+//	Screening screening;
 	
-	@ManyToOne
-	@JoinColumn(name = "ticket_fk")
-	Ticket ticket;
+//	@ManyToOne
+//	@JoinColumn(name = "ticket_fk")
+//	Ticket ticket;
 
 	public ScreeningSeat(){}
 

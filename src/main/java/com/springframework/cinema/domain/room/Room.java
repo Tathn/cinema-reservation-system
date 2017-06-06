@@ -1,13 +1,10 @@
 package com.springframework.cinema.domain.room;
 
 import java.io.Serializable;
-import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -36,8 +33,8 @@ public class Room implements Serializable {
 //	@OneToMany(mappedBy="room")
 //	Collection<Screening> screenings;
 	
-	@OneToMany(mappedBy="room")
-	Collection<RoomSeat> seats;
+//	@OneToMany(mappedBy="room", cascade = CascadeType.ALL, orphanRemoval = true)
+//	Collection<RoomSeat> seats;
 	
 	public Room(){}
 
@@ -56,6 +53,6 @@ public class Room implements Serializable {
 //	public Collection<Screening> getScreenings() { return screenings; }
 //	public void setScreenings(Collection<Screening> screenings) { this.screenings = screenings; }
 
-	public Collection<RoomSeat> getSeats() { return seats; }
-	public void setSeats(Collection<RoomSeat> seats) { this.seats = seats; }
+//	public Collection<RoomSeat> getSeats() { return seats; }
+//	public void setSeats(Collection<RoomSeat> seats) { this.seats = seats; }
 }

@@ -18,6 +18,12 @@ public class RoomSeatService {
     public RoomSeat save(RoomSeat roomSeat){
         return roomSeatRepository.save(roomSeat);
     }
+    
+    public void save(Collection<RoomSeat> roomSeats) {
+    	for(RoomSeat roomSeat : roomSeats){
+    		roomSeatRepository.save(roomSeat);
+    	}
+    }
 
     public void delete(Long id){
         roomSeatRepository.delete(id);
@@ -29,5 +35,13 @@ public class RoomSeatService {
 
     public RoomSeat findById(Long id){
         return roomSeatRepository.findOne(id);
+    }
+    
+    public Collection<RoomSeat> findRoomSeatsByRoomId(Long roomId) {
+    	return roomSeatRepository.findRoomSeatsByRoomId(roomId);
+    }
+    
+    public void deleteByRoomId(Long roomId) {
+    	roomSeatRepository.deleteByRoomId(roomId);
     }
 }

@@ -1,20 +1,11 @@
 package com.springframework.cinema.domain.ticket;
 
 import java.io.Serializable;
-import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.springframework.cinema.domain.screening.Screening;
-import com.springframework.cinema.domain.screening.ScreeningSeat;
-import com.springframework.cinema.domain.user.User;
 
 /**
  * Created by Patryk on 2017-05-27.
@@ -30,16 +21,16 @@ public class Ticket implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
-	@ManyToOne
-	@JoinColumn(name = "user_fk")
-	User user;
+//	@ManyToOne
+//	@JoinColumn(name = "user_fk")
+//	User user;
 	
-	@ManyToOne
-	@JoinColumn(name = "screening_fk")
-	Screening screening;
+//	@ManyToOne
+//	@JoinColumn(name = "screening_fk")
+//	Screening screening;
 	
-	@OneToMany(mappedBy = "ticket")
-	Collection<ScreeningSeat> screeningSeats;
+//	@OneToMany(mappedBy = "ticket")
+//	Collection<ScreeningSeat> screeningSeats;
 	
 	public Ticket(){}
 

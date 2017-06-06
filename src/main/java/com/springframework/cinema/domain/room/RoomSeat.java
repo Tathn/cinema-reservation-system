@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -24,14 +25,27 @@ public class RoomSeat implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
+	@Column(name = "label")
+	private String label;
+	
 	@ManyToOne
-	@JoinColumn(name = "room_fk")
+	@JoinColumn(name = "room_id", foreignKey = @ForeignKey(name = "room_id_fk"))
 	Room room;
 
-	public RoomSeat(){}
+	private RoomSeat(){}
+	
+	public RoomSeat(String label, Room room) {
+		this.label = label;
+		this.room = room;
+	}
 
 	public Long getId() { return id; }
-
 	public void setId(Long id) { this.id = id; }
+
+	public String getLabel() { return label; }
+	public void setLabel(String label) { this.label = label; }
+
+	public Room getRoom() { return room; }
+	public void setRoom(Room room) { this.room = room; }
 	
 }

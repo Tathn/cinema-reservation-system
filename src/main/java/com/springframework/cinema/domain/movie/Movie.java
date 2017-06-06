@@ -1,19 +1,14 @@
 package com.springframework.cinema.domain.movie;
 
 import java.io.Serializable;
-import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
-
-import com.springframework.cinema.domain.screening.Screening;
 
 /**
  * Created by Patryk on 2017-05-27.
@@ -48,8 +43,8 @@ public class Movie implements Serializable {
 	@Column(name = "available", nullable = false)
 	private Boolean available;
 
-	@OneToMany(mappedBy="movie")
-	Collection<Screening> screenings;	
+//	@OneToMany(mappedBy="movie")
+//	Collection<Screening> screenings;	
 	
 	public Movie(){}
 	

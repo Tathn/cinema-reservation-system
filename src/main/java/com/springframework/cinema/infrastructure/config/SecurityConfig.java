@@ -20,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/css/**", "/").permitAll()
+                    .antMatchers("/css/**", "/", "/favicon.ico").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/users/**","/account/**").hasRole("USER")
                     .antMatchers("/login","/register").hasRole("ANONYMOUS")
