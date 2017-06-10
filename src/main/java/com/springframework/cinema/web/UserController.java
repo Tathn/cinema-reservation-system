@@ -102,6 +102,13 @@ public class UserController {
         }
     }
     
+    // EMPLOYEE
+    
+    @GetMapping("/employee")
+    public String getEmployeePanelView() {
+    	return "user/employee/employeePanel";
+    }
+    
     // ADMIN
     @GetMapping("/admin")
     public String getAdminPanel(){

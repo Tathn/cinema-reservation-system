@@ -16,6 +16,7 @@
             </div>
             <div class="dropdown-content">
           		<a sec:authorize="hasRole('ROLE_ADMIN')" href="/admin" th:href="@{/admin}">Admin Panel</a>
+          		<a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/employee" th:href="@{/employee}">Employee Panel</a>
                 <a sec:authorize="hasRole('ROLE_USER')" href="/account" th:href="@{/account}">Manage Account</a>
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Log out" class="logoutbtn"/>

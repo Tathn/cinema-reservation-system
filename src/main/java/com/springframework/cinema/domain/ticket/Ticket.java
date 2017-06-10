@@ -32,10 +32,9 @@ public class Ticket implements Serializable {
 //	@OneToMany(mappedBy = "ticket")
 //	Collection<ScreeningSeat> screeningSeats;
 	
-	public Ticket(){}
+	private Ticket(){}
 
 	public Long getId() { return id; }
-
 	public void setId(Long id) { this.id = id; }
 
 }

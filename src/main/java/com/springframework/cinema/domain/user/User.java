@@ -1,6 +1,5 @@
 package com.springframework.cinema.domain.user;
 
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -56,7 +55,7 @@ public class User implements Serializable {
 //  @OneToMany(mappedBy = "user")
 //	Collection<Ticket> tickets;
 
-    public User(){}
+    private User(){}
     
     public User(User user){
     	this.setId(user.getId());

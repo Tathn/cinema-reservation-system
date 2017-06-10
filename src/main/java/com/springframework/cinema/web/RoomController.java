@@ -31,7 +31,7 @@ public class RoomController {
 	
 	@Autowired
 	public RoomController(RoomRepository roomRepository, RoomSeatRepository roomSeatRepository) {
-		roomService = new RoomService(roomRepository,roomSeatRepository);
+		roomService = new RoomService(roomRepository);
 		roomSeatService = new RoomSeatService(roomSeatRepository);
 	}
 	
@@ -97,6 +97,7 @@ public class RoomController {
     
     @PostMapping("/admin/rooms/delete/{roomId}")
     public String deleteRoom(@PathVariable Long roomId, RedirectAttributes redir) {
+    	roomSeatService.deleteByRoomId(roomId);
     	roomService.delete(roomId);
     	redir.addFlashAttribute("globalMessage","Room removed successfully!");
     	return "redirect:/admin/rooms"; 

@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="header :: head(${screening.id})"></div>
+<body>
+<div th:replace="header :: header"></div>
+<div>
+	<th:block th:each="seat : ${seats}">
+	    <span th:text="${seat.label} + ' '"></span>
+	    <br th:if="${seatStat.count} % ${screening.room.columns} == 0"/>
+	</th:block>
+</div>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>

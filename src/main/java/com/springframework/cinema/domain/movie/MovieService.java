@@ -30,4 +30,8 @@ public class MovieService {
     public Movie findById(Long id){
         return movieRepository.findOne(id);
     }
+    
+    public Movie findByTitle(String title) {
+    	return movieRepository.findMovieByTitle(title);
+    }
 }

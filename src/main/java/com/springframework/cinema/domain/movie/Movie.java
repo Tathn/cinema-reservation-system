@@ -46,7 +46,7 @@ public class Movie implements Serializable {
 //	@OneToMany(mappedBy="movie")
 //	Collection<Screening> screenings;	
 	
-	public Movie(){}
+	private Movie(){}
 	
 	public Movie(Movie movie) {
 		this.title = movie.title;
@@ -55,6 +55,9 @@ public class Movie implements Serializable {
 		this.description = movie.description;
 		this.available = movie.available;
 	}
+	
+	public Long getId() { return id; }
+	public void setId(Long id) { this.id = id; }
 	
 	public String getTitle() { return title; }
 	public void setTitle(String title) { this.title = title; }
@@ -70,8 +73,4 @@ public class Movie implements Serializable {
 
 	public Boolean getAvailable() { return available; }
 	public void setAvailable(Boolean available) { this.available = available; }
-
-	public Long getId() { return id; }
-
-	public void setId(Long id) { this.id = id; }
 }

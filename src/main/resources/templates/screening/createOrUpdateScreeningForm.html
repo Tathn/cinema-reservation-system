@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="header :: head('Create Screening')"></div>
+<body>
+<div th:replace="header :: header"></div>
+<form action="#" th:action="${#httpServletRequest.requestURI}" th:object="${screening}" method="post">
+    <p>Room: 
+    	<select th:field="*{room}">
+    		<option th:each="availableRoom : ${rooms}" th:value="${availableRoom.id}" th:text="${availableRoom.name}"></option>
+    	</select>
+    </p>
+    <p th:if="${#fields.hasErrors('room')}" th:errors="*{room}"></p>
+    <p>Movie: 
+    	<select th:field="*{movie}">
+    		<option th:each="availableMovie : ${movies}" th:value="${availableMovie.id}" th:text="${availableMovie.title}"></option>
+    	</select>
+    </p>
+    <p th:if="${#fields.hasErrors('movie')}" th:errors="*{movie}"></p>
+    
+    <p>Date: <input type="text" th:field="*{date}" th:placeholder="${#calendars.format(#calendars.createNow(), 'dd/MM/yyyy')}" /></p>
+    <p th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></p>
+    <p>Starts At(hh:mm): <input type="text" th:field="*{startsAt}" /></p>
+    <p th:if="${#fields.hasErrors('startsAt')}" th:errors="*{startsAt}"></p>
+    <p>Finishes At(hh:mm): <input type="text" th:field="*{finishesAt}"/></p>
+    <p th:if="${#fields.hasErrors('finishesAt')}" th:errors="*{finishesAt}"></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>

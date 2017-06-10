@@ -12,11 +12,9 @@ import org.springframework.stereotype.Service;
 public class RoomService {
     
 	private final RoomRepository roomRepository;
-    private final RoomSeatService roomSeatService;
     
-    public RoomService(RoomRepository roomRepository, RoomSeatRepository roomSeatRepository){
+    public RoomService(RoomRepository roomRepository){
         this.roomRepository = roomRepository;
-        roomSeatService = new RoomSeatService(roomSeatRepository);
     }
 
     public Room save(Room room){
@@ -24,7 +22,6 @@ public class RoomService {
     }
 
     public void delete(Long id){
-    	roomSeatService.deleteByRoomId(id);
         roomRepository.delete(id);
     }
 
@@ -35,4 +32,5 @@ public class RoomService {
     public Room findById(Long id){
         return roomRepository.findOne(id);
     }
+    
 }

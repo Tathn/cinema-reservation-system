@@ -36,7 +36,7 @@ public class Room implements Serializable {
 //	@OneToMany(mappedBy="room", cascade = CascadeType.ALL, orphanRemoval = true)
 //	Collection<RoomSeat> seats;
 	
-	public Room(){}
+	private Room(){}
 
 	public Long getId() { return id; }
 	public void setId(Long id) { this.id = id; }

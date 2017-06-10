@@ -9,6 +9,6 @@ import com.springframework.cinema.infrastructure.model.BaseRepository;
  */
 @Repository
 public interface MovieRepository extends BaseRepository<Movie, Long> {
-    Movie findMovieByTitle(String title);
+	Movie findMovieByTitle(String title);
 
 }

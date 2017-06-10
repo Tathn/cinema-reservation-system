@@ -29,8 +29,8 @@ public class RoomSeat implements Serializable {
 	private String label;
 	
 	@ManyToOne
-	@JoinColumn(name = "room_id", foreignKey = @ForeignKey(name = "room_id_fk"))
-	Room room;
+	@JoinColumn(name = "room_id", foreignKey = @ForeignKey(name = "seat_room_id_fk"))
+	private Room room;
 
 	private RoomSeat(){}
 	
