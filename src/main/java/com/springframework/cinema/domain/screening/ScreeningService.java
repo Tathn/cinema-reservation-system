@@ -1,6 +1,10 @@
 package com.springframework.cinema.domain.screening;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
@@ -29,5 +33,11 @@ public class ScreeningService {
 
     public Screening findById(Long id){
         return screeningRepository.findOne(id);
+    }
+    
+    public Collection<Screening> findByDate(Date date) {
+    	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    	dateFormat.format(date);
+    	return screeningRepository.findScreeningsByDate(date);
     }
 }

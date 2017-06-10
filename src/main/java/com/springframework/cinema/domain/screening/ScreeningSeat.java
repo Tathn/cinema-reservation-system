@@ -56,6 +56,6 @@ public class ScreeningSeat implements Serializable {
 	public String getLabel() { return label; }
 	public void setLabel(String label) { this.label = label; }
 	
-	public Boolean isAvailable() { return availability;}
+	public Boolean getAvailability() { return availability;}
 	public void setAvailability(Boolean availability) { this.availability = availability; }
 }

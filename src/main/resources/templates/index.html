@@ -3,7 +3,23 @@
 <div th:replace="header :: head('Cinema Main Page')"></div>
 <body>
 <div th:replace="header :: header"></div>
-
+<table>
+<thead>
+<tr>
+    <th>Movie Title</th>
+    <th>Starts At</th>
+    <th>Finishes At</th>
+</tr>
+</thead>
+<tbody>
+<tr th:each="screening : ${screenings}">
+    <td th:text="${screening.movie.title}"></td>
+    <td th:text="${screening.startsAt}"></td>
+    <td th:text="${screening.finishesAt}"></td>
+    <td><a href="#" th:href="@{#} + ${screening.id}"><button>Get ticket</button></a></td>
+</tr>
+</tbody>
+</table>
 <div th:replace="footer :: footer"></div>
 </body>
 </html>

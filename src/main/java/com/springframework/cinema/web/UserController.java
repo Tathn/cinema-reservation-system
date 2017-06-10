@@ -10,7 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import com.springframework.cinema.domain.user.RoleService;
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserRepository;
 import com.springframework.cinema.domain.user.UserService;
+import com.springframework.cinema.domain.user.UserValidator;
 import com.springframework.cinema.infrastructure.util.SecurityService;
 
 @Controller
@@ -31,14 +34,21 @@ public class UserController {
 	private static final String VIEWS_USER_UPDATE_FORM= "user/updateUserForm";
 	
 	private final UserService userService;
+	private final UserValidator userValidator;
     private final RoleService roleService;
     private final SecurityService securityService;
     
     @Autowired
     public UserController(UserRepository userRepository, RoleRepository roleRepository){
         userService = new UserService(userRepository);
+        userValidator = new UserValidator(userRepository);
         roleService = new RoleService(roleRepository);
         securityService = new SecurityService();
+    }
+    
+    @InitBinder("user")
+    public void initUserBinder(WebDataBinder dataBinder) {
+    	dataBinder.setValidator(userValidator);
     }
     
     // Anonymous

@@ -39,4 +39,12 @@ public class UserService {
     public Collection<User> findUsersByRoles(Role role){
     	return userRepository.findUsersByRoles(role);
     }
+    
+    public boolean checkIfUsernameExists(String username) {
+    	return !(userRepository.findUserByUsername(username) == null);
+    }
+    
+    public boolean checkIfEmailExists(String email) {
+    	return !(userRepository.findUserByEmail(email) == null);
+    }
 }

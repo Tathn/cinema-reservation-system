@@ -91,10 +91,7 @@ public class ScreeningController {
 
 			@Override
 			public Movie parse(String movieId, Locale arg1) throws ParseException {
-				Movie movie = movieService.findById(Long.valueOf(movieId));
-				if (movie == null)
-					System.out.println("MOVIE JEST PUSTY WCZESNIEJ. nazwa: " + movieId);
-				return movie;
+				return movieService.findById(Long.valueOf(movieId));
 			}
 		});
     }

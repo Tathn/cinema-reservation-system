@@ -5,7 +5,7 @@
 <div th:replace="header :: header"></div>
 <div>
 	<th:block th:each="seat : ${seats}">
-	    <span th:text="${seat.label} + ' '"></span>
+	    <span th:style="${seat.availability ? 'color: green;' : 'color: red;'}" th:text="${seat.label} + ' '"></span>
 	    <br th:if="${seatStat.count} % ${screening.room.columns} == 0"/>
 	</th:block>
 </div>
