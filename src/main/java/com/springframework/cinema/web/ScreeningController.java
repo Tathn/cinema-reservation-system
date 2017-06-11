@@ -123,7 +123,7 @@ public class ScreeningController {
 	
 	@GetMapping("/employee/screenings/create")
 	public String initScreeningCreateForm(@ModelAttribute Screening screening, Model model) {
-		model.addAttribute("movies", movieService.findAll());
+		model.addAttribute("movies", movieService.findAvailable());
 		model.addAttribute("rooms", roomService.findAll());
 		return "screening/createOrUpdateScreeningForm";
 	}

@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +24,7 @@ import com.springframework.cinema.domain.room.RoomSeat;
 import com.springframework.cinema.domain.room.RoomSeatRepository;
 import com.springframework.cinema.domain.room.RoomSeatService;
 import com.springframework.cinema.domain.room.RoomService;
+import com.springframework.cinema.domain.room.RoomValidator;
 
 @Controller
 public class RoomController {
@@ -27,12 +32,19 @@ public class RoomController {
 	private static final String VIEWS_ROOM_CREATE_OR_UPDATE_FORM = "room/createOrUpdateRoomForm";
 	
 	private final RoomService roomService;
+	private final RoomValidator roomValidator;
 	private final RoomSeatService roomSeatService;
 	
 	@Autowired
 	public RoomController(RoomRepository roomRepository, RoomSeatRepository roomSeatRepository) {
 		roomService = new RoomService(roomRepository);
+		roomValidator = new RoomValidator(roomRepository);
 		roomSeatService = new RoomSeatService(roomSeatRepository);
+	}
+	
+	@InitBinder
+	public void initRoomBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(roomValidator);
 	}
 	
 	@GetMapping("/admin/rooms")
@@ -65,7 +77,7 @@ public class RoomController {
     }
     
     @PostMapping("/admin/rooms/create")
-    public String processCreateRoomForm(@ModelAttribute Room room, BindingResult result, RedirectAttributes redirect) {
+    public String processCreateRoomForm(@Valid Room room, BindingResult result, RedirectAttributes redirect) {
     	if(result.hasErrors()) {
     		return VIEWS_ROOM_CREATE_OR_UPDATE_FORM;
     	} else {

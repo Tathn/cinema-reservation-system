@@ -46,7 +46,7 @@ public class UserController {
         securityService = new SecurityService();
     }
     
-    @InitBinder("user")
+    @InitBinder
     public void initUserBinder(WebDataBinder dataBinder) {
     	dataBinder.setValidator(userValidator);
     }
@@ -92,7 +92,7 @@ public class UserController {
     }
 
     @PostMapping("/account/edit")
-    public String processEditAccountForm(@ModelAttribute User user, BindingResult result, RedirectAttributes redir){
+    public String processEditAccountForm(@Valid User user, BindingResult result, RedirectAttributes redir){
         if (result.hasErrors()) {
             return VIEWS_USER_UPDATE_FORM;
         } else {
@@ -151,7 +151,7 @@ public class UserController {
     }
     
     @PostMapping("/admin/users/employees/create")
-    public String processCreateEmployeeForm(@ModelAttribute User user, BindingResult result, RedirectAttributes redirect){
+    public String processCreateEmployeeForm(@Valid User user, BindingResult result, RedirectAttributes redirect){
     	if(result.hasErrors()) {
     		return VIEWS_EMPLOYEE_CREATE_OR_UPDATE_FORM;
     	} else {

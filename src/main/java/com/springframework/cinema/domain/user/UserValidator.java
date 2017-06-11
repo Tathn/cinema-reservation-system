@@ -1,12 +1,5 @@
 package com.springframework.cinema.domain.user;
 
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.executable.ExecutableValidator;
-import javax.validation.metadata.BeanDescriptor;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -25,7 +18,7 @@ public class UserValidator implements Validator {
 	
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return User.class.equals(clazz);
+		return User.class.equals(clazz) || CustomUserDetails.class.equals(clazz);
 	}
 
 	@Override
@@ -36,16 +29,16 @@ public class UserValidator implements Validator {
 		User user = (User) object;
 		String password = user.getPassword();
 		if(password.length() < PASSWORD_MIN_LENGTH)
-			errors.rejectValue("password", "too_short");
+			errors.rejectValue("password", "password.too_short");
 		//TODO regex comparision
 		String username = user.getUsername();
 		if(userService.checkIfUsernameExists(username))
-			errors.rejectValue("username", "already_exists");
+			errors.rejectValue("username", "username.already_exists");
 		if(username.length() < USERNAME_MIN_LENGTH)
-			errors.rejectValue("username", "too_short");
+			errors.rejectValue("username", "username.too_short");
 		//TODO regex comparision
 		String email = user.getEmail();
 		if(userService.checkIfEmailExists(email))
-			errors.rejectValue("email", "already_exists");
+			errors.rejectValue("email", "email.already_exists");
 	}
 }

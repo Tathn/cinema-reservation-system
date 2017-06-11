@@ -26,6 +26,10 @@ public class MovieService {
     public Collection<Movie> findAll(){
         return movieRepository.findAll();
     }
+    
+    public Collection<Movie> findAvailable() {
+    	return movieRepository.findMoviesByAvailable(true);
+    }
 
     public Movie findById(Long id){
         return movieRepository.findOne(id);
@@ -33,5 +37,9 @@ public class MovieService {
     
     public Movie findByTitle(String title) {
     	return movieRepository.findMovieByTitle(title);
+    }
+    
+    public boolean checkIfTitleExists(String title) {
+    	return movieRepository.findMovieByTitle(title) != null;
     }
 }

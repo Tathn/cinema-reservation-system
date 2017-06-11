@@ -41,10 +41,10 @@ public class UserService {
     }
     
     public boolean checkIfUsernameExists(String username) {
-    	return !(userRepository.findUserByUsername(username) == null);
+    	return userRepository.findUserByUsername(username) != null;
     }
     
     public boolean checkIfEmailExists(String email) {
-    	return !(userRepository.findUserByEmail(email) == null);
+    	return userRepository.findUserByEmail(email) != null;
     }
 }

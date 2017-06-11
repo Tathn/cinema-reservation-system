@@ -11,6 +11,6 @@ import com.springframework.cinema.infrastructure.model.BaseRepository;
  */
 @Repository
 public interface RoomRepository extends BaseRepository<Room, Long> {
-    //Room findByName(String name);
+    Room findByName(String name);
 
 }

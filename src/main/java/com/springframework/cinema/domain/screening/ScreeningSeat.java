@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.springframework.cinema.domain.room.Room;
 import com.springframework.cinema.domain.room.RoomSeat;
+import com.springframework.cinema.domain.ticket.Ticket;
 
 /**
  * Created by Patryk on 2017-03-06.
@@ -39,7 +40,7 @@ public class ScreeningSeat implements Serializable {
 	private Screening screening;
 
 //	@ManyToOne
-//	@JoinColumn(name = "ticket_fk")
+//	@JoinColumn(name = "ticket_id", foreignKey = @ForeignKey(name = "seat_ticket_id_fk"))
 //	Ticket ticket;
 
 	private ScreeningSeat(){}

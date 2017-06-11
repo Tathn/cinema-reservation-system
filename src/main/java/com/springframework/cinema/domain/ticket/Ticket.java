@@ -3,9 +3,14 @@ package com.springframework.cinema.domain.ticket;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.springframework.cinema.domain.user.User;
 
 /**
  * Created by Patryk on 2017-05-27.
@@ -22,12 +27,8 @@ public class Ticket implements Serializable {
 	private Long id;
 	
 //	@ManyToOne
-//	@JoinColumn(name = "user_fk")
+//	@JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "ticket_user_id_fk"))
 //	User user;
-	
-//	@ManyToOne
-//	@JoinColumn(name = "screening_fk")
-//	Screening screening;
 	
 //	@OneToMany(mappedBy = "ticket")
 //	Collection<ScreeningSeat> screeningSeats;

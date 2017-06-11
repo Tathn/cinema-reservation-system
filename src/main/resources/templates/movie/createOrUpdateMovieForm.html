@@ -13,7 +13,6 @@
     <p>Description: <input type="text" th:field="*{description}"/></p>
     <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
     <p>Available: <input type="checkbox" th:field="*{available}"/></p>
-    <p th:if="${#fields.hasErrors('available')}" th:errors="*{available}"></p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
 <div th:replace="footer :: footer"></div>
