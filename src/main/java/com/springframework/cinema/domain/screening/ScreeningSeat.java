@@ -11,9 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.springframework.cinema.domain.room.Room;
 import com.springframework.cinema.domain.room.RoomSeat;
-import com.springframework.cinema.domain.ticket.Ticket;
 
 /**
  * Created by Patryk on 2017-03-06.

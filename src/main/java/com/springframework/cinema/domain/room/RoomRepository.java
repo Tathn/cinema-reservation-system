@@ -1,7 +1,5 @@
 package com.springframework.cinema.domain.room;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Repository;
 
 import com.springframework.cinema.infrastructure.model.BaseRepository;

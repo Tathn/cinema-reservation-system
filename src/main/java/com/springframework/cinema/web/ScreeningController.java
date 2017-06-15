@@ -1,19 +1,14 @@
 package com.springframework.cinema.web;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.Formatter;
 import java.util.Locale;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,8 +18,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springframework.cinema.domain.movie.Movie;
@@ -129,12 +122,12 @@ public class ScreeningController {
 	}
 	
 	@PostMapping("/employee/screenings/create")
-	public String processScreeningCreateForm(@Valid Screening screening, BindingResult result, RedirectAttributes redir) {
+	public String processScreeningCreateForm(@Valid Screening screening, BindingResult result, Model model, RedirectAttributes redir) {
 		if(result.hasErrors()) {
+			model.addAttribute("movies", movieService.findAvailable());
+			model.addAttribute("rooms", roomService.findAll());
+			//TODO Model attributes should be available here and I should not add them manually here
 			return "screening/createOrUpdateScreeningForm";
-			//TODO Model gets lost when processing Post request. Fix needed.
-			//Temporary fix redirects instead of returning view name
-			//return "redirect:/employee/screenings/create";
 		} else {
 			Room scrRoom = screening.getRoom();
 			if(scrRoom == null)
