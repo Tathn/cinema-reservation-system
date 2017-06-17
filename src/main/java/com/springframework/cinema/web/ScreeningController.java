@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springframework.cinema.domain.movie.Movie;
+import com.springframework.cinema.domain.movie.MovieFormatter;
 import com.springframework.cinema.domain.movie.MovieRepository;
 import com.springframework.cinema.domain.movie.MovieService;
 import com.springframework.cinema.domain.room.Room;
+import com.springframework.cinema.domain.room.RoomFormatter;
 import com.springframework.cinema.domain.room.RoomRepository;
 import com.springframework.cinema.domain.room.RoomSeat;
 import com.springframework.cinema.domain.room.RoomSeatRepository;
@@ -57,36 +59,8 @@ public class ScreeningController {
 	
 	@InitBinder
     protected void initBinder(WebDataBinder binder) {
-        binder.addCustomFormatter(new org.springframework.format.Formatter<Room>() {
-
-			@Override
-			public String print(Room arg0, Locale arg1) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public Room parse(String roomId, Locale arg1) throws ParseException {
-				Room room = roomService.findById(Long.valueOf(roomId));
-				if (room == null)
-					System.out.println("ROOM JEST PUSTY WCZESNIEJ. nazwa: " + roomId);
-				return room;
-			}
-		});
-        
-        binder.addCustomFormatter(new org.springframework.format.Formatter<Movie>() {
-
-			@Override
-			public String print(Movie arg0, Locale arg1) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public Movie parse(String movieId, Locale arg1) throws ParseException {
-				return movieService.findById(Long.valueOf(movieId));
-			}
-		});
+        binder.addCustomFormatter(new RoomFormatter(roomService));
+        binder.addCustomFormatter(new MovieFormatter(movieService));
     }
 	
 	
