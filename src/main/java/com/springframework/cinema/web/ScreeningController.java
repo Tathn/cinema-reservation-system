@@ -1,11 +1,8 @@
 package com.springframework.cinema.web;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Locale;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.springframework.cinema.domain.movie.Movie;
 import com.springframework.cinema.domain.movie.MovieFormatter;
 import com.springframework.cinema.domain.movie.MovieRepository;
 import com.springframework.cinema.domain.movie.MovieService;

@@ -16,7 +16,7 @@
     <td th:text="${screening.movie.title}"></td>
     <td th:text="${screening.startsAt}"></td>
     <td th:text="${screening.finishesAt}"></td>
-    <td><a href="#" th:href="@{#} + ${screening.id}"><button>Get ticket</button></a></td>
+    <td><a href="#" th:href="@{/ticket/screening/} + ${screening.id}"><button>Get ticket</button></a></td>
 </tr>
 </tbody>
 </table>

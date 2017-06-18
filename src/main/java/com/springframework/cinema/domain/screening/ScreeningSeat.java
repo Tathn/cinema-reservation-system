@@ -57,4 +57,7 @@ public class ScreeningSeat implements Serializable {
 	
 	public Boolean getAvailability() { return availability;}
 	public void setAvailability(Boolean availability) { this.availability = availability; }
+	
+	public Screening getScreening() { return screening;}
+	public void setScreening(Screening screening) { this.screening = screening; }
 }

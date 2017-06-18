@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="header :: head('Get Ticket')"></div>
+<body>
+<div th:replace="header :: header"></div>
+<form action="#" th:action="${#httpServletRequest.requestURI}" th:object="${ticket}" method="post">
+	<th:block th:each="seat : ${seats}">
+		<input type="checkbox" th:field="*{screeningSeats}" th:value="${seat.id}" />
+		<span 
+           th:style="${seat.availability ? 'color: green;' : 'color: red;'}" th:text="${seat.label} + ' '"></span>
+	    <br th:if="${seatStat.count} % ${seat.screening.room.columns} == 0"/>
+	</th:block>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>

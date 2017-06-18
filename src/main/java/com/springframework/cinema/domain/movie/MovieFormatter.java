@@ -20,7 +20,10 @@ public class MovieFormatter implements Formatter<Movie> {
 
 	@Override
 	public Movie parse(String movieId, Locale locale) throws ParseException {
-		return movieService.findById(Long.valueOf(movieId));
+		Movie movie = movieService.findById(Long.valueOf(movieId));
+		if(movie == null)
+			throw new ParseException("Failed to parse Movie. Movie with id " + movieId + " was not found in database.", -2);
+		return movie;
 	}
 
 
