@@ -1,8 +1,5 @@
 package com.springframework.cinema.domain.user;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,10 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.JoinColumn;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Created by Patryk on 2017-04-19.
@@ -55,7 +55,7 @@ public class User implements Serializable {
 //  @OneToMany(mappedBy = "user")
 //	Collection<Ticket> tickets;
 
-    private User(){}
+    public User(){}
     
     public User(User user){
     	this.setId(user.getId());

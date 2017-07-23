@@ -25,7 +25,6 @@ public class CinemaController {
 	
 	@GetMapping("/")
 	public String getMainPageView(Model model){
-		model.addAttribute("screenings", screeningService.findByDate(Calendar.getInstance().getTime()));
 		return "index";
 	}
 }

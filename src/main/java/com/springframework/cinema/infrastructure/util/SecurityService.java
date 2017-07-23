@@ -17,19 +17,33 @@ import com.springframework.cinema.domain.user.UserService;
 
 @Service
 public class SecurityService {
-
-	public String encodePassword(String password){
-    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(); 
+	
+	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+	
+	public String encodePassword(String password){ 
     	String encodedPassword = bCryptPasswordEncoder.encode(password);
     	return encodedPassword;
     }
 	
 	public void authenticate(User user, UserService userService){
-    	List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRolesNames());
-        UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
+		
+		UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        
+        if(bCryptPasswordEncoder.matches(user.getPassword(), userDetails.getPassword())){
+        	Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities());
+        	SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+//        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRolesNames());
+//        UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+//        if(userDetails.getPassword() == user.getPassword()){
+//        	Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
+//            SecurityContextHolder.getContext().setAuthentication(auth);
+//        }    
     }
+	
+//	public boolean authenticated(boolean authStatus){
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		return authentication.isAuthenticated() == authStatus;
+//	}
 }

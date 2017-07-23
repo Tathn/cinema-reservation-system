@@ -23,15 +23,20 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
+	
+	<repositories>
+    	<repository>
+        	<id>prime-repo</id>
+        	<name>PrimeFaces Maven Repository</name>
+        	<url>http://repository.primefaces.org</url>
+        	<layout>default</layout>
+    	</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -45,9 +50,15 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-taglibs</artifactId>
+    		<version>3.2.7.RELEASE</version>
+    	</dependency>
+    	<dependency>
+           <groupId>org.springframework.webflow</groupId>
+           <artifactId>spring-faces</artifactId>
+           <version>2.4.1.RELEASE</version>
         </dependency>
 		<!--<dependency>
 			<groupId>com.h2database</groupId>
@@ -59,6 +70,30 @@
             <artifactId>mariadb-java-client</artifactId>
         </dependency>
 		<dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>2.2.14</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+            <version>2.2.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>6.1</version>
+        </dependency>
+        <dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>all-themes</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+        <dependency>
+    		<groupId>org.apache.tomcat.embed</groupId>
+    		<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -66,11 +101,19 @@
 	</dependencies>
 
 	<build>
+	<finalName>cinema-reservation-system</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+<!-- 			<plugin> -->
+<!--                 <groupId>org.apache.maven.plugins</groupId> -->
+<!--                 <artifactId>maven-war-plugin</artifactId> -->
+<!--                 <configuration> -->
+<!--                     <outputDirectory>D:\Programs\apache-tomcat-8.5.16\webapps</outputDirectory> -->
+<!--                 </configuration> -->
+<!--             </plugin> -->
 		</plugins>
 	</build>
 

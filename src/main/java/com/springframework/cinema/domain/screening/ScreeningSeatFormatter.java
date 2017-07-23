@@ -2,6 +2,7 @@ package com.springframework.cinema.domain.screening;
 
 import java.text.ParseException;
 import java.util.Locale;
+
 import org.springframework.format.Formatter;
 
 public class ScreeningSeatFormatter implements Formatter<ScreeningSeat> {

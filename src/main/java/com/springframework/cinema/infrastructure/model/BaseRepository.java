@@ -1,10 +1,10 @@
 package com.springframework.cinema.infrastructure.model;
 
-import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.Repository;
-
 import java.io.Serializable;
 import java.util.Collection;
+
+import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.Repository;
 
 /**
  * Created by Patryk on 2017-04-27.

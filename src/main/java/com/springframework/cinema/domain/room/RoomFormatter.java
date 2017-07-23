@@ -5,8 +5,6 @@ import java.util.Locale;
 
 import org.springframework.format.Formatter;
 
-import com.springframework.cinema.domain.movie.Movie;
-
 public class RoomFormatter implements Formatter<Room> {
 
 	private final RoomService roomService;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/tags">
+<h:head/>
+<h:body>
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="content">
+	<h:form>
+		<p:dataTable value="#{screeningBean.screenings}" var="screening" widgetVar="screeningsTable"
+                 emptyMessage="No screenings found with given criteria" filteredValue="#{filteredScreenings}">
+                 <f:facet name="header">
+            <p:outputPanel>
+                <h:outputText value="Search all fields:" />
+                <p:inputText id="globalFilter" onkeyup="PF('screeningsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+            </p:outputPanel>
+        </f:facet>
+		<p:column filterBy="#{screening.movie.title}" headerText="Title" footerText="contains" filterMatchMode="contains">
+            <h:outputText value="#{screening.movie.title}" />
+        </p:column>
+		</p:dataTable>
+	</h:form>
+	</ui:define>
+</ui:composition>
+</h:body>
+</html>

@@ -1,12 +1,13 @@
 package com.springframework.cinema.infrastructure.config;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.configuration.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 /**
@@ -18,14 +19,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http 	.csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/css/**", "/", "/favicon.ico").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/employee/**").hasRole("EMPLOYEE")
                     .antMatchers("/users/**","/account/**","/ticket/**").hasRole("USER")
                     .antMatchers("/login","/register").hasRole("ANONYMOUS")
-                    .anyRequest().denyAll()
+                    .anyRequest().permitAll()
                     .and()
                 .formLogin()
                     .loginPage("/login")
@@ -34,7 +35,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 	.permitAll()
                 	.and()
                 .httpBasic();
-
     }
 
     @Autowired

@@ -1,6 +1,7 @@
 package com.springframework.cinema.domain.movie;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

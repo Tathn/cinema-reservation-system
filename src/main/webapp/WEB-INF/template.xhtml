@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:sec="http://www.springframework.org/security/tags">
+        
+<h:head>
+	<h:outputStylesheet library="css" name="main.css"  />
+	 <f:facet name="meta">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+     </f:facet>
+     <title>Cinema Reservation System</title>
+</h:head>
+<h:body>
+	<div id="header">
+	  	<ui:insert name="header" >
+	  		<sec:authorize access="!isAuthenticated()">
+	  			<h:form>
+	  				<p:menubar>
+		            	<p:menuitem value="Log In" url="/login"/>
+            			<p:menuitem value="Register" url="/register" />
+	  				</p:menubar>
+	  			</h:form>
+	  		</sec:authorize>
+	  		
+	  		<sec:authorize access="isAuthenticated()">
+	  			<h:form>
+	  				<p:menubar>
+	  					<p:submenu label="User">
+	  						<sec:authorize access="hasRole('ROLE_ADMIN')">
+			          			<p:menuitem value="Admin Panel" url="/admin" />
+			          		</sec:authorize>
+			          		<sec:authorize access="hasRole('ROLE_EMPLOYEE')">
+			          			<p:menuitem value="Employee Panel" url="/employee" />
+			                </sec:authorize>
+			                <sec:authorize access="hasRole('ROLE_USER')">
+			                	<p:menuitem value="Manage Account" url="/account" />
+			                </sec:authorize>
+	  					</p:submenu>
+	  					<f:facet name="options">
+            					<p:commandButton value="Logout" action="#{loginBean.logOut}" process="@this" icon="ui-icon-extlink" />
+        				</f:facet>
+	  				</p:menubar>
+	  			</h:form>
+	  		</sec:authorize>
+	  		
+<!-- 	  		<nav> -->
+<!-- 		        <sec:authorize access="!isAuthenticated()"> -->
+<!-- 		            <a href="/login"><button class="dropbtn">Log In</button></a> -->
+<!-- 		        </sec:authorize> -->
+<!-- 		        <sec:authorize access="isAuthenticated()"> -->
+<!-- 			        <div class="dropdown"> -->
+<!-- 			            <div class="dropbtn"> -->
+<!-- 			                <span sec:authentication="name">$$Imie$$</span> -->
+<!-- 			            </div> -->
+<!-- 			            <div class="dropdown-content"> -->
+<!-- 			         		<sec:authorize access="hasRole('ROLE_ADMIN')"> -->
+<!-- 			          			<a href="/admin">Admin Panel</a> -->
+<!-- 			          		</sec:authorize> -->
+<!-- 			          		<sec:authorize access="hasRole('ROLE_EMPLOYEE')"> -->
+<!-- 			          		<a href="/employee">Employee Panel</a> -->
+<!-- 			                </sec:authorize> -->
+<!-- 			                <sec:authorize access="hasRole('ROLE_USER')"> -->
+<!-- 			                <a href="/account">Manage Account</a> -->
+<!-- 			                </sec:authorize> -->
+<!-- 			                <form action="@{/logout}" method="post"> -->
+<!-- 			                    <input type="submit" value="Log out" class="logoutbtn"/> -->
+<!-- 			                </form> -->
+<!-- 			            </div> -->
+<!-- 			        </div> -->
+<!-- 			    </sec:authorize> -->
+<!-- 		    </nav> -->
+	  	</ui:insert>
+	</div>
+	
+	<div id="content">
+	  	<ui:insert name="content" >
+	  		<p>CONTENT</p>
+		</ui:insert>
+	</div>
+
+	<div id="footer">
+	    <ui:insert name="footer">
+	    </ui:insert>
+    </div>
+</h:body>
+</html>
