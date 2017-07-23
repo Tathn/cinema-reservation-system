@@ -1,8 +1,12 @@
-package com.springframework.cinema.domain.room;
+package com.springframework.cinema.web.beans.validators.del;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import com.springframework.cinema.domain.room.Room;
+import com.springframework.cinema.domain.room.RoomRepository;
+import com.springframework.cinema.domain.room.RoomService;
 
 public class RoomValidator implements Validator {
 

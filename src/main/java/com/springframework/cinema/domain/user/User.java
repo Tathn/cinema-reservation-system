@@ -13,9 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  * Created by Patryk on 2017-04-19.
@@ -31,8 +36,9 @@ public class User implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
-	@NotEmpty(message = "The username is required.")
-    @Column(name = "username", unique=true, nullable = false)
+	@NotNull(message = "Username is required.")
+	@Size(min = 4, message = "Username is too short.")
+	@Column(name = "username", unique=true, nullable = false)
     private String username;
 
     @Email(message = "Please provide a valid email address.")
@@ -40,7 +46,8 @@ public class User implements Serializable {
     @Column(name = "email",unique=true ,nullable = false)
     private String email;
 
-    @NotEmpty(message = "Password is required.")
+    @NotNull(message = "Password is required.")
+    @Size(min = 6, message = "Password is too short.")
     private String password;
     
     @ManyToMany(fetch = FetchType.EAGER)
@@ -63,6 +70,7 @@ public class User implements Serializable {
     	this.email = user.email;
     	this.password = user.password;
     	this.roles = user.roles;
+    
     }
 
     public String getUsername(){ return this.username; }

@@ -30,7 +30,7 @@
 	  		<sec:authorize access="isAuthenticated()">
 	  			<h:form>
 	  				<p:menubar>
-	  					<p:submenu label="User">
+	  					<p:submenu label="#{request.userPrincipal.name}">
 	  						<sec:authorize access="hasRole('ROLE_ADMIN')">
 			          			<p:menuitem value="Admin Panel" url="/admin" />
 			          		</sec:authorize>

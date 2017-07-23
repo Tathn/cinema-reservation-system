@@ -1,7 +1,10 @@
-package com.springframework.cinema.domain.ticket;
+package com.springframework.cinema.web.beans.validators.del;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import com.springframework.cinema.domain.ticket.Ticket;
+import com.springframework.cinema.domain.ticket.TicketService;
 
 public class TicketValidator implements Validator {
 

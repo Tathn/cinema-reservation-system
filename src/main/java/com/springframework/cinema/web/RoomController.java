@@ -24,7 +24,7 @@ import com.springframework.cinema.domain.room.RoomSeat;
 import com.springframework.cinema.domain.room.RoomSeatRepository;
 import com.springframework.cinema.domain.room.RoomSeatService;
 import com.springframework.cinema.domain.room.RoomService;
-import com.springframework.cinema.domain.room.RoomValidator;
+import com.springframework.cinema.web.beans.validators.del.RoomValidator;
 
 @Controller
 public class RoomController {

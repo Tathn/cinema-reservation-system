@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.springframework.cinema.domain.movie.Movie;
 import com.springframework.cinema.domain.movie.MovieRepository;
 import com.springframework.cinema.domain.movie.MovieService;
-import com.springframework.cinema.domain.movie.MovieValidator;
+import com.springframework.cinema.web.beans.validators.del.MovieValidator;
 
 @Controller
 public class MovieController {

@@ -24,6 +24,7 @@ import com.springframework.cinema.domain.user.RoleService;
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserService;
 import com.springframework.cinema.infrastructure.util.SecurityService;
+import com.springframework.cinema.web.beans.validators.del.UserValidator;
 
 @ManagedBean("registrationBean")
 @ViewScoped
@@ -31,7 +32,7 @@ public class RegistrationBean implements Serializable {
 
 	private static final long serialVersionUID = 1210614190308165176L;
 	private	User user = new User();
-	private String message;
+	private String message;;
 	
 	@EJB
 	private UserService userService;
@@ -42,13 +43,10 @@ public class RegistrationBean implements Serializable {
 	@EJB
 	private SecurityService securityService;
 	
-	@EJB
-	private AuthenticationManager authenticationManager;
-	
 	public User getUser() { return user; }
 	public void setUser(User user) { this.user = user; }
 
-	public void register(){
+	public void register() throws IOException{
 		Role userRole = roleService.findByName("ROLE_USER");
     	user.addRole(userRole);
     	String password = user.getPassword();
@@ -57,6 +55,7 @@ public class RegistrationBean implements Serializable {
         user = userService.save(user);
         user.setPassword(password);
         securityService.authenticate(user, userService);
-        
+        user = new User();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/");
 	}
 }

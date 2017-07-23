@@ -41,10 +41,12 @@ public class UserService {
     }
     
     public boolean checkIfUsernameExists(String username) {
+    	//TODO Rewrite to custom query looking only for name and not for entire object
     	return userRepository.findUserByUsername(username) != null;
     }
     
     public boolean checkIfEmailExists(String email) {
+    	//TODO Rewrite to custom query looking only for name and not for entire object
     	return userRepository.findUserByEmail(email) != null;
     }
 }

@@ -18,13 +18,13 @@ import com.springframework.cinema.domain.screening.ScreeningSeat;
 import com.springframework.cinema.domain.screening.ScreeningSeatFormatter;
 import com.springframework.cinema.domain.screening.ScreeningSeatRepository;
 import com.springframework.cinema.domain.screening.ScreeningSeatService;
-import com.springframework.cinema.domain.screening.ScreeningSeatValidator;
 import com.springframework.cinema.domain.screening.ScreeningService;
 import com.springframework.cinema.domain.ticket.Ticket;
 import com.springframework.cinema.domain.ticket.TicketRepository;
 import com.springframework.cinema.domain.ticket.TicketService;
-import com.springframework.cinema.domain.ticket.TicketValidator;
 import com.springframework.cinema.domain.user.User;
+import com.springframework.cinema.web.beans.validators.del.ScreeningSeatValidator;
+import com.springframework.cinema.web.beans.validators.del.TicketValidator;
 
 @Controller
 public class TicketController {

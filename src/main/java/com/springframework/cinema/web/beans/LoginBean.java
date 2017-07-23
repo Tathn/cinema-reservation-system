@@ -8,6 +8,7 @@ import java.util.Collection;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -42,13 +43,17 @@ public class LoginBean implements Serializable {
 	public void setUser(User user) { this.user = user; }
 
 	public void logIn() throws IOException{
-		securityService.authenticate(user, userService);
-		user = new User();
-		FacesContext.getCurrentInstance().getExternalContext().redirect("/");
+		if(securityService.authenticate(user, userService)){
+			user = new User();
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/");
+		}
+		else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Invalid username or password.","Try again."));
+		}
 	}
 	
 	public void logOut() throws IOException{
-		System.out.println("Logging out!");
 		SecurityContextHolder.clearContext();
 		FacesContext.getCurrentInstance().getExternalContext().redirect("/login");
 	}

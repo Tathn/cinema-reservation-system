@@ -1,8 +1,12 @@
-package com.springframework.cinema.domain.movie;
+package com.springframework.cinema.web.beans.validators.del;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import com.springframework.cinema.domain.movie.Movie;
+import com.springframework.cinema.domain.movie.MovieRepository;
+import com.springframework.cinema.domain.movie.MovieService;
 
 public class MovieValidator implements Validator {
 

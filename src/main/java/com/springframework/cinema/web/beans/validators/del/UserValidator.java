@@ -1,8 +1,15 @@
-package com.springframework.cinema.domain.user;
+package com.springframework.cinema.web.beans.validators.del;
+
+import javax.annotation.ManagedBean;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import com.springframework.cinema.domain.user.CustomUserDetails;
+import com.springframework.cinema.domain.user.User;
+import com.springframework.cinema.domain.user.UserRepository;
+import com.springframework.cinema.domain.user.UserService;
 
 public class UserValidator implements Validator {
 	

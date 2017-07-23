@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +26,21 @@ public class SecurityService {
     	return encodedPassword;
     }
 	
-	public void authenticate(User user, UserService userService){
+	public boolean authenticate(User user, UserService userService){
 		
 		UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-        if(bCryptPasswordEncoder.matches(user.getPassword(), userDetails.getPassword())){
-        	Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities());
-        	SecurityContextHolder.getContext().setAuthentication(auth);
-        }
+		try{
+			UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+			if(bCryptPasswordEncoder.matches(user.getPassword(), userDetails.getPassword())){
+	        	Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities());
+	        	SecurityContextHolder.getContext().setAuthentication(auth);
+	        	return true;
+	        }
+	        else return false;
+		}
+		catch(UsernameNotFoundException e){
+			return false;
+		}
 //        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRolesNames());
 //        UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
 //        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());

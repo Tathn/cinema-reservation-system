@@ -11,12 +11,16 @@
 <ui:define name="content">
 	<h:form>
 		<p:panel id="panel" header="Log In" style="margin-bottom:10px;">
-        	<p:messages id="messages" />
+        	<p:messages id="messages" showIcon="false" showSummary="true" showDetail="true" autoUpdate="true" closable="true" />
         	<h:panelGrid columns="2" cellpadding="5">
 				<p:outputLabel for="username" value="Username: " />
-				<p:inputText id="username" value="#{loginBean.user.username}" />
+				<p:inputText id="username" value="#{loginBean.user.username}" >
+					<f:validateBean disabled="true" />
+				</p:inputText>			
 				<p:outputLabel for="password" value="Password: " />
-				<p:password id="password" value="#{loginBean.user.password}"/>
+				<p:password id="password" value="#{loginBean.user.password}">
+					<f:validateBean disabled="true" />
+				</p:password>
 			</h:panelGrid>
 		</p:panel>
 		<p:commandButton value="Log in" action="#{loginBean.logIn}" />

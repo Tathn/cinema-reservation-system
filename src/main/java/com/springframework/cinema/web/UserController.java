@@ -24,8 +24,8 @@ import com.springframework.cinema.domain.user.RoleService;
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserRepository;
 import com.springframework.cinema.domain.user.UserService;
-import com.springframework.cinema.domain.user.UserValidator;
 import com.springframework.cinema.infrastructure.util.SecurityService;
+import com.springframework.cinema.web.beans.validators.del.UserValidator;
 
 @Controller
 public class UserController {

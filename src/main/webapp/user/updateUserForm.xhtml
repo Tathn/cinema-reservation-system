@@ -9,27 +9,21 @@
 <h:body>
 <ui:composition template="/WEB-INF/template.xhtml">
 <ui:define name="content">
+<h:outputText value="WORK IN PROGRESS" />
 	<h:form id="signup">
-		<p:panel id="panel" header="Register" style="margin-bottom:10px;">
+		<p:panel id="panel" header="Edit account details" style="margin-bottom:10px;">
         	<p:messages />
         	<h:panelGrid columns="3" cellpadding="5">
         	
-				<p:outputLabel for="username" value="Username: " />
-			    <p:inputText id="username" value="#{registrationBean.user.username}" required="true" requiredMessage="Username is required.">
-			    	<f:validator binding="#{usernameValidator}" />
-                    <p:ajax event="blur" update="usernameMsg"/>
-				</p:inputText>
-				<p:message id="usernameMsg" for="username" display="text"/>
-				
-				<p:outputLabel for="email" value="Email: " />
-			    <p:inputText id="email" value="#{registrationBean.user.email}" required="true" requiredMessage="Email is required.">
+				<p:outputLabel for="email" value="Enter new email address: " />
+			    <p:inputText id="email" value="#{userBean.user.email}" required="true" requiredMessage="Email is required.">
 			    	<f:validator binding="#{emailValidator}" />
                     <p:ajax event="blur" update="emailMsg"/>
 				</p:inputText>
 				<p:message id="emailMsg" for="email" display="text"/>
 				
 				<p:outputLabel for="password" value="Password: " />
-			    <p:password id="password" value="#{registrationBean.user.password}" required="true" requiredMessage="Password is required.">
+			    <p:password id="password" value="#{userBean.user.password}" required="true" requiredMessage="Password is required.">
                     <p:ajax event="keyup" update="passwordMsg"/>
 				</p:password>
 				<p:message id="passwordMsg" for="password" display="text"/>

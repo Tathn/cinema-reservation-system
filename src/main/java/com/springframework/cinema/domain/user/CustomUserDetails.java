@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-final class CustomUserDetails extends User implements UserDetails {
+public final class CustomUserDetails extends User implements UserDetails {
 
 	private static final long serialVersionUID = -8006025957151631338L;
 
