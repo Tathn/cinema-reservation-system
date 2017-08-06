@@ -2,31 +2,27 @@ package com.springframework.cinema.web.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Locale;
 
-import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.servlet.support.RequestContext;
 
-import com.springframework.cinema.domain.screening.Screening;
-import com.springframework.cinema.domain.screening.ScreeningService;
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserService;
 import com.springframework.cinema.infrastructure.util.SecurityService;
 
-@ManagedBean("loginBean")
+@Named("loginBean")
 @ViewScoped
 public class LoginBean implements Serializable {
 
@@ -34,9 +30,9 @@ public class LoginBean implements Serializable {
 	private User user = new User();
 	private String message;
 	
-	@EJB
+	@Inject
 	private UserService userService;
-	@EJB
+	@Inject
 	private SecurityService securityService;
 	
 	public User getUser() { return user; }
@@ -48,13 +44,12 @@ public class LoginBean implements Serializable {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("/");
 		}
 		else{
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+			FacesContext.getCurrentInstance().addMessage("loginMsg", new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Invalid username or password.","Try again."));
 		}
 	}
 	
 	public void logOut() throws IOException{
-		SecurityContextHolder.clearContext();
-		FacesContext.getCurrentInstance().getExternalContext().redirect("/login");
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/logout");
 	}
 }

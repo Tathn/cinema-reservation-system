@@ -10,7 +10,7 @@
 <ui:composition template="/WEB-INF/template.xhtml">
 <ui:define name="content">
 	<h:form id="signup">
-		<p:panel id="panel" header="Register" style="margin-bottom:10px;">
+		<p:panel id="panel" header="Create new Employee account" style="margin-bottom:10px;">
         	<h:panelGrid columns="3" cellpadding="5">
         	
 				<p:outputLabel for="username" value="Username: " />
@@ -19,13 +19,6 @@
                     <p:ajax event="blur" update="usernameMsg"/>
 				</p:inputText>
 				<p:message id="usernameMsg" for="username" display="text"/>
-				
-				<p:outputLabel for="email" value="Email: " />
-			    <p:inputText id="email" value="#{userBean.user.email}" required="true" requiredMessage="Email is required.">
-			    	<f:validator binding="#{emailValidator}" />
-                    <p:ajax event="blur" update="emailMsg"/>
-				</p:inputText>
-				<p:message id="emailMsg" for="email" display="text"/>
 				
 				<p:outputLabel for="password" value="Password: " />
 			    <p:password id="password" value="#{userBean.user.password}" required="true" requiredMessage="Password is required.">
@@ -41,7 +34,7 @@
 				
 			</h:panelGrid>
 		</p:panel>
-		<p:commandButton value="Submit" action="#{userBean.registerUser}"/>
+		<p:commandButton value="Submit" action="#{userBean.registerEmployee}"/>
 	</h:form>
 </ui:define>
 </ui:composition>

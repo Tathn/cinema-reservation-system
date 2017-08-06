@@ -15,10 +15,9 @@ import org.primefaces.validate.ClientValidator;
 
 import com.springframework.cinema.domain.user.UserService;
 
-@Named("usernameValidator")
-public class UsernameValidator implements Validator, ClientValidator {
+@Named("movieValidator")
+public class MovieValidator implements Validator, ClientValidator { 
 	
-	private static final int USERNAME_MIN_LENGTH = 4; 
 	@EJB
 	private UserService userService;
 
@@ -30,9 +29,9 @@ public class UsernameValidator implements Validator, ClientValidator {
 //			 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors.",
 //					 "Username is too short."));
 		
-		if(userService.checkIfUsernameExists(value.toString()))
+		if(userService.checkIfEmailExists(value.toString()))
 			 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors.",
-					 "Username is already taken, please choose another one."));
+					 "Email is already taken, please choose another one."));
 	}
 	
 	@Override
@@ -42,7 +41,7 @@ public class UsernameValidator implements Validator, ClientValidator {
 
 	@Override
 	public String getValidatorId() {
-		return "custom.UsernameValidator";
+		return "custom.EmailValidator";
 	}
 	
 	

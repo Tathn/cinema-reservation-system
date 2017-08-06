@@ -10,6 +10,7 @@
 <ui:composition template="/WEB-INF/template.xhtml">
 	<ui:define name="content">
 	<h:form>
+		<p:panel id="user-data-panel" header="Users list" style="padding-bottom:20px">
 		<p:dataTable value="#{userBean.users}" var="user" widgetVar="usersTable"
                  emptyMessage="No users found with given criteria" filteredValue="#{filteredUsers}">
 		<p:column filterBy="#{user.username}" headerText="Username" filterMatchMode="contains">
@@ -28,6 +29,12 @@
             <h:outputText value="#{user.roles}" />
         </p:column>
 		</p:dataTable>
+		</p:panel>
+		<p:panel id="actions-panel" header="Actions">
+	      	<h:panelGrid columns="1" cellpadding="5">
+				<p:button href="/admin/users/employees/create" value="Create Employee account" />	
+			</h:panelGrid>	
+		</p:panel>
 	</h:form>
 	</ui:define>
 </ui:composition>

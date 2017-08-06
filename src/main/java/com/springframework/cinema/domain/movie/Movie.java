@@ -1,6 +1,7 @@
 package com.springframework.cinema.domain.movie;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -19,7 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Movie implements Serializable {
 
 	private static final long serialVersionUID = 369022311879378956L;
-	
+	//TODO dubbing itd
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
@@ -38,16 +40,17 @@ public class Movie implements Serializable {
 	private Integer duration;
 
 	@NotEmpty(message = "Description is required")
-	@Column(name = "description", nullable = false)
+	@Size(max = 1024, message = "Description is too long")
+	@Column(name = "description", nullable = false, length = 1024)
 	private String description;
 	
 	@Column(name = "available", nullable = false)
 	private Boolean available;
-
+	
 //	@OneToMany(mappedBy="movie")
 //	Collection<Screening> screenings;	
 	
-	private Movie(){}
+	public Movie(){}
 	
 	public Movie(Movie movie) {
 		this.title = movie.title;
@@ -72,6 +75,20 @@ public class Movie implements Serializable {
 	public String getDescription() { return description; }
 	public void setDescription(String description) { this.description = description; }
 
-	public Boolean getAvailable() { return available; }
+	public Boolean getAvailable() {
+		if(available == null)
+			available = false;
+		return available; 
+		}
 	public void setAvailable(Boolean available) { this.available = available; }
+	
+	@Override
+	public String toString() {
+		return title;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return Objects.equals(obj, this.getTitle());
+	}
 }

@@ -7,6 +7,8 @@ import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
+import com.springframework.cinema.domain.room.Room;
+
 /**
  * Created by Patryk on 2017-06-03.
  */
@@ -38,5 +40,11 @@ public class ScreeningService {
     	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     	dateFormat.format(date);
     	return screeningRepository.findScreeningsByDate(date);
+    }
+    
+    public Collection<Screening> findByDateAndRoom(Date date, Room room) {
+    	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    	dateFormat.format(date);
+    	return screeningRepository.findScreeningsByDateAndRoom(date, room);
     }
 }

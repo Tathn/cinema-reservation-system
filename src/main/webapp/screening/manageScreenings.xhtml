@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/tags">
+<h:head/>
+<h:body>
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="content">
+	<h:form>
+		<p:dataTable id="screeningsDataTable" value="#{screeningBean.screenings}" var="screeningItem" widgetVar="screeningsTable"
+                 emptyMessage="No screenings found with given criteria" filteredValue="#{filteredScreenings}">
+	     	<p:column filterFunction="#{screeningBean.filterByDate}" filterBy="#{screeningItem.date}"
+	     	 	headerText="Date" style="text-align: center">
+	     	 	<f:facet name="filter">
+    				<p:calendar  pattern="yyyy-MM-dd" id="calendar" value="#{screeningBean.screening.date}">
+       				 	<p:ajax event="dateSelect" oncomplete="PF('screeningsTable').filter()"/>
+   					 </p:calendar>
+				</f:facet>
+            	<h:outputText value="#{screeningItem.date}" />
+        	</p:column>
+        	<p:column headerText="Starts at" sortBy="#{screeningItem.startsAt}" style="text-align: center">
+            	<h:outputText value="#{screeningItem.startsAt}">
+            		<f:convertDateTime pattern="HH:mm" />
+            	</h:outputText>
+        	</p:column>
+        	<p:column headerText="Finishes at" sortBy="#{screeningItem.finishesAt}"
+	        	style="text-align: center">
+	            <h:outputText value="#{screeningItem.finishesAt}">
+	          		<f:convertDateTime pattern="HH:mm" />
+	          	</h:outputText>
+	        </p:column>
+	        <p:column headerText="Room" filterBy="#{screeningItem.room}" style="text-align: center">
+            	<h:outputText value="#{screeningItem.room}" />
+        	</p:column>
+	     	<p:column filterBy="#{screeningItem.movie.title}" headerText="Movie Title" filterMatchMode="contains"
+	     		style="text-align: center">
+	            <h:outputText value="#{screeningItem.movie.title}" />
+	        </p:column>
+	        <p:column>
+	        <h:outputText value="#{screeningItem.id}"></h:outputText>
+	        </p:column>
+	        <p:column headerText="Action">
+	        	<p:button href="/employee/screenings/show/#{screeningItem.id}" value="Show room" style="width:100%; margin-bottom:10px;"/>
+	        	<p:commandButton oncomplete="PF('screeningsTable').filter()" value="Delete" action="#{screeningBean.deleteScreening}"
+	        	  style="width:100%">
+	        	 	<f:param name="screening_id" value="#{screeningItem.id}" />
+	        	 </p:commandButton>
+	        </p:column>
+		</p:dataTable>
+		<p:button href="/employee/screenings/create" value="Add screening"></p:button>
+	</h:form>
+	<script>
+		jQuery(document).ready(function() {
+     		PF('screeningsTable').filter();	
+     	});
+	</script>
+	</ui:define>
+</ui:composition>
+</h:body>
+</html>

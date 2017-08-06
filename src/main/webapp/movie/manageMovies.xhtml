@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/tags">
+<h:head/>
+<h:body>
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="content">
+	<h:form id="browseForm">
+		<p:dataTable id="moviesDataTable" value="#{movieBean.movies}" var="movieItem" widgetVar="moviesTable"
+                 emptyMessage="No movies found with given criteria" filteredValue="#{filteredMovies}">
+                 
+        	<p:column headerText="Title" sortBy="#{movieItem.title}" filterBy="#{movieItem.title}" style="text-align: center">
+            	<h:outputText value="#{movieItem.title}"/>
+        	</p:column>
+        	<p:column headerText="Genre" sortBy="#{movieItem.genre}"
+	        	style="text-align: center">
+	            <h:outputText value="#{movieItem.genre}"/>
+	        </p:column>
+	        <p:column headerText="Duration" sortBy="#{movieItem.duration}"
+	        	style="text-align: center">
+	            <h:outputText value="#{movieItem.duration}"/>
+	        </p:column>
+	        <p:column headerText="Available" sortBy="#{movieItem.available}"
+	        	style="text-align: center">
+	            <h:outputText value="#{movieItem.available ? 'Yes' : 'No'}"/>
+	        </p:column>
+	        <p:column headerText="Action">
+		        <p:commandButton update=":browseForm:movieDetail" action="#{movieBean.showMovie}" oncomplete="PF('movieDialog').show()" icon="ui-icon-search" title="View">
+	                <f:param name="movie_id" value="#{movieItem.id}" />
+	            </p:commandButton>
+<!-- 	        	<p:button href="/employee/movies/show/#{movieItem.id}" value="Show room" style="width:100%; margin-bottom:10px;"/> -->
+	        	<p:commandButton oncomplete="PF('moviesTable').filter()" value="Delete" action="#{movieBean.deleteMovie(movieItem)}"
+	        	  style="width:100%">
+	        	 	
+	        	 </p:commandButton>
+	        </p:column>
+		</p:dataTable>
+		<p:commandButton value="Add movie" oncomplete="PF('addMovieDialog').show()"  />
+		
+		<p:dialog header="Movie" widgetVar="movieDialog" showEffect="fade" hideEffect="fade"
+			 minHeight="40" modal="true" resizable="false" position="center" width="100%">
+    		<p:outputPanel id="movieDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{not empty movieBean.selectedMovie}">
+
+                <h:outputText value="Title:" />
+                <h:outputText value="#{movieBean.selectedMovie.title}"/>
+ 
+                <h:outputText value="Genre:" />
+                <h:outputText value="#{movieBean.selectedMovie.genre}"/>
+ 
+                <h:outputText value="Duration:" />
+                <h:outputText value="#{movieBean.selectedMovie.duration}"/>
+ 
+                <h:outputText value="Description:" />
+				<h:outputText value="#{movieBean.selectedMovie.description}"/>    
+				
+				<h:outputText value="Available:" />
+				<h:outputText value="#{movieBean.selectedMovie.available ? 'Yes' : 'No'}" />
+            </p:panelGrid>
+        	</p:outputPanel>
+		</p:dialog>
+	</h:form>
+	
+	<h:form id="addForm">
+		<p:dialog header="Add Movie" widgetVar="addMovieDialog" showEffect="fade" hideEffect="fade"
+			 minHeight="40" modal="true" resizable="false" position="center" width="60%">
+			<p:panel id="addFormPanel" style="margin-bottom:10px;">
+	        	<h:panelGrid columns="3" cellpadding="5">
+					<p:outputLabel for="title" value="Title: "  />
+					<p:inputText id="title" value="#{movieBean.movie.title}">
+						<p:ajax update="titleMsg" event="blur"/>
+					</p:inputText>
+				    <p:message id="titleMsg" for="title" display="text"/>
+
+					<p:outputLabel for="genre" value="Genre: "  />
+					<p:inputText id="genre" value="#{movieBean.movie.genre}">
+						<p:ajax update="genreMsg" event="blur"/>
+					</p:inputText>
+				    <p:message id="genreMsg" for="genre" display="text"/>
+					
+					<p:outputLabel for="duration" value="Duration: "  />
+					<p:inputNumber decimalPlaces="0" id="duration" value="#{movieBean.movie.duration}">
+						<p:ajax update="durationMsg" event="blur"/>
+					</p:inputNumber>
+				    <p:message id="durationMsg" for="duration" display="text"/>
+					
+					<p:outputLabel for="description" value="Description (1024 letters): "  />
+					<p:inputTextarea autoResize="false" id="description" value="#{movieBean.movie.description}">
+						<p:ajax update="descriptionMsg" event="blur"/>
+					</p:inputTextarea>
+				    <p:message id="descriptionMsg" for="description" display="text"/>
+					
+					<p:outputLabel for="available" value="Available: "  />
+					<p:inputSwitch  offLabel="NO" onLabel="YES" id="available" value="#{movieBean.movie.available}">
+						<p:ajax event="change" update="availableMsg"/>
+					</p:inputSwitch>
+				    <p:message id="availableMsg" for="available" display="text"/>
+	
+				</h:panelGrid>
+			</p:panel>
+			<p:commandButton value="Submit" process="@this" action="#{movieBean.createMovie}" update=":browseForm:moviesDataTable,addFormPanel"/>
+		</p:dialog>
+	</h:form>
+	
+	<script>
+		jQuery(document).ready(function() {
+     		PF('moviesTable').filter();	
+     	});
+	</script>
+	</ui:define>
+</ui:composition>
+</h:body>
+</html>

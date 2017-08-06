@@ -62,8 +62,6 @@ public class ScreeningController {
 	
 	@GetMapping("/employee/screenings")
 	public String getManageScreeningsView(Model model) {
-		Collection<Screening> screenings = screeningService.findAll();
-		model.addAttribute("screenings", screenings);
 		return "screening/manageScreenings";
 	}
 	
@@ -86,8 +84,6 @@ public class ScreeningController {
 	
 	@GetMapping("/employee/screenings/create")
 	public String initScreeningCreateForm(@ModelAttribute Screening screening, Model model) {
-		model.addAttribute("movies", movieService.findAvailable());
-		model.addAttribute("rooms", roomService.findAll());
 		return "screening/createOrUpdateScreeningForm";
 	}
 	
@@ -99,12 +95,6 @@ public class ScreeningController {
 			//TODO Model attributes should be available here and I should not add them manually here
 			return "screening/createOrUpdateScreeningForm";
 		} else {
-			Room scrRoom = screening.getRoom();
-			if(scrRoom == null)
-				System.out.println("ROOM JEST PUSTY");
-			Collection<RoomSeat> roomSeats = roomSeatService.findRoomSeatsByRoomId(scrRoom.getId());
-			screeningService.save(screening);
-			screeningSeatService.saveRoomSeatsAsScreeningSeats(roomSeats, screening);
 			//TODO I think I messed with ScreeningSeat and RoomSeat services (and ScreeningSeat constructor) too much (need to investigate)
 			return "redirect:/employee/screenings";
 		}

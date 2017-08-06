@@ -35,4 +35,8 @@ public class RoomService {
     public boolean checkIfNameExists(String name) {
     	return roomRepository.findByName(name) != null;
     }
+    
+    public Room findByName(String name){
+    	return roomRepository.findByName(name);
+    }
 }

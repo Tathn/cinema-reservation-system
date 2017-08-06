@@ -12,8 +12,6 @@ import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
-import com.sun.faces.config.ConfigureListener;
-
 @SpringBootApplication
 public class CinemaApplication {
 
@@ -28,10 +26,12 @@ public class CinemaApplication {
             @Override
             public void onStartup(ServletContext servletContext) throws ServletException {
                 servletContext.setInitParameter("com.sun.faces.forceLoadConfiguration", Boolean.TRUE.toString());
-                servletContext.setInitParameter("javax.faces.STATE_SAVING_METHOD", "client");
+                servletContext.setInitParameter("javax.faces.STATE_SAVING_METHOD", "server");
+                servletContext.setInitParameter("javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE", Boolean.TRUE.toString());
 //                servletContext.setInitParameter("primefaces.CLIENT_SIDE_VALIDATION", Boolean.TRUE.toString());
 //                servletContext.setInitParameter("javax.faces.FACELETS_SKIP_COMMENTS", Boolean.TRUE.toString());
-//                servletContext.setInitParameter("primefaces.FONT_AWESOME", Boolean.TRUE.toString());
+                servletContext.setInitParameter("javax.faces.PROJECT_STAGE", "Production");
+                servletContext.setInitParameter("primefaces.FONT_AWESOME", Boolean.TRUE.toString());
                 servletContext.setInitParameter("primefaces.THEME", "midnight");
                 servletContext.setInitParameter("javax.faces.FACELETS_LIBRARIES", "/WEB-INF/springsecurity.taglib.xml");
             }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/tags">
+<h:head/>
+<h:body>
+<ui:composition template="/WEB-INF/template.xhtml">
+<ui:define name="content">
+	<h:form>
+		<p:panel id="panel" header="Add Screening" style="margin-bottom:10px;">
+		<p:message id="screeningTimeRangeMsg" for="screeningTimeRange" display="text" />
+        	<h:panelGrid columns="3" cellpadding="5">
+				
+				<p:outputLabel for="room" value="Room: "  />
+			    <p:selectOneMenu id="room" value="#{screeningBean.screening.room}" converter="#{roomConverter}">
+                    <f:selectItems value="#{screeningBean.rooms}" var="room" itemLabel="#{room.name}" itemValue="#{room}"/>
+                	<p:ajax event="blur" update="roomMsg"/>
+                </p:selectOneMenu>
+				<p:message id="roomMsg" for="room" display="text"/>
+				
+				<p:outputLabel for="movie" value="Movie: " />
+			    <p:selectOneMenu id="movie" value="#{screeningBean.screening.movie}" converter="#{movieConverter}">
+                    <f:selectItems value="#{screeningBean.movies}" var="movie" itemLabel="#{movie.title}" itemValue="#{movie}" />
+                	<p:ajax event="blur" update="movieMsg"/>
+                	<p:ajax event="change"  listener="#{screeningBean.updateFinishesAt}" update="finishesAt" />
+                </p:selectOneMenu>
+				<p:message id="movieMsg" for="movie" display="text"/>
+				
+				<p:outputLabel for="date" value="Date: " />
+			    <p:calendar id="date" readonlyInput="true" value="#{screeningBean.screening.date}" showOn="button" pattern="yyyy-MM-dd" mask="true" mindate="#{dateBean.currentDate}">
+			    	<f:convertDateTime pattern="yyyy-MM-dd" />
+			    	<f:validator binding="#{screeningDateValidator}"/>
+			    	<p:ajax event="dateSelect" update="dateMsg"/>
+			    </p:calendar>
+				<p:message id="dateMsg" for="date" display="text"/>
+				
+				<p:outputLabel for="startsAt" value="Starts at: " />
+			    <p:calendar timeOnly="true" pattern="HH:mm" id="startsAt" value="#{screeningBean.screening.startsAt}">
+			    	<p:ajax event="blur" update="startsAtMsg"/>
+			    	<p:ajax event="dateSelect"  listener="#{screeningBean.updateFinishesAt}" update="finishesAt" />
+			    </p:calendar>
+			    <p:message id="startsAtMsg" for="startsAt" display="text"/>
+
+				<p:outputLabel for="finishesAt" value="Finishes at: " />
+			    <p:calendar disabled="true" timeOnly="true" readonlyInput="true" pattern="HH:mm" id="finishesAt" value="#{screeningBean.screening.finishesAt}">
+			    	<p:ajax event="blur" update="finishesAtMsg"/>
+			    </p:calendar>
+			    <p:message id="finishesAtMsg" for="finishesAt" display="text"/>
+			 
+			    <h:inputHidden id="screeningTimeRange" value="true">
+      				<f:validator binding="#{screeningTimeRangeValidator}"/>
+      				<f:attribute name="screening" value="#{screeningBean.screening}"/>
+      			</h:inputHidden>
+			    
+			</h:panelGrid>
+		</p:panel>
+		<p:commandButton value="Submit" action="#{screeningBean.createScreening}" update="screeningTimeRangeMsg"/>
+	</h:form>
+</ui:define>
+</ui:composition>
+</h:body>
+</html>

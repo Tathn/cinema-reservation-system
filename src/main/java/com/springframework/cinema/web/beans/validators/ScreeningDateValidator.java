@@ -1,5 +1,11 @@
 package com.springframework.cinema.web.beans.validators;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.ManagedBean;
@@ -15,24 +21,17 @@ import org.primefaces.validate.ClientValidator;
 
 import com.springframework.cinema.domain.user.UserService;
 
-@Named("usernameValidator")
-public class UsernameValidator implements Validator, ClientValidator {
-	
-	private static final int USERNAME_MIN_LENGTH = 4; 
-	@EJB
-	private UserService userService;
+@Named("screeningDateValidator")
+public class ScreeningDateValidator implements Validator, ClientValidator {
 
 	@Override
 	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
 		if(value == null) return;
 		
-//		if(value.toString().length() < USERNAME_MIN_LENGTH )
-//			 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors.",
-//					 "Username is too short."));
-		
-		if(userService.checkIfUsernameExists(value.toString()))
-			 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors.",
-					 "Username is already taken, please choose another one."));
+		LocalDate valueDate = LocalDateTime.ofInstant(((Date)value).toInstant(), ZoneId.systemDefault()).toLocalDate();
+		if( valueDate.isBefore(LocalDate.now()))
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors",
+					"You cannot create a screening in the past."));
 	}
 	
 	@Override
@@ -42,7 +41,7 @@ public class UsernameValidator implements Validator, ClientValidator {
 
 	@Override
 	public String getValidatorId() {
-		return "custom.UsernameValidator";
+		return "custom.EmailValidator";
 	}
 	
 	

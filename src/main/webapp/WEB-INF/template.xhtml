@@ -18,8 +18,14 @@
 <h:body>
 	<div id="header">
 	  	<ui:insert name="header" >
+	  		<style>
+	  			label.ui-state-error{
+	  				color: white !important;
+	  				background: none !important;
+	  			}
+	  		</style>
 	  		<sec:authorize access="!isAuthenticated()">
-	  			<h:form>
+	  			<h:form id="navigation-bar">
 	  				<p:menubar>
 		            	<p:menuitem value="Log In" url="/login"/>
             			<p:menuitem value="Register" url="/register" />
@@ -28,7 +34,7 @@
 	  		</sec:authorize>
 	  		
 	  		<sec:authorize access="isAuthenticated()">
-	  			<h:form>
+	  			<h:form id="navigation-bar">
 	  				<p:menubar>
 	  					<p:submenu label="#{request.userPrincipal.name}">
 	  						<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -47,34 +53,8 @@
 	  				</p:menubar>
 	  			</h:form>
 	  		</sec:authorize>
-	  		
-<!-- 	  		<nav> -->
-<!-- 		        <sec:authorize access="!isAuthenticated()"> -->
-<!-- 		            <a href="/login"><button class="dropbtn">Log In</button></a> -->
-<!-- 		        </sec:authorize> -->
-<!-- 		        <sec:authorize access="isAuthenticated()"> -->
-<!-- 			        <div class="dropdown"> -->
-<!-- 			            <div class="dropbtn"> -->
-<!-- 			                <span sec:authentication="name">$$Imie$$</span> -->
-<!-- 			            </div> -->
-<!-- 			            <div class="dropdown-content"> -->
-<!-- 			         		<sec:authorize access="hasRole('ROLE_ADMIN')"> -->
-<!-- 			          			<a href="/admin">Admin Panel</a> -->
-<!-- 			          		</sec:authorize> -->
-<!-- 			          		<sec:authorize access="hasRole('ROLE_EMPLOYEE')"> -->
-<!-- 			          		<a href="/employee">Employee Panel</a> -->
-<!-- 			                </sec:authorize> -->
-<!-- 			                <sec:authorize access="hasRole('ROLE_USER')"> -->
-<!-- 			                <a href="/account">Manage Account</a> -->
-<!-- 			                </sec:authorize> -->
-<!-- 			                <form action="@{/logout}" method="post"> -->
-<!-- 			                    <input type="submit" value="Log out" class="logoutbtn"/> -->
-<!-- 			                </form> -->
-<!-- 			            </div> -->
-<!-- 			        </div> -->
-<!-- 			    </sec:authorize> -->
-<!-- 		    </nav> -->
-	  	</ui:insert>
+	  		<p:messages id="globalMessages" globalOnly="true" showSummary="true" showDetail="false" showIcon="false" autoUpdate="true" closable="true" />
+  	</ui:insert>
 	</div>
 	
 	<div id="content">

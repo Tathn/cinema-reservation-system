@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.stereotype.Repository;
 
+import com.springframework.cinema.domain.room.Room;
 import com.springframework.cinema.infrastructure.model.BaseRepository;
 
 /**
@@ -12,5 +13,6 @@ import com.springframework.cinema.infrastructure.model.BaseRepository;
  */
 @Repository
 public interface ScreeningRepository extends BaseRepository<Screening, Long> {
-	Collection<Screening> findScreeningsByDate(Date date); 
+	Collection<Screening> findScreeningsByDate(Date date);
+	Collection<Screening> findScreeningsByDateAndRoom(Date date, Room room);
 }

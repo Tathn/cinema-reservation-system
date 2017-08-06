@@ -1,6 +1,9 @@
 package com.springframework.cinema.domain.screening;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,11 +16,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.springframework.cinema.domain.movie.Movie;
 import com.springframework.cinema.domain.room.Room;
+import com.springframework.cinema.infrastructure.util.DateUtil;
 
 /**
  * Created by Patryk on 2017-06-03.
@@ -40,35 +45,41 @@ public class Screening implements Serializable {
 	private Date date;
 	
 	@Column(name = "screeningStart")
-    @Temporal(TemporalType.TIME)
-    @DateTimeFormat(pattern = "HH:mm")
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date startsAt;
 	
 	@Column(name = "screeningFinish")
-    @Temporal(TemporalType.TIME)
-    @DateTimeFormat(pattern = "HH:mm")
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date finishesAt;
 	
 	@ManyToOne
+	@NotNull(message = "Movie must be specified")
 	@JoinColumn(name = "movie_id", foreignKey = @ForeignKey(name = "movie_id_fk"))
-	Movie movie;
+	private Movie movie;
 	
 	@ManyToOne
+	@NotNull(message = "Room must be specified")
 	@JoinColumn(name = "room_id", foreignKey = @ForeignKey(name = "screening_room_id_fk"))
-	Room room;
+	private Room room;
 	
 //	@OneToMany(mappedBy = "screening")
 //	Collection<Ticket> tickets;
 
-	private Screening(){}
+	public Screening(){
+		date = finishesAt = startsAt = new Date();
+		movie = new Movie();
+		room = new Room();
+	}
 	
 	public Long getId() { return id; }
 	public void setId(Long id) { this.id = id; }
-	
+
 	public Date getDate() { return date; }
 	public void setDate(Date date) { this.date = date; }
-
-	public Date getStartsAt() { return startsAt; }
+	
+	public Date getStartsAt() { return DateUtil.setDateTime(getDate(), startsAt); }
 	public void setStartsAt(Date startsAt) { this.startsAt = startsAt; }
 	
 	public Date getFinishesAt() { return finishesAt; }
@@ -80,4 +91,22 @@ public class Screening implements Serializable {
 	public Room getRoom() { return room; }
 	public void setRoom(Room room) { this.room = room; }
 
+	@Override
+	public String toString() {
+		return "Id: " + id + " \nDate " + date + " \n" + "StartsAt: " + getStartsAt() + " \n" + "FinishesAt: " + finishesAt + " \n" + "Movie: " + movie + " \n" + "Room: " + room; 
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    return (obj != null && getClass() == obj.getClass() && id != null)
+	        ? id.equals(((Screening) obj).getId())
+	        : (obj == this);
+	}
+
+	@Override
+	public int hashCode() {
+	    return (id != null) 
+	        ? (getClass().hashCode() + id.hashCode())
+	        : super.hashCode();
+	}
 }

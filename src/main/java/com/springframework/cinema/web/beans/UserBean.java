@@ -5,30 +5,24 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import com.springframework.cinema.domain.screening.Screening;
-import com.springframework.cinema.domain.screening.ScreeningService;
+import javax.inject.Inject;
+import javax.inject.Named;
 import com.springframework.cinema.domain.user.Role;
 import com.springframework.cinema.domain.user.RoleService;
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserService;
 import com.springframework.cinema.infrastructure.util.SecurityService;
 
-@ManagedBean("userBean")
+@Named("userBean")
 @ViewScoped
 public class UserBean implements Serializable {
 
@@ -39,13 +33,13 @@ public class UserBean implements Serializable {
 	private Collection<User> filteredUsers = new ArrayList<User>();
 	private Collection<Role> roles = new ArrayList<Role>();
 	
-	@EJB
+	@Inject
 	private UserService userService;
 	
-	@EJB
+	@Inject
 	private RoleService roleService;
 	
-	@EJB
+	@Inject
 	private SecurityService securityService;
 	
 	public User getUser() { return user; }
@@ -62,8 +56,49 @@ public class UserBean implements Serializable {
 	
 	@PostConstruct
 	public void init(){
+		System.out.println("UserBean is contructed");
 		users = userService.findAll();
 		roles = roleService.findAll();
+	}
+	
+	@PreDestroy
+	public void dest(){
+		System.out.println("UserBean is destroyed");
+	}
+	
+	public void registerUser() throws IOException{
+		Role userRole = roleService.findByName("ROLE_USER");
+    	user.addRole(userRole);
+    	String password = user.getPassword();
+    	String encodedPassword = securityService.encodePassword(password);
+    	user.setPassword(encodedPassword);
+        user = userService.save(user);
+        user.setPassword(password);
+        securityService.authenticate(user, userService);
+        user = new User();
+        init();
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Account created successfully."));
+        externalContext.getFlash().setKeepMessages(true);
+        externalContext.redirect("/");
+	}
+	
+	public void registerEmployee() throws IOException{
+		Collection<Role> userRoles = new ArrayList<Role>();
+		userRoles.add(roleService.findByName("ROLE_EMPLOYEE"));
+		userRoles.add(roleService.findByName("ROLE_USER"));
+    	user.setRoles(userRoles);
+    	user.setEmail(user.getUsername() + "@cinema.com");
+    	String password = user.getPassword();
+    	String encodedPassword = securityService.encodePassword(password);
+    	user.setPassword(encodedPassword);
+        user = userService.save(user);
+        user = new User();
+        init();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Employee created successfully."));
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        externalContext.redirect("/admin/users");
+        externalContext.getFlash().setKeepMessages(true);
 	}
 	
 //	public void update() throws IOException{

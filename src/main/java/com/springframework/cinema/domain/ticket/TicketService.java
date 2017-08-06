@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
+import com.springframework.cinema.domain.screening.ScreeningSeat;
+
 /**
  * Created by Patryk on 2017-05-27.
  */
@@ -13,6 +15,10 @@ public class TicketService {
 
     public TicketService(TicketRepository ticketRepository){
         this.ticketRepository = ticketRepository;
+    }
+    
+    public void deleteByScreeningSeatsId(Long screeningSeatId){
+    	ticketRepository.deleteByScreeningSeatsId(screeningSeatId);
     }
 
     public Ticket save(Ticket ticket){
