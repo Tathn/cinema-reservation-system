@@ -1,6 +1,7 @@
 package com.springframework.cinema.domain.ticket;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -38,7 +39,9 @@ public class Ticket implements Serializable {
     @OneToMany
 	private Collection<ScreeningSeat> screeningSeats;
 	
-	private Ticket(){}
+	public Ticket(){
+		screeningSeats = new ArrayList<ScreeningSeat>();
+	}
 
 	public Long getId() { return id; }
 	public void setId(Long id) { this.id = id; }

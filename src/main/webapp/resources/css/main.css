@@ -9,6 +9,15 @@ body{
 	margin-bottom: 10px;
 }
 
+label.ui-state-error{
+	color: white !important;
+	background: none !important;
+}
+
+.menu_item{
+	
+}
+
 /* nav{ */
 /*     background-color: black; */
 /* } */

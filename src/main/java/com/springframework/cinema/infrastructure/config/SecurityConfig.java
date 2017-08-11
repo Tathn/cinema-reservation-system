@@ -21,10 +21,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http 	.csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/css/**", "/", "/favicon.ico").permitAll()
+                    .antMatchers("/css/**", "/", "/favicon.ico", "/ticket/**").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/employee/**").hasRole("EMPLOYEE")
-                    .antMatchers("/users/**","/account/**","/ticket/**").hasRole("USER")
+                    .antMatchers("/users/**","/account/**","/tickets/**").hasRole("USER")
                     .antMatchers("/login","/register").hasRole("ANONYMOUS")
                     .anyRequest().permitAll()
                     .and()

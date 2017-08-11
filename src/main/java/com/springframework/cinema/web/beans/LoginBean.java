@@ -20,7 +20,7 @@ import org.springframework.web.servlet.support.RequestContext;
 
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserService;
-import com.springframework.cinema.infrastructure.util.SecurityService;
+import com.springframework.cinema.infrastructure.util.SecurityUtil;
 
 @Named("loginBean")
 @ViewScoped
@@ -32,14 +32,12 @@ public class LoginBean implements Serializable {
 	
 	@Inject
 	private UserService userService;
-	@Inject
-	private SecurityService securityService;
 	
 	public User getUser() { return user; }
 	public void setUser(User user) { this.user = user; }
 
 	public void logIn() throws IOException{
-		if(securityService.authenticate(user, userService)){
+		if(SecurityUtil.authenticate(user, userService)){
 			user = new User();
 			FacesContext.getCurrentInstance().getExternalContext().redirect("/");
 		}

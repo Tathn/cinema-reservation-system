@@ -27,7 +27,11 @@ public class ScreeningSeatService {
     public Collection<ScreeningSeat> findScreeningSeatsByScreeningId(Long screeningId) {
     	return screeningSeatRepository.findScreeningSeatsByScreeningId(screeningId);
     }
-
+    
+    public void save(ScreeningSeat seat){
+    	screeningSeatRepository.save(seat);
+    }
+    
     public void delete(Long id){
         screeningSeatRepository.delete(id);
     }

@@ -44,6 +44,12 @@ public class TicketController {
 		binder.addValidators(new TicketValidator(ticketService));
 	}
 	
+	@GetMapping("/ticket/book")
+	public String initBookTicketForm(){
+		return "ticket/bookTicket";
+	}
+	
+	
 	@GetMapping("/ticket/screening/{screeningId}")
 	public String initChooseSeatsForm(@PathVariable Long screeningId,@ModelAttribute Ticket ticket, Model model) {
 		model.addAttribute("seats", screeningSeatService.findScreeningSeatsByScreeningId(screeningId));

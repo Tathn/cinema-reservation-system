@@ -24,7 +24,7 @@ import com.springframework.cinema.domain.user.RoleService;
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserRepository;
 import com.springframework.cinema.domain.user.UserService;
-import com.springframework.cinema.infrastructure.util.SecurityService;
+import com.springframework.cinema.infrastructure.util.SecurityUtil;
 import com.springframework.cinema.web.beans.validators.del.UserValidator;
 
 @Controller
@@ -36,14 +36,14 @@ public class UserController {
 	private final UserService userService;
 	private final UserValidator userValidator;
     private final RoleService roleService;
-    private final SecurityService securityService;
+    private final SecurityUtil securityUtil;
     
     @Autowired
     public UserController(UserRepository userRepository, RoleRepository roleRepository){
         userService = new UserService(userRepository);
         userValidator = new UserValidator(userRepository);
         roleService = new RoleService(roleRepository);
-        securityService = new SecurityService();
+        securityUtil = new SecurityUtil();
     }
     
     @InitBinder
@@ -64,10 +64,10 @@ public class UserController {
         } else {
         	Role userRole = roleService.findByName("ROLE_USER");
         	user.addRole(userRole);
-        	String encodedPassword = securityService.encodePassword(user.getPassword());
+        	String encodedPassword = securityUtil.encodePassword(user.getPassword());
         	user.setPassword(encodedPassword);
             user = userService.save(user);
-            securityService.authenticate(user, userService);
+            securityUtil.authenticate(user, userService);
             redirect.addFlashAttribute("globalMessage", "Successfully signed up");
             return "redirect:/";
         }
@@ -102,11 +102,11 @@ public class UserController {
         	dbRecord.setEmail(user.getEmail());
         	String userPassword = user.getPassword();
         	if(userPassword != ""){
-        		String encodedPassword = securityService.encodePassword(userPassword);
+        		String encodedPassword = securityUtil.encodePassword(userPassword);
         		dbRecord.setPassword(encodedPassword);
         	}
             userService.save(dbRecord);
-            securityService.authenticate(dbRecord,userService);
+            securityUtil.authenticate(dbRecord,userService);
             redir.addFlashAttribute("globalMessage","Account details saved!");
             return "redirect:/account";
         }
@@ -159,7 +159,7 @@ public class UserController {
     		userRoles.add(roleService.findByName("ROLE_EMPLOYEE"));
     		userRoles.add(roleService.findByName("ROLE_USER"));
         	user.setRoles(userRoles);
-        	String encodedPassword = securityService.encodePassword(user.getPassword());
+        	String encodedPassword = securityUtil.encodePassword(user.getPassword());
         	user.setPassword(encodedPassword);
             user = userService.save(user);
             redirect.addFlashAttribute("globalMessage", "Successfully created an Employee Account");

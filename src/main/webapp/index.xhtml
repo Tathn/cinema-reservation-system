@@ -9,7 +9,7 @@
 <h:body>
 <ui:composition template="/WEB-INF/template.xhtml">
 	<ui:define name="content">
-	<h:form>
+	<h:form id="screeningsForm">
 		<p:dataTable value="#{screeningBean.screenings}" var="screening" widgetVar="screeningsTable"
                  emptyMessage="No screenings found with given criteria" filteredValue="#{filteredScreenings}">
 	     	<p:column id="screeningDate" filterFunction="#{screeningBean.filterByDate}" filterBy="#{screening.date}" sortBy="#{screening.startsAt}"
@@ -29,8 +29,19 @@
 	        	style="text-align: center">
 	            <h:outputText value="#{screening.movie.genre}" />
 	        </p:column>
+	        <p:column>
+	        	<p:commandButton action="#{screeningBean.initBuyTicketDialog}" oncomplete="PF('buyTicketDialog').show()" icon="ui-icon-search" title="Choose seat">
+	                <f:param name="screening_id" value="#{screening.id}" />
+	            </p:commandButton>
+	        </p:column>
 		</p:dataTable>
 	</h:form>
+	
+<!-- 	<style>
+		.buyTicketDlg, .ui-dialog .ui-dialog-content{
+			height: 100% !important;
+		}
+	</style>  -->
 	
 	<script>
         jQuery(document).ready(function() {

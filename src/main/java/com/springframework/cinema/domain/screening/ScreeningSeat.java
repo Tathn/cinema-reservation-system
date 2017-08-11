@@ -48,6 +48,13 @@ public class ScreeningSeat implements Serializable {
 		availability = true;
 		this.screening = screening;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    return (obj != null && getClass() == obj.getClass() && id != null)
+		        ? id.equals(((ScreeningSeat) obj).getId())
+		        : (obj == this);
+	}
 
 	public Long getId() { return id; }
 	public void setId(Long id) { this.id = id; }

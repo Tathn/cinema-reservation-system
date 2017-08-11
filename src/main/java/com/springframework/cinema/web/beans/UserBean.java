@@ -20,7 +20,7 @@ import com.springframework.cinema.domain.user.Role;
 import com.springframework.cinema.domain.user.RoleService;
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserService;
-import com.springframework.cinema.infrastructure.util.SecurityService;
+import com.springframework.cinema.infrastructure.util.SecurityUtil;
 
 @Named("userBean")
 @ViewScoped
@@ -38,9 +38,6 @@ public class UserBean implements Serializable {
 	
 	@Inject
 	private RoleService roleService;
-	
-	@Inject
-	private SecurityService securityService;
 	
 	public User getUser() { return user; }
 	public void setUser(User user) { this.user = user; }
@@ -70,11 +67,11 @@ public class UserBean implements Serializable {
 		Role userRole = roleService.findByName("ROLE_USER");
     	user.addRole(userRole);
     	String password = user.getPassword();
-    	String encodedPassword = securityService.encodePassword(password);
+    	String encodedPassword = SecurityUtil.encodePassword(password);
     	user.setPassword(encodedPassword);
         user = userService.save(user);
         user.setPassword(password);
-        securityService.authenticate(user, userService);
+        SecurityUtil.authenticate(user, userService);
         user = new User();
         init();
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -90,7 +87,7 @@ public class UserBean implements Serializable {
     	user.setRoles(userRoles);
     	user.setEmail(user.getUsername() + "@cinema.com");
     	String password = user.getPassword();
-    	String encodedPassword = securityService.encodePassword(password);
+    	String encodedPassword = SecurityUtil.encodePassword(password);
     	user.setPassword(encodedPassword);
         user = userService.save(user);
         user = new User();

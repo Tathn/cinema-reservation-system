@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -24,6 +25,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.springframework.cinema.domain.movie.Movie;
@@ -36,13 +39,17 @@ import com.springframework.cinema.domain.screening.Screening;
 import com.springframework.cinema.domain.screening.ScreeningSeat;
 import com.springframework.cinema.domain.screening.ScreeningSeatService;
 import com.springframework.cinema.domain.screening.ScreeningService;
+import com.springframework.cinema.domain.ticket.Ticket;
 import com.springframework.cinema.domain.ticket.TicketService;
+import com.springframework.cinema.domain.user.CustomUserDetails;
+import com.springframework.cinema.domain.user.User;
+import com.springframework.cinema.domain.user.UserService;
 import com.springframework.cinema.infrastructure.util.DateUtil;
+import com.springframework.cinema.infrastructure.util.SecurityUtil;
 
 @Component("screeningBean")
 @Scope("session")
 public class ScreeningBean implements Serializable {
-	//TODO manageScreenings sends wrong screening to delete (implement selectable)
 	private static final long serialVersionUID = -3210711807003424547L;
 	
 	private Collection<Screening> screenings;
@@ -52,7 +59,12 @@ public class ScreeningBean implements Serializable {
 	private ArrayList<Movie> movies;
 	private ArrayList<Room> rooms;
 	
-	private Long screeningId;
+	private Screening selectedScreening;
+	private Collection<ScreeningSeat> selectedScreeningSeats;
+	private Ticket ticket;
+	
+	@Inject
+	private UserService userService;
 	
 	@Inject
 	private ScreeningService screeningService;
@@ -71,14 +83,6 @@ public class ScreeningBean implements Serializable {
 	
 	@Inject
 	private TicketService ticketService;
-	
-	public Long getScreeningId() {
-		return screeningId;
-	}
-
-	public void setScreeningId(Long screeningId) {
-		this.screeningId = screeningId;
-	}
 
 	public ScreeningBean(){}
 	
@@ -95,22 +99,10 @@ public class ScreeningBean implements Serializable {
 		
 		if(!movies.isEmpty())
 			updateFinishesAt();
+		
+		ticket = new Ticket();
+		ticket.setScreeningSeats(new ArrayList<ScreeningSeat>());
 	}
-
-	public Collection<Screening> getScreenings() { return screenings; }
-	public void setScreenings(Collection<Screening> screenings) { this.screenings = screenings; }
-	
-	public Collection<Screening> getFilteredScreenings() { return filteredScreenings; }
-	public void setFilteredScreenings(Collection<Screening> filteredScreenings) { this.filteredScreenings = filteredScreenings; }
-
-	public Screening getScreening() { return screening; }
-	public void setScreening(Screening screening) { this.screening = screening; }
-
-	public Collection<Movie> getMovies() { return movies; }
-	public void setMovies(ArrayList<Movie> movies) { this.movies = movies; }
-	
-	public Collection<Room> getRooms() { return rooms; }
-	public void setRooms(ArrayList<Room> rooms) { this.rooms = rooms; }
 
 	public boolean filterByDate(Object value, Object filter, Locale locale) {
 	        if( filter == null ) { return false; }
@@ -150,6 +142,122 @@ public class ScreeningBean implements Serializable {
 		screeningService.delete(screeningId);
 		init();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Screening deleted successfully."));
+	}
+	
+	public void redirectIfScreeningDataEmpty() throws IOException{
+		if(selectedScreening == null || selectedScreeningSeats == null)
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/");
+	}
+	
+	public void initBuyTicketDialog() throws IOException {
+		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		selectedScreening = screeningService.findById(Long.parseLong((params.get("screening_id"))));
+		selectedScreeningSeats = screeningSeatService.findScreeningSeatsByScreeningId(selectedScreening.getId());
+		ticket = new Ticket();
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		externalContext.redirect("/ticket/book");
+	}
+	
+	public void selectDeselectSeat() {
+		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		Long selectedSeatId = Long.parseLong((params.get("seat_id")));
+		ScreeningSeat selectedSeat = null;
+		for(ScreeningSeat seat : selectedScreeningSeats){
+			if(seat.getId().equals(selectedSeatId))
+				selectedSeat = seat;
+		}
+		
+		boolean seatAlreadyChoosen = isSeatOnTicket(selectedSeat); 
+		
+		if(selectedSeat != null && !seatAlreadyChoosen)
+			ticket.getScreeningSeats().add(selectedSeat);
+		else if(seatAlreadyChoosen)
+			ticket.getScreeningSeats().remove(selectedSeat);
+	}
+	
+	public boolean isSeatOnTicket(ScreeningSeat seat){
+		if(ticket.getScreeningSeats().contains(seat))
+			return true;
+		return false;
+	}
+	
+	public void bookTicket() throws IOException{
+		String message = new String();
+		boolean success = true;
+		if(SecurityUtil.isAuthenticated()){
+			selectedScreeningSeats = screeningSeatService.findScreeningSeatsByScreeningId(selectedScreening.getId());
+			Collection<ScreeningSeat> ticketScreeningSeats = ticket.getScreeningSeats();
+			for(ScreeningSeat seat : selectedScreeningSeats){
+				if(ticketScreeningSeats.contains(seat)){
+					if(!seat.getAvailability()){
+						ticketScreeningSeats.remove(seat);
+						message += " " + seat.getLabel();
+						success = false;
+					}
+				}
+			}
+			
+			if(success){
+				ticket.setUser(userService.findByUsername(((CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
+				for(ScreeningSeat seat : selectedScreeningSeats){
+					if(ticketScreeningSeats.contains(seat)){
+						seat.setAvailability(false);
+						screeningSeatService.save(seat);
+					}
+				}
+				ticketService.save(ticket);
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/");
+				ticket = new Ticket();
+			} else {
+				FacesContext.getCurrentInstance().addMessage("ticketMsg", new FacesMessage(FacesMessage.SEVERITY_ERROR,"There was an error during booking a ticket process.",
+						"Someone already took some of the seats you choosed: " + message + "."));
+			}
+		} else {
+			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+	        FacesContext.getCurrentInstance().addMessage("logInMessages", new FacesMessage(FacesMessage.SEVERITY_ERROR, "","You are not logged in. Please log in and book your ticket again."));
+			externalContext.getFlash().setKeepMessages(true);
+			externalContext.redirect("/login");
+		}
+			
+	}
+	
+	public Collection<Screening> getScreenings() { return screenings; }
+	public void setScreenings(Collection<Screening> screenings) { this.screenings = screenings; }
+	
+	public Collection<Screening> getFilteredScreenings() { return filteredScreenings; }
+	public void setFilteredScreenings(Collection<Screening> filteredScreenings) { this.filteredScreenings = filteredScreenings; }
+
+	public Screening getScreening() { return screening; }
+	public void setScreening(Screening screening) { this.screening = screening; }
+
+	public Collection<Movie> getMovies() { return movies; }
+	public void setMovies(ArrayList<Movie> movies) { this.movies = movies; }
+	
+	public Collection<Room> getRooms() { return rooms; }
+	public void setRooms(ArrayList<Room> rooms) { this.rooms = rooms; }
+
+	public Collection<ScreeningSeat> getSelectedScreeningSeats() {
+		return selectedScreeningSeats;
+	}
+
+	public void setSelectedScreeningSeats(Collection<ScreeningSeat> selectedScreeningSeats) {
+		this.selectedScreeningSeats = selectedScreeningSeats;
+	}
+
+	public Screening getSelectedScreening() {
+		return selectedScreening;
+	}
+
+	public void setSelectedScreening(Screening selectedScreening) {
+		this.selectedScreening = selectedScreening;
+	}
+
+	public Ticket getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
 	}
 	
 }

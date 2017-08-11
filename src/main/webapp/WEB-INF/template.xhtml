@@ -18,17 +18,12 @@
 <h:body>
 	<div id="header">
 	  	<ui:insert name="header" >
-	  		<style>
-	  			label.ui-state-error{
-	  				color: white !important;
-	  				background: none !important;
-	  			}
-	  		</style>
 	  		<sec:authorize access="!isAuthenticated()">
 	  			<h:form id="navigation-bar">
 	  				<p:menubar>
-		            	<p:menuitem value="Log In" url="/login"/>
-            			<p:menuitem value="Register" url="/register" />
+	  		    		<p:menuitem value="Log In" url="/login" styleClass="menu_item" />
+           				<p:menuitem value="Register" url="/register" styleClass="menu_item" />
+           				<p:menuitem value="Browse screenings" url="/" styleClass="menu_item" />
 	  				</p:menubar>
 	  			</h:form>
 	  		</sec:authorize>
@@ -36,7 +31,7 @@
 	  		<sec:authorize access="isAuthenticated()">
 	  			<h:form id="navigation-bar">
 	  				<p:menubar>
-	  					<p:submenu label="#{request.userPrincipal.name}">
+	  					<p:submenu label="#{request.userPrincipal.name}" icon="fa fa-user" styleClass="menu_item">
 	  						<sec:authorize access="hasRole('ROLE_ADMIN')">
 			          			<p:menuitem value="Admin Panel" url="/admin" />
 			          		</sec:authorize>
@@ -44,12 +39,11 @@
 			          			<p:menuitem value="Employee Panel" url="/employee" />
 			                </sec:authorize>
 			                <sec:authorize access="hasRole('ROLE_USER')">
-			                	<p:menuitem value="Manage Account" url="/account" />
+			                	<p:menuitem value="Manage Account"   url="/account" />
 			                </sec:authorize>
+			                <p:menuitem value="Logout" action="#{loginBean.logOut}" process="@this" icon="ui-icon-extlink"/>
 	  					</p:submenu>
-	  					<f:facet name="options">
-            					<p:commandButton value="Logout" action="#{loginBean.logOut}" process="@this" icon="ui-icon-extlink" />
-        				</f:facet>
+	  					<p:menuitem  value="Browse screenings" url="/" styleClass="menu_item"/>
 	  				</p:menubar>
 	  			</h:form>
 	  		</sec:authorize>

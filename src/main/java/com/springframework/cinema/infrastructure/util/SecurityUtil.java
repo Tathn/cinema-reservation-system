@@ -2,6 +2,7 @@ package com.springframework.cinema.infrastructure.util;
 
 import java.util.List;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,23 +11,23 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserRepositoryUserDetailsService;
 import com.springframework.cinema.domain.user.UserService;
 
-@Service
-public class SecurityService {
+public class SecurityUtil {
 	
-	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+	private static BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	
-	public String encodePassword(String password){ 
+	public static String encodePassword(String password){ 
     	String encodedPassword = bCryptPasswordEncoder.encode(password);
     	return encodedPassword;
     }
 	
-	public boolean authenticate(User user, UserService userService){
+	public static boolean authenticate(User user, UserService userService){
 		
 		UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
 		try{
@@ -40,18 +41,12 @@ public class SecurityService {
 		}
 		catch(UsernameNotFoundException e){
 			return false;
-		}
-//        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(user.getRolesNames());
-//        UserRepositoryUserDetailsService userDetailsService = new UserRepositoryUserDetailsService(userService);
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-//        if(userDetails.getPassword() == user.getPassword()){
-//        	Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), authorities);
-//            SecurityContextHolder.getContext().setAuthentication(auth);
-//        }    
+		} 
     }
 	
-//	public boolean authenticated(boolean authStatus){
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		return authentication.isAuthenticated() == authStatus;
-//	}
+	public static boolean isAuthenticated(){
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    return authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
+	}
+	
 }
