@@ -2,9 +2,12 @@ package com.springframework.cinema.domain.ticket;
 
 import java.util.Collection;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.springframework.cinema.domain.screening.ScreeningSeat;
+import com.springframework.cinema.domain.user.CustomUserDetails;
+import com.springframework.cinema.domain.user.User;
 
 /**
  * Created by Patryk on 2017-05-27.
@@ -35,5 +38,14 @@ public class TicketService {
 
     public Ticket findById(Long id){
         return ticketRepository.findOne(id);
+    }
+    
+    public Collection<Ticket> findByUserId(Long userId){
+    	return ticketRepository.findByUserId(userId);
+    }
+    
+    public Collection<Ticket> findCurrentUserTickets(){
+    	User currentUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	return ticketRepository.findByUserId(currentUser.getId());
     }
 }

@@ -26,7 +26,6 @@ import com.springframework.cinema.domain.movie.MovieService;
 
 @Component("movieBean")
 @Scope("session")
-// DODAJ TE BEANY DO FACES KONFIGU
 public class MovieBean implements Serializable {
 
 	private static final long serialVersionUID = -9062642633257589248L;
@@ -54,12 +53,18 @@ public class MovieBean implements Serializable {
 		System.out.println("MovieBean is destroyed");
 	}
 
-	public void createMovie() throws IOException{
+	public void saveMovie() throws IOException{
 		movieService.save(movie);
 		resetMovie();
 		reloadMovies();
 		RequestContext.getCurrentInstance().execute("PF('addMovieDialog').hide()");
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Movie created successfully."));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Movie saved successfully."));
+	}
+	
+	public void initEditDialog(){
+		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		Long movieId = Long.parseLong((params.get("movie_id")));
+		movie = movieService.findById(movieId);
 	}
 	
 	public void showMovie(){
@@ -74,7 +79,11 @@ public class MovieBean implements Serializable {
 	}
 	
 	public void deleteMovie(){
-		//TODO implement
+		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		Long movieId = Long.parseLong((params.get("movie_id")));
+		movieService.delete(movieId);
+		reloadMovies();
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Movie deleted successfully."));
 	}
 	
 	public void resetMovie(){

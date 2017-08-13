@@ -49,6 +49,11 @@ public class TicketController {
 		return "ticket/bookTicket";
 	}
 	
+	@GetMapping("/ticket/manage")
+	public String initManageTicketsView(){
+		return "ticket/manageTickets";
+	}
+	
 	
 	@GetMapping("/ticket/screening/{screeningId}")
 	public String initChooseSeatsForm(@PathVariable Long screeningId,@ModelAttribute Ticket ticket, Model model) {

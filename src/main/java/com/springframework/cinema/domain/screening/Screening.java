@@ -54,6 +54,15 @@ public class Screening implements Serializable {
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date finishesAt;
 	
+	@Column(name = "movie_attributes")
+	private String movieAttributes;
+	
+	@Column(name = "adult_ticket_price")
+	private float adultTicketPrice;
+	
+	@Column(name = "child_ticket_price")
+	private float childTicketPrice;
+	
 	@ManyToOne
 	@NotNull(message = "Movie must be specified")
 	@JoinColumn(name = "movie_id", foreignKey = @ForeignKey(name = "movie_id_fk"))
@@ -90,6 +99,30 @@ public class Screening implements Serializable {
 	
 	public Room getRoom() { return room; }
 	public void setRoom(Room room) { this.room = room; }
+
+	public String getMovieAttributes() {
+		return movieAttributes;
+	}
+
+	public void setMovieAttributes(String movieAttributes) {
+		this.movieAttributes = movieAttributes;
+	}
+
+	public float getAdultTicketPrice() {
+		return adultTicketPrice;
+	}
+
+	public void setAdultTicketPrice(float adultTicketPrice) {
+		this.adultTicketPrice = adultTicketPrice;
+	}
+
+	public float getChildTicketPrice() {
+		return childTicketPrice;
+	}
+
+	public void setChildTicketPrice(float childTicketPrice) {
+		this.childTicketPrice = childTicketPrice;
+	}
 
 	@Override
 	public String toString() {

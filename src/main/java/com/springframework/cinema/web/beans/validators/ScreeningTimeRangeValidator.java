@@ -42,10 +42,16 @@ public class ScreeningTimeRangeValidator implements Validator, ClientValidator {
 		if(value == null) return;
 		
 		Screening screening = (Screening) uiComponent.getAttributes().get("screening");
+		if(screening.getStartsAt().before(new Date()) && screening.getId() == null)
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors",
+					"You cannot create a screening in the past."));
+		
 		Collection<Screening> screenings = screeningService.findByDateAndRoom(screening.getDate(),screening.getRoom());
 		screenings.addAll(screeningService.findByDateAndRoom(screening.getFinishesAt(),screening.getRoom()));
 		screenings.addAll(screeningService.findByDateAndRoom(DateUtil.getPreviousDay(screening.getDate()),screening.getRoom()));
 		for(Screening scr : screenings){
+			if(scr.getId().equals(screening.getId()))
+				continue;
 			if(scr.getStartsAt().compareTo(screening.getFinishesAt()) <= 0 &&
 	    			screening.getStartsAt().compareTo(scr.getFinishesAt()) <= 0){
 					throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors",

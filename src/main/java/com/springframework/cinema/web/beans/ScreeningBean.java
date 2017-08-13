@@ -24,6 +24,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.context.RequestContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,8 +57,11 @@ public class ScreeningBean implements Serializable {
 	private Collection<Screening> filteredScreenings;
 	
 	private Screening screening;
+	private String screeningDimension;
+	private String translation;
 	private ArrayList<Movie> movies;
 	private ArrayList<Room> rooms;
+	private String mode;
 	
 	private Screening selectedScreening;
 	private Collection<ScreeningSeat> selectedScreeningSeats;
@@ -93,12 +97,7 @@ public class ScreeningBean implements Serializable {
 		
 		movies = (ArrayList<Movie>) movieService.findAvailable();
 		rooms = (ArrayList<Room>) roomService.findAll();
-		screening = new Screening();
-		screening.setMovie(movies.isEmpty() ? new Movie() : movies.get(0));
-		screening.setRoom(rooms.isEmpty() ? new Room() : rooms.get(0));
-		
-		if(!movies.isEmpty())
-			updateFinishesAt();
+		resetScreening();
 		
 		ticket = new Ticket();
 		ticket.setScreeningSeats(new ArrayList<ScreeningSeat>());
@@ -110,6 +109,22 @@ public class ScreeningBean implements Serializable {
 	        return ((Date)value).compareTo((Date)filter) == 0;
 	    }
 	
+	public void resetScreening(){
+		screening = new Screening();
+		screening.setMovie(movies.isEmpty() ? new Movie() : movies.get(0));
+		screening.setRoom(rooms.isEmpty() ? new Room() : rooms.get(0));
+		screeningDimension = screening.getMovie().getTwoDimensional() ? "2D" : "3D";
+		translation = "";
+		if(!movies.isEmpty())
+			updateFinishesAt();
+	}
+	
+	public void resetMovieProperties(){
+		screeningDimension = screening.getMovie().getTwoDimensional() ? "2D" : "3D";
+		translation = "";
+		updateFinishesAt();
+	}
+	
 	public void updateFinishesAt(){
 		Integer movieDuration = screening.getMovie().getDuration();
 		screening.setStartsAt(DateUtil.setDateTime(screening.getDate(), screening.getStartsAt()));
@@ -119,17 +134,32 @@ public class ScreeningBean implements Serializable {
 		screening.setFinishesAt(finishesAtAsDate);
 	}
 	
+	public void initEditDialog(){
+		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		Long screeningId = Long.parseLong((params.get("screening_id")));
+		screening = screeningService.findById(screeningId);
+	}
+	
 	public void createScreening() throws IOException{
-		Collection<RoomSeat> roomSeats = roomSeatService.findRoomSeatsByRoomId(screening.getRoom().getId());
 		//TODO startsDate gets reseted to 1970 along the way i don't know how to fix this issue (temporary fix)
-		screening.setStartsAt(DateUtil.setDateTime(screening.getDate(), screening.getStartsAt())); 
+		screening.setStartsAt(DateUtil.setDateTime(screening.getDate(), screening.getStartsAt()));
+		screening.setMovieAttributes(screeningDimension + " " + translation);
+		if(screening.getId() != null && mode.equals("Update")){
+			Screening screeningDbRecord = screeningService.findById(screening.getId());
+			if(!screeningDbRecord.getRoom().equals(screening.getRoom()))
+			{
+				Collection<ScreeningSeat> screeningSeats = screeningSeatService.findScreeningSeatsByScreeningId(screening.getId()); 
+				for( ScreeningSeat seat : screeningSeats)
+					ticketService.deleteByScreeningSeatsId(seat.getId());
+				screeningSeatService.deleteByScreeningId(screening.getId());
+			}
+		}
 		screeningService.save(screening);
+		Collection<RoomSeat> roomSeats = roomSeatService.findRoomSeatsByRoomId(screening.getRoom().getId());
 		screeningSeatService.saveRoomSeatsAsScreeningSeats(roomSeats, screening);
 		init();
-		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Screening created successfully."));
-		externalContext.getFlash().setKeepMessages(true);
-		externalContext.redirect("/employee/screenings");
+		RequestContext.getCurrentInstance().execute("PF('addUpdateScreeningDialog').hide()");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Screening " + mode.toLowerCase() + "d successfully."));
 	}
 	
 	public void deleteScreening() {
@@ -230,11 +260,35 @@ public class ScreeningBean implements Serializable {
 	public Screening getScreening() { return screening; }
 	public void setScreening(Screening screening) { this.screening = screening; }
 
+	public String getScreeningDimension() {
+		return screeningDimension;
+	}
+
+	public void setScreeningDimension(String screeningDimension) {
+		this.screeningDimension = screeningDimension;
+	}
+
+	public String getTranslation() {
+		return translation;
+	}
+
+	public void setTranslation(String translation) {
+		this.translation = translation;
+	}
+
 	public Collection<Movie> getMovies() { return movies; }
 	public void setMovies(ArrayList<Movie> movies) { this.movies = movies; }
 	
 	public Collection<Room> getRooms() { return rooms; }
 	public void setRooms(ArrayList<Room> rooms) { this.rooms = rooms; }
+
+	public String getMode() {
+		return mode;
+	}
+
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
 
 	public Collection<ScreeningSeat> getSelectedScreeningSeats() {
 		return selectedScreeningSeats;

@@ -13,25 +13,22 @@ import javax.inject.Named;
 
 import org.primefaces.validate.ClientValidator;
 
+import com.springframework.cinema.domain.movie.Movie;
+import com.springframework.cinema.domain.screening.Screening;
 import com.springframework.cinema.domain.user.UserService;
 
-@Named("movieValidator")
-public class MovieValidator implements Validator, ClientValidator { 
-	
-	@EJB
-	private UserService userService;
+@Named("movieAttributesValidator")
+public class MovieAttributesValidator implements Validator, ClientValidator { 
 
 	@Override
 	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
 		if(value == null) return;
 		
-//		if(value.toString().length() < USERNAME_MIN_LENGTH )
-//			 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors.",
-//					 "Username is too short."));
-		
-		if(userService.checkIfEmailExists(value.toString()))
-			 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors.",
-					 "Email is already taken, please choose another one."));
+		Movie movie = (Movie) uiComponent.getAttributes().get("movie");
+
+		if(!movie.getThreeDimensional() && !movie.getTwoDimensional())
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "No attribute selected",
+    				"Please choose at least one option from 2D and 3D."));
 	}
 	
 	@Override
@@ -41,7 +38,7 @@ public class MovieValidator implements Validator, ClientValidator {
 
 	@Override
 	public String getValidatorId() {
-		return "custom.EmailValidator";
+		return "custom.MovieAttributesValidator";
 	}
 	
 	

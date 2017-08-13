@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.springframework.cinema.domain.screening.Screening;
 import com.springframework.cinema.domain.screening.ScreeningSeat;
 import com.springframework.cinema.domain.user.User;
 
@@ -32,10 +33,20 @@ public class Ticket implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
+	@Column(name = "price")
+	private float price;
+	
+	@Column(name = "isPaid")
+	private boolean paid;
+	
 	@ManyToOne
 	@JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "ticket_user_id_fk"))
 	private User user;
 
+	@ManyToOne
+	@JoinColumn(name = "screening_id", foreignKey = @ForeignKey(name = "ticket_screening_id_fk"))
+	private Screening screening;
+	
     @OneToMany
 	private Collection<ScreeningSeat> screeningSeats;
 	

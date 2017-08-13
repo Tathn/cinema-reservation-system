@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -28,7 +30,13 @@ public class Role implements Serializable {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable( 
+		name = "users_roles", 
+		joinColumns = @JoinColumn(
+			name = "role_id", referencedColumnName = "id"), 
+		inverseJoinColumns = @JoinColumn(
+		    name = "user_id", referencedColumnName = "id")) 
     private Collection<User> users;
 	
 	private Role() {}
