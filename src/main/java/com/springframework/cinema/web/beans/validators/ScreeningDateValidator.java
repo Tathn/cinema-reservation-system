@@ -3,13 +3,9 @@ package com.springframework.cinema.web.beans.validators;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-import javax.annotation.ManagedBean;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -18,8 +14,6 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 
 import org.primefaces.validate.ClientValidator;
-
-import com.springframework.cinema.domain.user.UserService;
 
 @Named("screeningDateValidator")
 public class ScreeningDateValidator implements Validator, ClientValidator {
@@ -41,7 +35,7 @@ public class ScreeningDateValidator implements Validator, ClientValidator {
 
 	@Override
 	public String getValidatorId() {
-		return "custom.EmailValidator";
+		return "custom.ScreeningDateValidator";
 	}
 	
 	

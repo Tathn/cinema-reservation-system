@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.springframework.cinema.domain.room.RoomSeat;
 
@@ -37,11 +38,8 @@ public class ScreeningSeat implements Serializable {
 	@JoinColumn(name = "screening_id", foreignKey = @ForeignKey(name = "screening_id_fk"))
 	private Screening screening;
 	
+	@Transient
 	private float price = 0;
-
-//	@ManyToOne
-//	@JoinColumn(name = "ticket_id", foreignKey = @ForeignKey(name = "seat_ticket_id_fk"))
-//	Ticket ticket;
 
 	private ScreeningSeat(){}
 	

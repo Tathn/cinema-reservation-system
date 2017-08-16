@@ -8,29 +8,13 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.jsf.FacesContextUtils;
 
 import com.springframework.cinema.domain.movie.Movie;
@@ -43,13 +27,8 @@ import com.springframework.cinema.domain.screening.Screening;
 import com.springframework.cinema.domain.screening.ScreeningSeat;
 import com.springframework.cinema.domain.screening.ScreeningSeatService;
 import com.springframework.cinema.domain.screening.ScreeningService;
-import com.springframework.cinema.domain.ticket.Ticket;
 import com.springframework.cinema.domain.ticket.TicketService;
-import com.springframework.cinema.domain.user.CustomUserDetails;
-import com.springframework.cinema.domain.user.User;
-import com.springframework.cinema.domain.user.UserService;
 import com.springframework.cinema.infrastructure.util.DateUtil;
-import com.springframework.cinema.infrastructure.util.SecurityUtil;
 
 
 public class ManageScreeningsView implements Serializable {
@@ -91,7 +70,7 @@ public class ManageScreeningsView implements Serializable {
         .getRequiredWebApplicationContext(FacesContext.getCurrentInstance())
         .getAutowireCapableBeanFactory().autowireBean(this);
 		
-		screenings = screeningService.findAll();
+		screenings = screeningService.findAllSortByStartsAt();
 		filteredScreenings = new ArrayList<Screening>();
 		
 		movies = (ArrayList<Movie>) movieService.findAvailable();

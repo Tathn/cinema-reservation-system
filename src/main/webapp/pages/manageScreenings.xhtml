@@ -12,7 +12,9 @@
 	<h:form id="screeningList">
 		<p:panel header="Screenings list">
 		<p:dataTable id="screeningsDataTable" value="#{manageScreeningsView.screenings}" var="screeningItem" widgetVar="screeningsTable"
-                 emptyMessage="No screenings found with given criteria" filteredValue="#{filteredScreenings}">
+                 emptyMessage="No screenings found with given criteria" filteredValue="#{filteredScreenings}"
+				 rows="10" paginator="true" rowsPerPageTemplate="5,10,15" paginatorPosition="bottom"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                  <p:ajax event="filter" ignoreAutoUpdate="true" />
 	     	<p:column filterFunction="#{dateUtil.filterByDate}" filterBy="#{screeningItem.date}"
 	     	 	headerText="Date" style="text-align: center">
@@ -25,12 +27,12 @@
             		<f:convertDateTime pattern="dd-MM-yyyy" />
             	</h:outputText>
         	</p:column>
-        	<p:column headerText="Starts at" sortBy="#{screeningItem.startsAt}" style="text-align: center">
+        	<p:column headerText="Starts at" style="text-align: center">
             	<h:outputText value="#{screeningItem.startsAt}">
             		<f:convertDateTime pattern="HH:mm" />
             	</h:outputText>
         	</p:column>
-        	<p:column headerText="Finishes at" sortBy="#{screeningItem.finishesAt}"
+        	<p:column headerText="Finishes at"
 	        	style="text-align: center">
 	            <h:outputText value="#{screeningItem.finishesAt}">
 	          		<f:convertDateTime pattern="HH:mm" />
@@ -95,7 +97,7 @@
 					<p:message id="movieMsg" for="movie" display="text"/>
 					
 					<p:outputLabel for="date" value="Date: " />
-				    <p:calendar id="date" readonlyInput="true" value="#{manageScreeningsView.screening.date}" showOn="button" pattern="dd-MM-yyyy" mask="true" mindate="#{dateBean.currentDate}">
+				    <p:calendar id="date" readonlyInput="true" value="#{manageScreeningsView.screening.date}" showOn="button" pattern="dd-MM-yyyy" mask="true" mindate="#{dateUtil.now()}">
 				    	<f:convertDateTime pattern="dd-MM-yyyy" />
 				    	<f:validator binding="#{screeningDateValidator}"/>
 				    	<p:ajax event="dateSelect" update="dateMsg"/>

@@ -2,9 +2,7 @@ package com.springframework.cinema.web.beans.validators;
 
 import java.util.Map;
 
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
@@ -12,9 +10,6 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 
 import org.primefaces.validate.ClientValidator;
-
-import com.springframework.cinema.domain.screening.Screening;
-import com.springframework.cinema.domain.user.UserService;
 
 @Named("passwordValidator")
 public class PasswordValidator implements Validator, ClientValidator { 
@@ -43,7 +38,7 @@ public class PasswordValidator implements Validator, ClientValidator {
 
 	@Override
 	public String getValidatorId() {
-		return "custom.EmailValidator";
+		return "custom.PasswordValidator";
 	}
 	
 	

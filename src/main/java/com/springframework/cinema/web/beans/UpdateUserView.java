@@ -2,21 +2,14 @@ package com.springframework.cinema.web.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.jsf.FacesContextUtils;
 
-import com.springframework.cinema.domain.user.Role;
-import com.springframework.cinema.domain.user.RoleService;
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserService;
 import com.springframework.cinema.infrastructure.util.SecurityUtil;

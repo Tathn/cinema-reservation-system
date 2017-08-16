@@ -122,7 +122,10 @@ private static final long serialVersionUID = -3210711807003424547L;
 				ticket.setScreening(selectedScreening);
 				ticket.setPaid(false);
 				ticketService.save(ticket);
-				FacesContext.getCurrentInstance().getExternalContext().redirect("/");
+				ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ticket booked successfully.",""));
+				externalContext.getFlash().setKeepMessages(true);
+				externalContext.redirect("/tickets");
 				ticket = new Ticket();
 			} else {
 				FacesContext.getCurrentInstance().addMessage("ticketMsg", new FacesMessage(FacesMessage.SEVERITY_ERROR,"There was an error during booking a ticket process.",

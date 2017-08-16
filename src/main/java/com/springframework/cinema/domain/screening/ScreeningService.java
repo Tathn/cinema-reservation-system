@@ -2,9 +2,12 @@ package com.springframework.cinema.domain.screening;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springframework.cinema.domain.room.Room;
@@ -16,6 +19,7 @@ import com.springframework.cinema.domain.room.Room;
 public class ScreeningService {
     private final ScreeningRepository screeningRepository;
 
+    @Autowired
     public ScreeningService(ScreeningRepository screeningRepository){
         this.screeningRepository = screeningRepository;
     }
@@ -30,6 +34,18 @@ public class ScreeningService {
 
     public Collection<Screening> findAll(){
         return screeningRepository.findAll();
+    }
+    
+    public Collection<Screening> findAllSortByStartsAt(){
+    	ArrayList<Screening> screenings = (ArrayList<Screening>) screeningRepository.findAll();
+    	screenings.sort(new Comparator<Screening>() {
+
+			@Override
+			public int compare(Screening o1, Screening o2) {
+				return o1.getStartsAt().compareTo(o2.getStartsAt());
+			}
+		});
+    	return screenings;
     }
 
     public Screening findById(Long id){

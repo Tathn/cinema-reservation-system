@@ -1,19 +1,12 @@
 package com.springframework.cinema.infrastructure.util;
 
-import java.util.List;
-
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import com.springframework.cinema.domain.user.User;
 import com.springframework.cinema.domain.user.UserRepositoryUserDetailsService;
 import com.springframework.cinema.domain.user.UserService;

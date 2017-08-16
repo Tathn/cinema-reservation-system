@@ -6,7 +6,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import com.springframework.cinema.domain.screening.ScreeningSeat;
 import com.springframework.cinema.infrastructure.model.BaseRepository;
 
 /**

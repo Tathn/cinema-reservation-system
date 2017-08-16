@@ -12,7 +12,9 @@
 	<h:form id="userList">
 		<p:panel id="usersDataPanel" header="Users list" style="padding-bottom:20px; text-align:center;">
 		<p:dataTable value="#{manageUsersView.users}" var="user" widgetVar="usersTable"
-                 emptyMessage="No users found with given criteria" filteredValue="#{filteredUsers}">
+                 emptyMessage="No users found with given criteria" filteredValue="#{filteredUsers}"
+                 rows="10" paginator="true" rowsPerPageTemplate="5,10,15" paginatorPosition="bottom"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                  <p:ajax event="filter" ignoreAutoUpdate="true" />
 		<p:column filterBy="#{user.username}" headerText="Username" filterMatchMode="contains">
             <h:outputText value="#{user.username}" />

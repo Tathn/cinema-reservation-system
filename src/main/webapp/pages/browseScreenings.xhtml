@@ -9,6 +9,9 @@
 <h:body>
 <ui:composition template="/WEB-INF/template.xhtml">
 	<ui:define name="content">
+	<sec:authorize access="!isAuthenticated()">
+		<h:outputText value="Konta dostępne po każdym restarcie aplikacji: admin, employee, user. Hasło do każdego z tych kont: 123123" style="color:white;"/>
+	</sec:authorize>
 	<h:form id="screeningsForm">
 		<p:dataTable value="#{browseScreeningsView.screenings}" var="screening" widgetVar="screeningsTable"
                  emptyMessage="No screenings found with given criteria" filteredValue="#{filteredScreenings}">
@@ -24,7 +27,7 @@
             		<f:convertDateTime pattern="dd-MM-yyyy"/>
             	</h:outputText>
         	</p:column>
-        	<p:column headerText="Starts at" style="text-align: center" sortBy="#{screening.startsAt}">
+        	<p:column headerText="Starts at" style="text-align: center">
         		<h:outputText value="#{screening.startsAt}" >
             		<f:convertDateTime pattern="HH:mm"/>
             	</h:outputText>
@@ -37,12 +40,12 @@
 	        	style="text-align: center">
 	            <h:outputText value="#{screening.movieAttributes}" />
 	        </p:column>
-	        <p:column filterBy="#{screening.movie.genre}" headerText="Genre" filterMatchMode="contains"
+	        <p:column headerText="Room"
 	        	style="text-align: center">
-	            <h:outputText value="#{screening.movie.genre}" />
+	            <h:outputText value="#{screening.room.name}" />
 	        </p:column>
 	        <p:column>
-	        	<p:button href="/ticket/book/#{screening.id}" icon="ui-icon-search" value="Book a ticket" />
+	        	<p:button href="/screening/#{screening.id}" icon="ui-icon-search" value="Book a ticket" />
 	        </p:column>
 		</p:dataTable>
 	</h:form>

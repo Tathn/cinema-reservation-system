@@ -3,8 +3,6 @@ package com.springframework.cinema.web.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ public class BrowseScreeningsView implements Serializable {
 	private Collection<Screening> screenings;
 	private Collection<Screening> filteredScreenings;
 
-	
 	@Autowired
 	private ScreeningService screeningService;
 
@@ -32,7 +29,7 @@ public class BrowseScreeningsView implements Serializable {
         .getRequiredWebApplicationContext(FacesContext.getCurrentInstance())
         .getAutowireCapableBeanFactory().autowireBean(this);
 		
-		screenings = screeningService.findAll();
+		screenings = screeningService.findAllSortByStartsAt();
 		filteredScreenings = new ArrayList<Screening>();
 	}
 	

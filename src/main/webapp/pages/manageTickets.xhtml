@@ -12,7 +12,9 @@
 	<h:form>
 		<p:panel header="Booked tickets">
 		<p:dataTable id="ticketsDataTable" value="#{manageTicketsView.tickets}" var="ticketItem" widgetVar="ticketsTable"
-                 emptyMessage="No tickets found" filteredValue="#{filteredTickets}" >
+                 emptyMessage="No tickets found" filteredValue="#{filteredTickets}" 
+				 rows="10" paginator="true" rowsPerPageTemplate="5,10,15" paginatorPosition="bottom"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                  <p:ajax event="filter" ignoreAutoUpdate="true" />
 	        <p:column headerText="Ticket number" style="text-align: center">
             	<h:outputText value="##{ticketItem.id}" />

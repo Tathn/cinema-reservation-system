@@ -44,8 +44,8 @@
 			                	</p:submenu>
 			                </sec:authorize>
 			                <sec:authorize access="hasRole('ROLE_USER')">
-			                	<p:menuitem url="/ticket/manage" value="Booked tickets" />
-			                	<p:menuitem url="/account/edit" value="Account" />
+			                	<p:menuitem url="/tickets" value="Booked tickets" />
+			                	<p:menuitem url="/account" value="Account" />
 			                	
 			                </sec:authorize>
 			                <p:menuitem value="Logout" action="#{loginView.logOut}" process="@this" icon="ui-icon-extlink"/>

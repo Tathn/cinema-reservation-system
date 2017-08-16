@@ -1,34 +1,21 @@
 package com.springframework.cinema.web.beans.validators;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 
-import org.primefaces.util.DateUtils;
 import org.primefaces.validate.ClientValidator;
 
-import com.springframework.cinema.domain.room.Room;
 import com.springframework.cinema.domain.screening.Screening;
 import com.springframework.cinema.domain.screening.ScreeningService;
-import com.springframework.cinema.domain.user.UserService;
 import com.springframework.cinema.infrastructure.util.DateUtil;
 
 @Named("screeningTimeRangeValidator")
@@ -143,7 +130,7 @@ public class ScreeningTimeRangeValidator implements Validator, ClientValidator {
 
 	@Override
 	public String getValidatorId() {
-		return "custom.EmailValidator";
+		return "custom.ScreeningTimeRangeValidator";
 	}
 	
 	

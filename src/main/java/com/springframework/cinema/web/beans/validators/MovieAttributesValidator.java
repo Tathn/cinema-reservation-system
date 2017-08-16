@@ -2,8 +2,6 @@ package com.springframework.cinema.web.beans.validators;
 
 import java.util.Map;
 
-import javax.annotation.ManagedBean;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -14,8 +12,6 @@ import javax.inject.Named;
 import org.primefaces.validate.ClientValidator;
 
 import com.springframework.cinema.domain.movie.Movie;
-import com.springframework.cinema.domain.screening.Screening;
-import com.springframework.cinema.domain.user.UserService;
 
 @Named("movieAttributesValidator")
 public class MovieAttributesValidator implements Validator, ClientValidator { 

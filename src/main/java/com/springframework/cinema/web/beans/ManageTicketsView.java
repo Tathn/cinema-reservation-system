@@ -1,29 +1,17 @@
 package com.springframework.cinema.web.beans;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 
-import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.web.jsf.FacesContextUtils;
 
 import com.springframework.cinema.domain.ticket.Ticket;
 import com.springframework.cinema.domain.ticket.TicketService;
-import com.springframework.cinema.infrastructure.util.SecurityUtil;
 
 public class ManageTicketsView implements Serializable {
 

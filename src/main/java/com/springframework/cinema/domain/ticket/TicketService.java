@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.springframework.cinema.domain.screening.ScreeningSeat;
 import com.springframework.cinema.domain.screening.ScreeningSeatService;
-import com.springframework.cinema.domain.user.CustomUserDetails;
 import com.springframework.cinema.domain.user.User;
 
 /**
