@@ -5,11 +5,12 @@ import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.inject.Named;
 
 import com.springframework.cinema.domain.room.Room;
 import com.springframework.cinema.domain.room.RoomService;
 
-@ManagedBean("roomConverter")
+@Named("roomConverter")
 public class RoomConverter implements Converter {
 
 	@EJB

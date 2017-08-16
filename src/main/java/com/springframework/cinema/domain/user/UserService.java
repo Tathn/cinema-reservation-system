@@ -2,7 +2,10 @@ package com.springframework.cinema.domain.user;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.springframework.cinema.domain.ticket.TicketService;
 
 /**
  * Created by Patryk on 2017-04-27.
@@ -10,9 +13,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository){
+    private final TicketService ticketService;
+    
+    @Autowired
+    public UserService(UserRepository userRepository,TicketService ticketService){
         this.userRepository = userRepository;
+        this.ticketService = ticketService;
     }
 
 
@@ -21,6 +27,7 @@ public class UserService {
     }
 
     public void delete(Long id){
+    	ticketService.deleteByUserId(id);
         userRepository.delete(id);
     }
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/tags">
+<h:head/>
+<h:body>
+<ui:composition template="/WEB-INF/template.xhtml">
+<ui:define name="content">
+	<h:form id="signup">
+		<p:panel id="panel" header="Register" style="margin-bottom:10px;">
+		<p:message for="passwordValidation" id="passwordValidationMsg"  />
+        	<h:panelGrid columns="3" cellpadding="5">
+        	
+				<p:outputLabel for="username" value="Username: " />
+			    <p:inputText id="username" value="#{signupView.user.username}" required="true" requiredMessage="Username is required.">
+			    	<f:validator binding="#{usernameValidator}" />
+                    <p:ajax event="blur" update="usernameMsg"/>
+				</p:inputText>
+				<p:message id="usernameMsg" for="username" display="text"/>
+				
+				<p:outputLabel for="email" value="Email: " />
+			    <p:inputText id="email" value="#{signupView.user.email}" required="true" requiredMessage="Email is required.">
+			    	<f:validator binding="#{emailValidator}" />
+                    <p:ajax event="blur" update="emailMsg"/>
+				</p:inputText>
+				<p:message id="emailMsg" for="email" display="text"/>
+				
+				<p:outputLabel for="password" value="Password: " />
+			    <p:password id="password" value="#{signupView.user.password}" required="true" requiredMessage="Password is required.">
+                    <p:ajax event="blur" update="passwordMsg"/>
+				</p:password>
+				<p:message id="passwordMsg" for="password" display="text"/>
+				
+				<h:outputLabel for="confirm" value="Confirm password:" />
+				<p:password id="confirm" value="#{signupView.passwordConfirm}" required="true" requiredMessage="Please repeat the password.">
+				    <p:ajax event="blur" update="confirmMsg"/>
+				</p:password>
+				<p:message id="confirmMsg" for="confirm" display="text"/>
+				
+				<h:inputHidden id="passwordValidation" value="true">
+	      				<f:validator binding="#{passwordValidator}"/>
+	      				<f:attribute name="password" value="#{signupView.user.password}"/>
+	      				<f:attribute name="passwordConfirm" value="#{signupView.passwordConfirm}"/>
+	      		</h:inputHidden>
+				
+			</h:panelGrid>
+		</p:panel>
+		<p:commandButton value="Submit" action="#{signupView.register}" update="passwordValidationMsg"/>
+	</h:form>
+</ui:define>
+</ui:composition>
+</h:body>
+</html>

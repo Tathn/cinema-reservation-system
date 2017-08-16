@@ -32,12 +32,6 @@ public class Room implements Serializable {
 	@Column(name = "columns")
 	private Integer columns;
 	
-//	@OneToMany(mappedBy="room")
-//	Collection<Screening> screenings;
-	
-//	@OneToMany(mappedBy="room", cascade = CascadeType.ALL, orphanRemoval = true)
-//	Collection<RoomSeat> seats;
-	
 	public Room(){
 		name = "Undefined";
 		rows = 0;

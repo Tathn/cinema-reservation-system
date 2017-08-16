@@ -49,4 +49,8 @@ public class SecurityUtil {
 	    return authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
 	}
 	
+	public static User getCurrentUser(){
+		return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	}
+	
 }

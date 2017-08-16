@@ -33,15 +33,22 @@
 	  				<p:menubar>
 	  					<p:submenu label="#{request.userPrincipal.name}" icon="fa fa-user" styleClass="menu_item">
 	  						<sec:authorize access="hasRole('ROLE_ADMIN')">
-			          			<p:menuitem value="Admin Panel" url="/admin" />
+	  							<p:submenu label="Admin">
+			          				<p:menuitem url="/admin/users" value="Manage users" />
+			          				<p:menuitem url="/admin/movies" value="Manage movies" />
+			          			</p:submenu>
 			          		</sec:authorize>
 			          		<sec:authorize access="hasRole('ROLE_EMPLOYEE')">
-			          			<p:menuitem value="Employee Panel" url="/employee" />
+			          			<p:submenu label="Employee">
+			          				<p:menuitem url="/employee/screenings" value="Manage screenings" />
+			                	</p:submenu>
 			                </sec:authorize>
 			                <sec:authorize access="hasRole('ROLE_USER')">
-			                	<p:menuitem value="Manage Account"   url="/account" />
+			                	<p:menuitem url="/ticket/manage" value="Booked tickets" />
+			                	<p:menuitem url="/account/edit" value="Account" />
+			                	
 			                </sec:authorize>
-			                <p:menuitem value="Logout" action="#{loginBean.logOut}" process="@this" icon="ui-icon-extlink"/>
+			                <p:menuitem value="Logout" action="#{loginView.logOut}" process="@this" icon="ui-icon-extlink"/>
 	  					</p:submenu>
 	  					<p:menuitem  value="Browse screenings" url="/" styleClass="menu_item"/>
 	  				</p:menubar>

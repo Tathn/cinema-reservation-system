@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.springframework.cinema.domain.screening.Screening;
 import com.springframework.cinema.domain.screening.ScreeningSeat;
@@ -47,7 +51,8 @@ public class Ticket implements Serializable {
 	@JoinColumn(name = "screening_id", foreignKey = @ForeignKey(name = "ticket_screening_id_fk"))
 	private Screening screening;
 	
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
 	private Collection<ScreeningSeat> screeningSeats;
 	
 	public Ticket(){
@@ -59,6 +64,15 @@ public class Ticket implements Serializable {
 
 	public User getUser() { return user; }
 	public void setUser(User user) { this.user = user; }
+	
+	public float getPrice() { return price; }
+	public void setPrice(float price) { this.price = price; }
+
+	public boolean isPaid() { return paid; }
+	public void setPaid(boolean paid) { this.paid = paid; }
+
+	public Screening getScreening() { return screening; }
+	public void setScreening(Screening screening) { this.screening = screening; }
 
 	public Collection<ScreeningSeat> getScreeningSeats() { return screeningSeats; }
 	public void setScreeningSeats(Collection<ScreeningSeat> screeningSeats) { this.screeningSeats = screeningSeats; }

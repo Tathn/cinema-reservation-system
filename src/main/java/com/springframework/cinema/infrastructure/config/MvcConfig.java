@@ -23,13 +23,4 @@ public class MvcConfig extends WebMvcConfigurerAdapter{
 		return resolver;
 	}
 	
-	@Bean
-	public static CustomScopeConfigurer viewScope() {
-	    CustomScopeConfigurer configurer = new CustomScopeConfigurer();
-	    HashMap<String, Object> map =  new HashMap<String, Object>();
-	    map.put("view", new ViewScope());
-	    configurer.setScopes(map);
-	    System.out.println("SCOPEEEE " + map.containsKey("view"));
-	    return configurer;
-	}
 }

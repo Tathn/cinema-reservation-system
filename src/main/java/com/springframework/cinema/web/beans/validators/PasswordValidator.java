@@ -13,25 +13,27 @@ import javax.inject.Named;
 
 import org.primefaces.validate.ClientValidator;
 
+import com.springframework.cinema.domain.screening.Screening;
 import com.springframework.cinema.domain.user.UserService;
 
-@Named("emailValidator")
-public class EmailValidator implements Validator, ClientValidator { 
+@Named("passwordValidator")
+public class PasswordValidator implements Validator, ClientValidator { 
 	
-	@EJB
-	private UserService userService;
-
+	private static final int PASSWORD_MIN_LENGTH = 6; 
+	
 	@Override
 	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
-		if(value == null || value.toString().isEmpty()) return;
-		String email = value.toString();
-		if(!email.contains("@") || !email.contains("."))
-			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors.",
-					 "Please provide a valid email address."));
+		if(value == null) return;
 		
-		if(userService.checkIfEmailExists(email))
+		String password = (String) uiComponent.getAttributes().get("password");
+		String passwordConfirm = (String) uiComponent.getAttributes().get("passwordConfirm");
+		if(password.length() < 6 && password.length() != 0)
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors.",
-					 "Email is already taken, please choose another one."));
+					 "Password is too short. It must have at least " + PASSWORD_MIN_LENGTH + " characters."));
+		
+		if(!password.equals(passwordConfirm) && password.length() + passwordConfirm.length() > 0)
+			 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Form input has errors.",
+					 "Passwords do not match."));
 	}
 	
 	@Override

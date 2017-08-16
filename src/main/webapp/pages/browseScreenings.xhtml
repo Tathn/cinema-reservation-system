@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/tags">
+<h:head/>
+<h:body>
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="content">
+	<h:form id="screeningsForm">
+		<p:dataTable value="#{browseScreeningsView.screenings}" var="screening" widgetVar="screeningsTable"
+                 emptyMessage="No screenings found with given criteria" filteredValue="#{filteredScreenings}">
+            <p:ajax event="filter" ignoreAutoUpdate="true" />
+	     	<p:column id="screeningDate" filterFunction="#{dateUtil.filterByDate}" filterBy="#{screening.date}"
+	     	 	headerText="Date" style="text-align: center">
+	     	 	<f:facet name="filter">
+    				<p:calendar  pattern="dd-MM-yyyy" id="calendar" mindate="#{dateUtil.now()}">
+       				 	<p:ajax event="dateSelect" oncomplete="PF('screeningsTable').filter()"/>
+   					 </p:calendar>
+				</f:facet>
+            	<h:outputText value="#{screening.date}">
+            		<f:convertDateTime pattern="dd-MM-yyyy"/>
+            	</h:outputText>
+        	</p:column>
+        	<p:column headerText="Starts at" style="text-align: center" sortBy="#{screening.startsAt}">
+        		<h:outputText value="#{screening.startsAt}" >
+            		<f:convertDateTime pattern="HH:mm"/>
+            	</h:outputText>
+        	</p:column>
+	     	<p:column filterBy="#{screening.movie.title}" headerText="Title" filterMatchMode="contains"
+	     		style="text-align: center">
+	            <h:outputText value="#{screening.movie.title}"/>
+	        </p:column>
+	        <p:column filterBy="#{screening.movieAttributes}" headerText="Attributes" filterMatchMode="contains"
+	        	style="text-align: center">
+	            <h:outputText value="#{screening.movieAttributes}" />
+	        </p:column>
+	        <p:column filterBy="#{screening.movie.genre}" headerText="Genre" filterMatchMode="contains"
+	        	style="text-align: center">
+	            <h:outputText value="#{screening.movie.genre}" />
+	        </p:column>
+	        <p:column>
+	        	<p:button href="/ticket/book/#{screening.id}" icon="ui-icon-search" value="Book a ticket" />
+	        </p:column>
+		</p:dataTable>
+	</h:form>
+	<script>
+        jQuery(document).ready(function() {
+            jQuery('input[id*="calendar_input"]').val(jQuery.datepicker.formatDate('dd-mm-yy', new Date()));
+            PF('screeningsTable').filter();	});
+    </script>
+	</ui:define>
+</ui:composition>
+</h:body>
+</html>

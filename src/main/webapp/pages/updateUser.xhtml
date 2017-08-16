@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/tags">
+<h:head/>
+<h:body>
+<ui:composition template="/WEB-INF/template.xhtml">
+<ui:define name="content">
+	<h:form id="signup">
+		<p:panel id="panel" header="Edit account details" style="margin-bottom:10px;">
+        	<p:messages />
+			<p:message for="passwordValidation" id="passwordValidationMsg"  />
+			<h:panelGrid columns="3" cellpadding="5">
+			
+				<p:outputLabel for="email" value="New email address: " />
+			    <p:inputText id="email" value="#{updateUserView.newEmail}" required="false" requiredMessage="Email is required.">
+			    	<f:validator binding="#{emailValidator}" />
+                    <p:ajax event="blur" update="emailMsg"/>
+				</p:inputText>
+				<p:message id="emailMsg" for="email" display="text"/>	
+				
+				<p:outputLabel for="password" value="New password: " />
+			    <p:password id="password" value="#{updateUserView.newPassword}" required="false" requiredMessage="Password is required.">
+                    <p:ajax event="keyup" update="passwordMsg"/>
+				</p:password>
+				<p:message id="passwordMsg" for="password" display="text"/>
+				
+				<h:outputLabel for="confirm" value="New password (again):" />
+				<p:password id="confirm" value="#{updateUserView.newPasswordConfirm}" required="false" requiredMessage="Please repeat the password.">
+				    <p:ajax event="blur" update="confirmMsg"/>
+				</p:password>
+				<p:message id="confirmMsg" for="confirm" display="text"/>
+				
+				<h:inputHidden id="passwordValidation" value="true">
+	      				<f:validator binding="#{passwordValidator}"/>
+	      				<f:attribute name="password" value="#{updateUserView.newPassword}"/>
+	      				<f:attribute name="passwordConfirm" value="#{updateUserView.newPasswordConfirm}"/>
+	      		</h:inputHidden>
+			</h:panelGrid>
+		</p:panel>
+		<p:commandButton value="Submit" action="#{updateUserView.updateUser}" update="passwordValidationMsg"/>
+	</h:form>
+</ui:define>
+</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/tags">
+<h:head/>
+<h:body>
+<ui:composition template="/WEB-INF/template.xhtml">
+	<f:metadata>
+	  <f:viewAction action="#{bookTicketView.redirectIfScreeningDataEmpty}" />
+	</f:metadata>
+	<ui:define name="content">
+	<h:form id="buyTicketForm">
+		<p:panel header="Book a ticket">
+		
+		<sec:authorize access="!isAuthenticated()">
+		<div class="ui-messages ui-widget">
+		<div class="ui-messages-warn ui-corner-all">
+    		<span class="ui-messages-warn-icon"/>
+    		<span class="ui-messages-warn-summary">You are not logged in.</span>
+    		<span class="ui-messages-warn-detail">Please log in before booking a ticket.</span>
+		</div>
+		</div>
+		</sec:authorize>
+		
+		<p:messages id="ticketMsg" showSummary="true" showDetail="true" showIcon="false"/>
+		
+		<p:panelGrid columns="1" layout="grid">
+			<p:column>
+			<p:panel header="Choose seat" id="chooseSeatPanel" >
+				<div style="display: flex; justify-content: center; flex-wrap: wrap;
+						background-color: gray; margin-bottom: 10px;">
+					<p style="margin: 5px;">Screen</p>
+				</div>
+				<div id="seatsWrapper" style="display: flex; justify-content: center; flex-wrap: wrap;">
+					<p:repeat var="seat" varStatus="seatStatus" value="#{bookTicketView.selectedScreeningSeats}">
+						<div style="display: block; text-align:center; margin 5px; font-size: 12px;">
+							
+							<p:commandLink process=":buyTicketForm:chooseSeatPanel, :buyTicketForm:choosenSeats" action="#{bookTicketView.selectDeselectSeat}" rendered="#{seat.availability}"
+							 update=" :buyTicketForm:choosenSeats,@this,:buyTicketForm:ticketPrice">
+	             					<f:param name="seat_id" value="#{seat.id}" />
+			                	<p:graphicImage name="images/seat_available.png" width="30px" rendered="#{!bookTicketView.isSeatOnTicket(seat)}" />
+			           			<p:graphicImage name="images/seat_choosen.png" width="30px"  rendered="#{bookTicketView.isSeatOnTicket(seat)}" />
+			           		</p:commandLink>
+			                <p:graphicImage name="images/seat_not_available.png" width="30px" rendered="#{!seat.availability}"/>
+			           		
+			           		<br />
+			           		<h:outputText value="#{seat.label}"/>
+		           		</div>
+		           		<ui:fragment rendered="#{(seatStatus.index + 1) % bookTicketView.selectedScreening.room.columns == 0}">
+							<div style="flex-basis: 100%; margin-bottom:5px;" />
+						</ui:fragment>
+					</p:repeat>
+				</div>
+			</p:panel>
+			</p:column>
+			<p:column>
+			<p:panel header="Ticket" id="ticketSummaryPanel">
+				<p:panel header="Movie info" >
+					<p:panelGrid columns="2" layout="grid" >
+						<h:outputText value="Title: " style="float:right;" />
+						<h:outputText value="#{bookTicketView.selectedScreening.movie.title}" style="float:left;"/>
+						<h:outputText value="Genre: " style="float:right;" />
+						<h:outputText value="#{bookTicketView.selectedScreening.movie.genre}" style="float:left;"/>
+						<h:outputText value="Date: " style="float:right;" />
+						<h:outputText value="#{bookTicketView.selectedScreening.date}" style="float:left;">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+						<h:outputText value="Starts at: " style="float:right;"/>
+						<h:outputText value="#{bookTicketView.selectedScreening.startsAt}" style="float:left;">
+							<f:convertDateTime pattern="HH:mm"/>
+						</h:outputText>
+						<h:outputText value="Duration: " style="float:right;" />
+						<h:outputText value="#{bookTicketView.selectedScreening.movie.duration}" style="float:left;"/>
+						<h:outputText value="Age restriction: " style="float:right;" />
+						<h:outputText value="#{bookTicketView.selectedScreening.movie.ageRestriction}+" style="float:left;"/>
+						<h:outputText value="Other: " style="float:right;" />
+						<h:outputText value="#{bookTicketView.selectedScreening.movieAttributes}" style="float:left;"/>
+					</p:panelGrid>
+					<p:panelGrid columns="1" layout="grid" style="text-align: center;" >
+						<h:outputText value="#{bookTicketView.selectedScreening.movie.description}" />
+					</p:panelGrid>
+						
+				</p:panel>
+				<p:panel header="Choosen seats" >
+				<p:dataGrid id="choosenSeats" var="seat" value="#{bookTicketView.ticket.screeningSeats}"
+					emptyMessage="No seats choosen" columns="3"  layout="grid" style="margin-bottom: 20px; text-align: center;">
+					<p:graphicImage name="images/seat_choosen.png" width="30px"  />
+					<h:outputText value="#{seat.label}"/>
+					<p:selectOneRadio value="#{seat.price}" style="margin: 0 auto;" rendered="#{bookTicketView.selectedScreening.adultTicketPrice != bookTicketView.selectedScreening.childTicketPrice}">
+						<f:selectItem itemLabel="Adult" itemValue="#{bookTicketView.selectedScreening.adultTicketPrice}"/>
+						<f:selectItem itemLabel="Child" itemValue="#{bookTicketView.selectedScreening.childTicketPrice}"/>
+						<p:ajax event="change" update=":buyTicketForm:ticketPrice" listener="#{bookTicketView.calculateTicketPrice}" />
+					</p:selectOneRadio>
+				</p:dataGrid>
+				</p:panel>
+				
+				<h:outputLabel for="ticketPrice" value="Price: " />
+				<h:outputText id="ticketPrice" value="$#{bookTicketView.ticket.price}"/>
+				<br />
+				
+				<h:inputHidden id="ticketSeatsAmount" value="true">
+	      			<f:validator binding="#{ticketSeatsAmountValidator}"/>
+	      			<f:attribute name="ticket" value="#{bookTicketView.ticket}"/>
+	      		</h:inputHidden>
+	      			
+				<p:commandButton value="Book ticket" update="@all" action="#{bookTicketView.bookTicket}" style="margin-top: 20px;">
+					<p:ajax />
+				</p:commandButton>
+			</p:panel>
+			</p:column>
+		</p:panelGrid>
+		</p:panel>
+	</h:form>
+	</ui:define>
+</ui:composition>
+</h:body>
+</html>

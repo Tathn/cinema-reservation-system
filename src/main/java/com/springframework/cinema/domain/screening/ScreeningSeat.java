@@ -36,6 +36,8 @@ public class ScreeningSeat implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "screening_id", foreignKey = @ForeignKey(name = "screening_id_fk"))
 	private Screening screening;
+	
+	private float price = 0;
 
 //	@ManyToOne
 //	@JoinColumn(name = "ticket_id", foreignKey = @ForeignKey(name = "seat_ticket_id_fk"))
@@ -67,4 +69,12 @@ public class ScreeningSeat implements Serializable {
 	
 	public Screening getScreening() { return screening;}
 	public void setScreening(Screening screening) { this.screening = screening; }
+
+	public float getPrice() {
+		return price;
+	}
+
+	public void setPrice(float seatPrice) {
+		this.price = seatPrice;
+	}
 }

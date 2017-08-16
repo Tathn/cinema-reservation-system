@@ -47,7 +47,6 @@ public class User implements Serializable {
     private String email;
 
     @NotNull(message = "Password is required.")
-    @Size(min = 6, message = "Password is too short.")
     private String password;
     
     @ManyToMany(fetch = FetchType.EAGER)

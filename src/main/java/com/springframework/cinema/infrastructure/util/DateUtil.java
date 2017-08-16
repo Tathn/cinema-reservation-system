@@ -2,9 +2,19 @@ package com.springframework.cinema.infrastructure.util;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component("dateUtil")
+@Scope("application")
 public class DateUtil {
 
+	 public static Date now(){
+		 return new Date();
+	 }
+	 
 	 public static Date getNextDay(Date date) {
 		 Calendar cal = Calendar.getInstance();
 	     cal.setTime(date);
@@ -40,6 +50,10 @@ public class DateUtil {
         return cal.getTime();
     }
     
-    
+    public boolean filterByDate(Object value, Object filter, Locale locale) {
+        if( filter == null ) { return false; }
+        if( value == null ) { return false; }
+        return ((Date)value).compareTo((Date)filter) == 0;
+    }
 
 }

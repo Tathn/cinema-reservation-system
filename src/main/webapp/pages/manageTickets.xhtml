@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/tags">
+<h:head/>
+<h:body>
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="content">
+	<h:form>
+		<p:panel header="Booked tickets">
+		<p:dataTable id="ticketsDataTable" value="#{manageTicketsView.tickets}" var="ticketItem" widgetVar="ticketsTable"
+                 emptyMessage="No tickets found" filteredValue="#{filteredTickets}" >
+                 <p:ajax event="filter" ignoreAutoUpdate="true" />
+	        <p:column headerText="Ticket number" style="text-align: center">
+            	<h:outputText value="##{ticketItem.id}" />
+        	</p:column>
+        	<p:column headerText="Movie title" style="text-align: center">
+            	<h:outputText value="#{ticketItem.screening.movie.title} | #{ticketItem.screening.movieAttributes}" />
+        	</p:column>
+        	<p:column headerText="Starts at" style="text-align: center">
+            	<h:outputText value="#{ticketItem.screening.startsAt}">
+            		<f:convertDateTime pattern="dd-MM-YYYY HH:mm"/>
+            	</h:outputText>
+        	</p:column>
+        	<p:column headerText="Paid" style="text-align: center" exportable="false">
+            	<h:outputText value="#{ticketItem.paid ? 'Yes' : 'No'}" />
+        	</p:column>
+        	<p:column headerText="Price" style="text-align: center">
+            	<h:outputText value="#{ticketItem.price}$" />
+        	</p:column>
+        	<p:column headerText="Room" style="text-align: center">
+            	<h:outputText value="#{ticketItem.screening.room.name}" />
+        	</p:column>
+        	<p:column headerText="Seats labels" style="text-align: center">
+	        	<ui:repeat var="seat" value="#{ticketItem.screeningSeats}">
+	        			<h:outputText value="#{seat.label} "/>
+	        	</ui:repeat>
+        	</p:column>
+        	<p:column headerText="Actions" style="text-align: center" exportable="false">
+	        	<p:commandButton action="#{manageTicketsView.payForTicket}" value="Pay" rendered="#{!ticketItem.paid}" update="ticketsDataTable">
+	        		<p:ajax />
+	        		<f:param name="ticket_id" value="#{ticketItem.id}" />
+	        	</p:commandButton>
+        	</p:column>
+		</p:dataTable>
+		</p:panel>
+	</h:form>
+	</ui:define>
+</ui:composition>
+</h:body>
+</html>

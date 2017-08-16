@@ -16,7 +16,8 @@ import com.springframework.cinema.infrastructure.model.BaseRepository;
 public interface TicketRepository extends BaseRepository<Ticket, Long> {
 	@Transactional
     void deleteByScreeningSeatsId(Long screeningSeatId);
-	
+	@Transactional
+	void deleteByUserId(Long userId);
 	Collection<Ticket> findByUserId(Long userId);
 
 }
