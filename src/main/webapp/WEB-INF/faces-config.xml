@@ -9,55 +9,55 @@
     
     <managed-bean>
     	<managed-bean-name> loginView </managed-bean-name>
-    	<managed-bean-class> com.springframework.cinema.web.beans.LoginView </managed-bean-class>
+    	<managed-bean-class>com.tathn.cinema.web.beans.LoginView</managed-bean-class>
     	<managed-bean-scope> view </managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
     	<managed-bean-name> updateUserView </managed-bean-name>
-    	<managed-bean-class> com.springframework.cinema.web.beans.UpdateUserView </managed-bean-class>
+    	<managed-bean-class>com.tathn.cinema.web.beans.UpdateUserView</managed-bean-class>
     	<managed-bean-scope> view </managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
     	<managed-bean-name> signupView </managed-bean-name>
-    	<managed-bean-class> com.springframework.cinema.web.beans.SignupView </managed-bean-class>
+    	<managed-bean-class>com.tathn.cinema.web.beans.SignupView</managed-bean-class>
     	<managed-bean-scope> view </managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
     	<managed-bean-name> manageUsersView </managed-bean-name>
-    	<managed-bean-class> com.springframework.cinema.web.beans.ManageUsersView </managed-bean-class>
+    	<managed-bean-class>com.tathn.cinema.web.beans.ManageUsersView</managed-bean-class>
     	<managed-bean-scope> view </managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
     	<managed-bean-name> manageMoviesView </managed-bean-name>
-    	<managed-bean-class> com.springframework.cinema.web.beans.ManageMoviesView </managed-bean-class>
+    	<managed-bean-class>com.tathn.cinema.web.beans.ManageMoviesView</managed-bean-class>
     	<managed-bean-scope> view </managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
     	<managed-bean-name> manageTicketsView </managed-bean-name>
-    	<managed-bean-class> com.springframework.cinema.web.beans.ManageTicketsView </managed-bean-class>
+    	<managed-bean-class>com.tathn.cinema.web.beans.ManageTicketsView</managed-bean-class>
     	<managed-bean-scope> view </managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
     	<managed-bean-name> manageScreeningsView </managed-bean-name>
-    	<managed-bean-class> com.springframework.cinema.web.beans.ManageScreeningsView </managed-bean-class>
+    	<managed-bean-class>com.tathn.cinema.web.beans.ManageScreeningsView</managed-bean-class>
     	<managed-bean-scope> view </managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
     	<managed-bean-name> browseScreeningsView </managed-bean-name>
-    	<managed-bean-class> com.springframework.cinema.web.beans.BrowseScreeningsView </managed-bean-class>
+    	<managed-bean-class>com.tathn.cinema.web.beans.BrowseScreeningsView</managed-bean-class>
     	<managed-bean-scope> view </managed-bean-scope>
     </managed-bean>
     
     <managed-bean>
     	<managed-bean-name> bookTicketView </managed-bean-name>
-    	<managed-bean-class> com.springframework.cinema.web.beans.BookTicketView </managed-bean-class>
+    	<managed-bean-class>com.tathn.cinema.web.beans.BookTicketView</managed-bean-class>
     	<managed-bean-scope> view </managed-bean-scope>
     </managed-bean>
 </faces-config>
