@@ -1,19 +1,23 @@
 package com.tathn.cinema.web.beans.converters;
 
-import javax.ejb.EJB;
+import com.tathn.cinema.domain.room.RoomService;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.inject.Inject;
 import javax.inject.Named;
-
-import com.tathn.cinema.domain.room.RoomService;
 
 @Named("roomConverter")
 public class RoomConverter implements Converter {
 
-	@EJB
-    RoomService roomService;
-	
+    private RoomService roomService;
+
+    @Inject
+	public RoomConverter(RoomService roomService) {
+    	this.roomService = roomService;
+	}
+
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		return roomService.findByName(value);

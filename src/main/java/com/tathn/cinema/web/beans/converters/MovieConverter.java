@@ -4,6 +4,7 @@ import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.tathn.cinema.domain.movie.MovieService;
@@ -11,9 +12,13 @@ import com.tathn.cinema.domain.movie.MovieService;
 @Named("movieConverter")
 public class MovieConverter implements Converter {
 
-	@EJB
-    MovieService movieService;
-	
+    private MovieService movieService;
+
+	@Inject
+	public MovieConverter(MovieService movieService) {
+		this.movieService = movieService;
+	}
+
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		return movieService.findByTitle(value);
