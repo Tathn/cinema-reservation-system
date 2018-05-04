@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by Patryk on 2017-05-27.
  */
-@Service
+@Service("movieService")
 public class MovieService {
     private final MovieRepository movieRepository;
 

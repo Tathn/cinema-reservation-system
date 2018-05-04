@@ -9,7 +9,7 @@ import com.tathn.cinema.domain.room.RoomSeat;
 /**
  * Created by Patryk on 2017-06-03.
  */
-@Service
+@Service("screeningSeatService")
 public class ScreeningSeatService {
     private final ScreeningSeatRepository screeningSeatRepository;
 

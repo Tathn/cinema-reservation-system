@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by Patryk on 2017-04-27.
  */
-@Service
+@Service("userService")
 public class UserService {
     private final UserRepository userRepository;
     private final TicketService ticketService;

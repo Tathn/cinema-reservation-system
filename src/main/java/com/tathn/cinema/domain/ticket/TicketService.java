@@ -14,7 +14,7 @@ import com.tathn.cinema.domain.user.User;
 /**
  * Created by Patryk on 2017-05-27.
  */
-@Service
+@Service("ticketService")
 public class TicketService {
     private final TicketRepository ticketRepository;
     private final ScreeningSeatService screeningSeatService;
@@ -39,7 +39,7 @@ public class TicketService {
     
     public void deleteByUserId(Long userId){
     	Collection<Ticket> userTickets = ticketRepository.findByUserId(userId);
-    	ArrayList<ScreeningSeat> ticketsScreeningSeats = new ArrayList<ScreeningSeat>();
+    	ArrayList<ScreeningSeat> ticketsScreeningSeats = new ArrayList<>();
     	for(Ticket ticket : userTickets){
     		ticketsScreeningSeats.addAll(ticket.getScreeningSeats());
     	}

@@ -15,7 +15,7 @@ import com.tathn.cinema.domain.room.Room;
 /**
  * Created by Patryk on 2017-06-03.
  */
-@Service
+@Service("screeningService")
 public class ScreeningService {
     private final ScreeningRepository screeningRepository;
 
@@ -38,13 +38,7 @@ public class ScreeningService {
     
     public Collection<Screening> findAllSortByStartsAt(){
     	ArrayList<Screening> screenings = (ArrayList<Screening>) screeningRepository.findAll();
-    	screenings.sort(new Comparator<Screening>() {
-
-			@Override
-			public int compare(Screening o1, Screening o2) {
-				return o1.getStartsAt().compareTo(o2.getStartsAt());
-			}
-		});
+    	screenings.sort(Comparator.comparing(Screening::getStartsAt));
     	return screenings;
     }
 

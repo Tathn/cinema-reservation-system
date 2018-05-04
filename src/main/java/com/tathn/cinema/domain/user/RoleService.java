@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by Patryk on 2017-05-09.
  */
-@Service
+@Service("roleService")
 public class RoleService {
     private final RoleRepository roleRepository;
 

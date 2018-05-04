@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by Patryk on 2017-05-27.
  */
-@Service
+@Service("roomSeatService")
 public class RoomSeatService {
     private final RoomSeatRepository roomSeatRepository;
 
