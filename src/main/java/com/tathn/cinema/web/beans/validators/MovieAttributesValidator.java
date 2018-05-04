@@ -23,7 +23,7 @@ public class MovieAttributesValidator implements Validator, ClientValidator {
 
 		if(!movie.getThreeDimensional() && !movie.getTwoDimensional())
 			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "No attribute selected",
-    				"Please choose at least one option from 2D and 3D."));
+    				"Please choose one option from 2D and 3D."));
 	}
 	
 	@Override
