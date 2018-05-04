@@ -54,7 +54,7 @@ private static final long serialVersionUID = -3210711807003424547L;
 		selectedScreening = screeningService.findById(screeningId);
 		selectedScreeningSeats = screeningSeatService.findScreeningSeatsByScreeningId(screeningId);
 		ticket = new Ticket();
-		ticket.setScreeningSeats(new ArrayList<ScreeningSeat>());
+		ticket.setScreeningSeats(new ArrayList<>());
 	}
 	
 	public void redirectIfScreeningDataEmpty() throws IOException{
@@ -84,20 +84,21 @@ private static final long serialVersionUID = -3210711807003424547L;
 	}
 	
 	public void calculateTicketPrice(){
-		float ticketPrice = 0;
-		for(ScreeningSeat seat : ticket.getScreeningSeats())
-			ticketPrice += seat.getPrice();
+		float ticketPrice = ticket.getScreeningSeats().stream()
+				.map(ScreeningSeat::getPrice)
+				.reduce(
+						0f,
+						(a, b) -> a + b
+				);
 		ticket.setPrice(ticketPrice);
 	}
 	
 	public boolean isSeatOnTicket(ScreeningSeat seat){
-		if(ticket.getScreeningSeats().contains(seat))
-			return true;
-		return false;
+		return ticket.getScreeningSeats().contains(seat);
 	}
 	
 	public void bookTicket() throws IOException{
-		String message = new String();
+		StringBuilder message = new StringBuilder();
 		boolean success = true;
 		if(SecurityUtil.isAuthenticated()){
 			selectedScreeningSeats = screeningSeatService.findScreeningSeatsByScreeningId(selectedScreening.getId());
@@ -106,7 +107,7 @@ private static final long serialVersionUID = -3210711807003424547L;
 				if(ticketScreeningSeats.contains(seat)){
 					if(!seat.getAvailability()){
 						ticketScreeningSeats.remove(seat);
-						message += " " + seat.getLabel();
+						message.append(" ").append(seat.getLabel());
 						success = false;
 					}
 				}
