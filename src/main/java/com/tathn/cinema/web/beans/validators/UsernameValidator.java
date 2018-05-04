@@ -8,6 +8,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.tathn.cinema.domain.user.UserService;
@@ -15,9 +16,13 @@ import org.primefaces.validate.ClientValidator;
 
 @Named("usernameValidator")
 public class UsernameValidator implements Validator, ClientValidator {
-	
-	@EJB
+
 	private UserService userService;
+
+	@Inject
+	public UsernameValidator(UserService userService) {
+		this.userService = userService;
+	}
 
 	@Override
 	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {

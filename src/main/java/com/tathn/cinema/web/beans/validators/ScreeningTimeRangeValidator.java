@@ -10,6 +10,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.tathn.cinema.domain.screening.Screening;
@@ -19,9 +20,13 @@ import org.primefaces.validate.ClientValidator;
 
 @Named("screeningTimeRangeValidator")
 public class ScreeningTimeRangeValidator implements Validator, ClientValidator { 
-	
-	@EJB
+
 	private ScreeningService screeningService;
+
+	@Inject
+	public ScreeningTimeRangeValidator(ScreeningService screeningService) {
+		this.screeningService = screeningService;
+	}
 
 	@Override
 	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
