@@ -15,9 +15,8 @@ public class SecurityUtil {
 	
 	private static BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	
-	public static String encodePassword(String password){ 
-    	String encodedPassword = bCryptPasswordEncoder.encode(password);
-    	return encodedPassword;
+	public static String encodePassword(String password){
+		return bCryptPasswordEncoder.encode(password);
     }
 	
 	public static boolean authenticate(User user, UserService userService){
